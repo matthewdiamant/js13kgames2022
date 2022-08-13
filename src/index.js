@@ -3,6 +3,7 @@ import Drawer from "./Drawer";
 import Keyboard from "./Keyboard";
 import HUD from "./HUD";
 import Map from "./Map";
+import MineCollection from "./MineCollection";
 import MiniMap from "./MiniMap";
 import Mouse from "./Mouse";
 import Player from "./Player";
@@ -37,6 +38,7 @@ window.onload = () => {
 
   let hud = new HUD();
   let map = new Map();
+  let mines = new MineCollection();
   let miniMap = new MiniMap();
   let player = new Player();
 
@@ -78,6 +80,7 @@ window.onload = () => {
     camera.tick({ keyboard });
     const mouseEvents = mouse.tick({ camera });
     player.tick({ mouseEvents });
+    mines.tick();
     hud.tick({ player });
 
     /*
@@ -116,7 +119,7 @@ window.onload = () => {
     */
   };
 
-  let drawObjects = () => [background, map, player, mouse, hud, miniMap];
+  let drawObjects = () => [background, map, player, mines, mouse, hud, miniMap];
 
   gameLoop();
 };
