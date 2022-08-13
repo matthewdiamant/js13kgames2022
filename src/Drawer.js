@@ -173,13 +173,14 @@ export default class Drawer {
   }
 
   miniMap({ x, y, size, sizeX, sizeY, color }) {
+    const miniMapSize = 250;
     this.draw(() => {
       this.rect({
         adjusted: false,
         fillColor: color,
         rect: [
-          this.canvas.width - 200 + (x / Map.size) * 200,
-          this.canvas.height - 200 + (y / Map.size) * 200,
+          (x / Map.size) * miniMapSize,
+          this.canvas.height - miniMapSize + (y / Map.size) * miniMapSize,
           sizeX || size,
           sizeY || size,
         ],

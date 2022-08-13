@@ -88,22 +88,14 @@ class Map {
     });
 
     // minimap
-    const minimapSize = 200;
+    const minimapSize = 250;
     drawer.rect({
       adjusted: false,
       fillColor: "#eee",
-      rect: [
-        drawer.width - minimapSize,
-        drawer.height - minimapSize,
-        minimapSize,
-        minimapSize,
-      ],
+      rect: [0, drawer.height - minimapSize, minimapSize, minimapSize],
     });
 
-    const x =
-      drawer.width -
-      minimapSize +
-      (drawer.camera.position_x / Map.size) * minimapSize;
+    const x = (drawer.camera.position_x / Map.size) * minimapSize;
     const y =
       drawer.height -
       minimapSize +
