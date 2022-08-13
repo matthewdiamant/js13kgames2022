@@ -31,7 +31,7 @@ export const humanoid = (x, y, facing, colors, options = {}) => {
     c,
     r: [
       facing === 1 ? x + (r[0] * mult) : 5 * mult - ((r[0] + r[2]) * mult) + x,
-      y + r[1] * mult,
+      r[1] * mult + y,
       r[2] * mult,
       r[3] * mult
     ],
