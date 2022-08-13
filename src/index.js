@@ -1,6 +1,7 @@
 import Background from "./Background";
 import Drawer from "./Drawer";
 import Keyboard from "./Keyboard";
+import HUD from "./HUD";
 import Map from "./Map";
 import MiniMap from "./MiniMap";
 import Mouse from "./Mouse";
@@ -34,6 +35,7 @@ window.onload = () => {
   let keyboard = new Keyboard();
   let mouse = new Mouse();
 
+  let hud = new HUD();
   let map = new Map();
   let miniMap = new MiniMap();
   let player = new Player();
@@ -44,7 +46,6 @@ window.onload = () => {
 
 
   let level = new Level();
-  let hud = new HUD();
   let enemies = new EnemyCollection();
   let projectiles = new ProjectileCollection();
   let spurts = new BloodCollection();
@@ -114,7 +115,7 @@ window.onload = () => {
     */
   };
 
-  let drawObjects = () => [background, map, player, mouse, miniMap];
+  let drawObjects = () => [background, map, player, mouse, hud, miniMap];
 
   gameLoop();
 };

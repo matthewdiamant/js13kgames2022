@@ -37,7 +37,7 @@ class Building {
     drawer.miniMap({
       x: this.x,
       y: this.y,
-      color: "#C33",
+      color: "#0f0",
       sizeX: Math.ceil(this.sizeX / 20),
       sizeY: Math.ceil(this.sizeY / 20),
     });

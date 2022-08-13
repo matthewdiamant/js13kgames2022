@@ -1,4 +1,5 @@
 import Camera from "./Camera";
+import HUD from "./HUD";
 import Map from "./Map";
 
 let cx = null;
@@ -181,8 +182,11 @@ export default class Drawer {
         adjusted: false,
         fillColor: color,
         rect: [
-          (x / Map.size) * miniMapSize,
-          this.canvas.height - miniMapSize + (y / Map.size) * miniMapSize,
+          (x / Map.size) * miniMapSize + HUD.HUD_PADDING,
+          this.canvas.height -
+            miniMapSize +
+            (y / Map.size) * miniMapSize -
+            HUD.HUD_PADDING,
           sizeX || size,
           sizeY || size,
         ],
