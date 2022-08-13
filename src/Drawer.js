@@ -21,6 +21,8 @@ export default class Drawer {
     };
     resize();
     container.onresize = resize;
+
+    this.miniMapObjects = [];
   }
 
   draw(d) {
@@ -174,7 +176,7 @@ export default class Drawer {
 
   miniMap({ x, y, size, sizeX, sizeY, color }) {
     const miniMapSize = 250;
-    this.draw(() => {
+    this.miniMapObjects.push(() =>
       this.rect({
         adjusted: false,
         fillColor: color,
@@ -184,7 +186,17 @@ export default class Drawer {
           sizeX || size,
           sizeY || size,
         ],
-      });
+      })
+    );
+  }
+
+  clearMiniMap() {
+    this.miniMapObjects = [];
+  }
+
+  renderMiniMap() {
+    this.miniMapObjects.forEach((obj) => {
+      this.draw(obj);
     });
   }
 

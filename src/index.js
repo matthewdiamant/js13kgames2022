@@ -2,6 +2,7 @@ import Background from "./Background";
 import Drawer from "./Drawer";
 import Keyboard from "./Keyboard";
 import Map from "./Map";
+import MiniMap from "./MiniMap";
 import Mouse from "./Mouse";
 import Player from "./Player";
 
@@ -34,6 +35,7 @@ window.onload = () => {
   let mouse = new Mouse();
 
   let map = new Map();
+  let miniMap = new MiniMap();
   let player = new Player();
 
   /*
@@ -64,6 +66,7 @@ window.onload = () => {
     if (currentTime - lastTime) {
       tick();
       drawer.clearBackground();
+      drawer.clearMiniMap();
       drawObjects().map((object) => object.draw(drawer));
       lastTime = currentTime - (delta % interval);
     }
@@ -111,7 +114,7 @@ window.onload = () => {
     */
   };
 
-  let drawObjects = () => [background, map, player, mouse];
+  let drawObjects = () => [background, map, player, mouse, miniMap];
 
   gameLoop();
 };
