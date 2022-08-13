@@ -21,7 +21,7 @@ class Player {
     ];
 
     this.buildings = [new Building(400, 80 * 8)];
-    this.selected = null;
+    this.selected = [];
   }
 
   dragSelect(mouseEvents, entities) {
@@ -37,6 +37,7 @@ class Player {
       entities.forEach((entity) => (entity.selected = false));
       collisions.forEach((entity) => (entity.selected = true));
     }
+    this.selected = collisions;
   }
 
   clickSelect(mouseEvents, entities) {
@@ -51,7 +52,7 @@ class Player {
           mouseY < y + (size || sizeY)
         ) {
           entities.forEach((entity) => (entity.selected = false));
-          this.selected = entity;
+          this.selected = [entity];
           entity.selected = true;
         }
       });

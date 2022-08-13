@@ -78,6 +78,7 @@ window.onload = () => {
     camera.tick({ keyboard });
     const mouseEvents = mouse.tick({ camera });
     player.tick({ mouseEvents });
+    hud.tick({ player });
 
     /*
     level.tick({

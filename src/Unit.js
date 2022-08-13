@@ -23,6 +23,7 @@ class Unit {
     this.path = [];
     this.facing = 1;
     this.colors = makeColors(["#50c878", "#50c878", "#c00", "#a00"]);
+    this.name = "WORKER";
   }
 
   setPath(target) {
