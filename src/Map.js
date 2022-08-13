@@ -1,4 +1,4 @@
-/* eslint-disable */
+// prettier-ignore
 const m = [
   [ 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
   [ 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
@@ -52,15 +52,14 @@ const m = [
   [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
 ];
 
-const TILE_TYPE = { NORMAL: 'NORMAL', HOLE: 'HOLE', RESOURCE: 'RESOURCE' };
+const TILE_TYPE = { NORMAL: "NORMAL", HOLE: "HOLE", RESOURCE: "RESOURCE" };
 const TILES = [TILE_TYPE.NORMAL, TILE_TYPE.HOLE, TILE_TYPE.RESOURCE];
 const TILE_COLORS = {
-  NORMAL: (cell) => cell ? "#bbb" : "#ddd",
-  HOLE: (cell) => "#111",
-  RESOURCE: (cell) => "#acf",
+  NORMAL: (cell) => (cell ? "#ddd" : "#e6e6e6"),
+  HOLE: (_) => "#333",
+  RESOURCE: (_) => "#acf",
 };
 
-/* eslint-enable */
 class Map {
   constructor() {
     this.map = m;
