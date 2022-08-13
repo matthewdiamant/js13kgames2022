@@ -46,6 +46,24 @@ class HUD {
         y: INFOBOX_Y + INFOBOX_PADDING,
         size: 5,
       });
+      const colors = {
+        skin: "#0f0",
+        horns: "#0f0",
+        eyes: "#666",
+        body: "#666",
+      };
+      humanoid(
+        INFOBOX_X + INFOBOX_PADDING,
+        INFOBOX_Y + INFOBOX_PADDING + 60,
+        1,
+        colors,
+        { size: 12 }
+      ).forEach(({ c, r }) =>
+        drawer.rect({
+          fillColor: c,
+          rect: r,
+        })
+      );
     } else if (this.selected.length > 1) {
       // multiple selected units
       const MULTISELECT_BOX_SIZE = 60;

@@ -25,7 +25,7 @@ export const humanoid = (x, y, facing, colors, options = {}) => {
       [horns, [4, -1, 1, 1]], // horn right
     ]);
 
-  const mult = options.huge ? 12 : options.big ? 2 : 8;
+  const mult = options.size || 8;
   // prettier-ignore
   parts = parts.map(([c, r]) => ({
     c,
