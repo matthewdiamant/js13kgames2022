@@ -1,5 +1,14 @@
+import { humanoid } from "./Sprites";
+
 const IDLE = "idle";
 const WALKING = "walking";
+
+const makeColors = ([skin, horns, eyes, body]) => ({
+  skin,
+  horns,
+  eyes,
+  body,
+});
 
 class Unit {
   constructor(x, y) {
@@ -7,11 +16,13 @@ class Unit {
     this.y = y;
     this.dx = 0;
     this.dy = 0;
-    this.size = 40;
+    this.size = 8 * 5;
     this.lifespan = 0;
     this.selected = false;
     this.speed = 5;
     this.path = [];
+    this.facing = 1;
+    this.colors = makeColors(["#50c878", "#50c878", "#c00", "#a00"]);
   }
 
   setPath(target) {
@@ -39,6 +50,7 @@ class Unit {
     if (this.path.length) {
       this.calculateSpeed();
       this.state = WALKING;
+      this.facing = this.dx > 0 ? 1 : 0;
     } else {
       this.dx = 0;
       this.dy = 0;
@@ -78,10 +90,21 @@ class Unit {
       });
     }
 
-    drawer.rect({
-      fillColor: "#A33",
-      rect: [this.x, this.y, this.size, this.size],
-    });
+    humanoid(this.x, this.y, this.facing, this.colors).forEach(({ c, r }) =>
+      drawer.rect({
+        fillColor: c,
+        rect: r,
+      })
+    );
+
+    // hitbox?
+    const hitbox = false;
+    if (hitbox) {
+      drawer.rect({
+        fillColor: "#c66",
+        rect: [this.x, this.y, this.size, this.size],
+      });
+    }
 
     drawer.miniMap({
       x: this.x,
