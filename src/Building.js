@@ -20,7 +20,7 @@ class Building {
 
   tick() {
     this.lifespan += 1;
-    const currentTask = this.tasks[0];
+    const [currentTask] = this.tasks;
     if (currentTask) {
       currentTask.time -= 1;
       if (currentTask.time <= 0) {
@@ -31,7 +31,7 @@ class Building {
   }
 
   queueTask(type, time, { player }) {
-    this.tasks.push({ name: "worker", time: time * 30 });
+    this.tasks.push({ name: "worker", time: time * 30, totalTime: time * 30 });
   }
 
   actions() {
@@ -60,6 +60,42 @@ class Building {
         },
       },
     ];
+  }
+
+  hudDraw(drawer, x, y) {
+    if (this.tasks.length) {
+      const { name, time, totalTime } = this.tasks[0];
+      drawer.text({
+        text: `${name}`,
+        x: x + 200,
+        y: y,
+        size: 5,
+      });
+
+      // progress bar
+      const PROGRESS_BAR_X = x + 200;
+      const PROGRESS_BAR_Y = y + 60;
+      const PROGRESS_BAR_WIDTH = 100;
+      const PROGRESS_BAR_HEIGHT = 10;
+      drawer.rect({
+        strokeColor: "#0f0",
+        rect: [
+          PROGRESS_BAR_X,
+          PROGRESS_BAR_Y,
+          PROGRESS_BAR_WIDTH,
+          PROGRESS_BAR_HEIGHT,
+        ],
+      });
+      drawer.rect({
+        fillColor: "#0f0",
+        rect: [
+          PROGRESS_BAR_X,
+          PROGRESS_BAR_Y,
+          ((totalTime - time) / totalTime) * PROGRESS_BAR_WIDTH,
+          PROGRESS_BAR_HEIGHT,
+        ],
+      });
+    }
   }
 
   hudDrawIcon(drawer, x, y) {

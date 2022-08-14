@@ -121,13 +121,11 @@ class HUD {
         size: 5,
       });
 
-      if (entity.type === "unit") {
-        entity.hudDraw(
-          drawer,
-          this.infoboxX + INFOBOX_PADDING,
-          this.infoboxY + INFOBOX_PADDING + 60
-        );
-      }
+      entity.hudDraw(
+        drawer,
+        this.infoboxX + INFOBOX_PADDING,
+        this.infoboxY + INFOBOX_PADDING + 60
+      );
     } else if (this.selected.length > 1) {
       // multiple selected
       const units = this.selected.slice(0, MULTISELECT_ROW_MAX * 3);
