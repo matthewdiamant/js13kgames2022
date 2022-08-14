@@ -79,6 +79,38 @@ class Unit {
     return [{ name: "move" }];
   }
 
+  hudDraw(drawer, x, y) {
+    const colors = {
+      skin: "#0f0",
+      horns: "#0f0",
+      eyes: "#666",
+      body: "#666",
+    };
+    humanoid(x, y, 1, colors, { size: 12 }).forEach(({ c, r }) =>
+      drawer.rect({
+        adjusted: false,
+        fillColor: c,
+        rect: r,
+      })
+    );
+  }
+
+  hudDrawIcon(drawer, x, y) {
+    const colors = {
+      skin: "#0f0",
+      horns: "#0f0",
+      eyes: "#666",
+      body: "#666",
+    };
+    humanoid(x, y, 1, colors).forEach(({ c, r }) =>
+      drawer.rect({
+        adjusted: false,
+        fillColor: c,
+        rect: r,
+      })
+    );
+  }
+
   draw(drawer) {
     if (this.selected) {
       drawer.ellipse({

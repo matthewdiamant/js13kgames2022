@@ -29,6 +29,8 @@ class Building {
     ];
   }
 
+  hudDrawIcon(drawer, x, y) {}
+
   draw(drawer) {
     if (this.selected) {
       drawer.ellipse({

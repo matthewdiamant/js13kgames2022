@@ -55,24 +55,10 @@ class HUD {
       });
 
       if (entity.type === "unit") {
-        const colors = {
-          skin: "#0f0",
-          horns: "#0f0",
-          eyes: "#666",
-          body: "#666",
-        };
-        humanoid(
+        entity.hudDraw(
+          drawer,
           INFOBOX_X + INFOBOX_PADDING,
-          INFOBOX_Y + INFOBOX_PADDING + 60,
-          1,
-          colors,
-          { size: 12 }
-        ).forEach(({ c, r }) =>
-          drawer.rect({
-            adjusted: false,
-            fillColor: c,
-            rect: r,
-          })
+          INFOBOX_Y + INFOBOX_PADDING + 60
         );
       }
     } else if (this.selected.length > 1) {
@@ -94,23 +80,10 @@ class HUD {
           strokeColor: "#0f0",
           rect: [x, y, MULTISELECT_BOX_SIZE, MULTISELECT_BOX_SIZE],
         });
-        const colors = {
-          skin: "#0f0",
-          horns: "#0f0",
-          eyes: "#666",
-          body: "#666",
-        };
-        humanoid(
+        unit.hudDrawIcon(
+          drawer,
           x + MULTISELECT_BOX_PADDING,
-          y + MULTISELECT_BOX_PADDING * 1.5,
-          1,
-          colors
-        ).forEach(({ c, r }) =>
-          drawer.rect({
-            adjusted: false,
-            fillColor: c,
-            rect: r,
-          })
+          y + MULTISELECT_BOX_PADDING * 1.5
         );
       });
     }
