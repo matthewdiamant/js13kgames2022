@@ -27,7 +27,7 @@ class MiniMap {
       HUD.HUD_PADDING;
     drawer.rect({
       adjusted: false,
-      strokeColor: "#333",
+      strokeColor: "#fff",
       rect: [
         x,
         y,

@@ -57,6 +57,13 @@ class Mine {
         rect: [this.x, this.y, this.size, this.size],
       });
     }
+
+    drawer.miniMap({
+      x: this.x,
+      y: this.y,
+      color: "#69c",
+      size: Math.ceil(this.size / 20),
+    });
   }
 }
 
