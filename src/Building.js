@@ -8,6 +8,8 @@ class Building {
     this.sizeY = Map.tileSize * 2;
     this.lifespan = 0;
     this.selected = false;
+    this.name = "base";
+    this.type = "building";
   }
 
   tick() {}

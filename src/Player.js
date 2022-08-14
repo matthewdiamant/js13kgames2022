@@ -10,35 +10,35 @@ const boxCollision = (rect1, rect2) =>
 class Player {
   constructor() {
     this.units = [
-      new Unit(100, 300),
-      new Unit(200, 300),
-      new Unit(300, 300),
       new Unit(400, 300),
       new Unit(500, 300),
       new Unit(600, 300),
       new Unit(700, 300),
       new Unit(800, 300),
+      new Unit(900, 300),
+      new Unit(1000, 300),
+      new Unit(1100, 300),
 
-      new Unit(100, 400),
-      new Unit(200, 400),
-      new Unit(300, 400),
       new Unit(400, 400),
       new Unit(500, 400),
       new Unit(600, 400),
       new Unit(700, 400),
       new Unit(800, 400),
+      new Unit(900, 400),
+      new Unit(1000, 400),
+      new Unit(1100, 400),
 
-      new Unit(100, 500),
-      new Unit(200, 500),
-      new Unit(300, 500),
       new Unit(400, 500),
       new Unit(500, 500),
       new Unit(600, 500),
       new Unit(700, 500),
       new Unit(800, 500),
+      new Unit(900, 500),
+      new Unit(1000, 500),
+      new Unit(1100, 500),
     ];
 
-    this.buildings = [new Building(400, 80 * 8)];
+    this.buildings = [new Building(80 * 1, 80 * 5)];
     this.selected = [];
   }
 

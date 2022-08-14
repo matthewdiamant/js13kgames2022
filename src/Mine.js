@@ -48,6 +48,15 @@ class Mine {
         2 * Math.PI,
       ],
     });
+
+    // hitbox?
+    const hitbox = false;
+    if (hitbox) {
+      drawer.rect({
+        fillColor: "#caa",
+        rect: [this.x, this.y, this.size, this.size],
+      });
+    }
   }
 }
 

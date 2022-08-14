@@ -38,35 +38,38 @@ class HUD {
 
     const INFOBOX_PADDING = 20;
     if (this.selected.length === 1) {
-      // one selected unit
-      const [unit] = this.selected;
+      // one selected
+      const [entity] = this.selected;
       drawer.text({
-        text: unit.name,
+        text: entity.name,
         x: INFOBOX_X + INFOBOX_PADDING,
         y: INFOBOX_Y + INFOBOX_PADDING,
         size: 5,
       });
-      const colors = {
-        skin: "#0f0",
-        horns: "#0f0",
-        eyes: "#666",
-        body: "#666",
-      };
-      humanoid(
-        INFOBOX_X + INFOBOX_PADDING,
-        INFOBOX_Y + INFOBOX_PADDING + 60,
-        1,
-        colors,
-        { size: 12 }
-      ).forEach(({ c, r }) =>
-        drawer.rect({
-          adjusted: false,
-          fillColor: c,
-          rect: r,
-        })
-      );
+
+      if (entity.type === "unit") {
+        const colors = {
+          skin: "#0f0",
+          horns: "#0f0",
+          eyes: "#666",
+          body: "#666",
+        };
+        humanoid(
+          INFOBOX_X + INFOBOX_PADDING,
+          INFOBOX_Y + INFOBOX_PADDING + 60,
+          1,
+          colors,
+          { size: 12 }
+        ).forEach(({ c, r }) =>
+          drawer.rect({
+            adjusted: false,
+            fillColor: c,
+            rect: r,
+          })
+        );
+      }
     } else if (this.selected.length > 1) {
-      // multiple selected units
+      // multiple selected
       const MULTISELECT_BOX_SIZE = 60;
       const MULTISELECT_BOX_MARGIN = 10;
       const MULTISELECT_ROW_MAX = 8;
