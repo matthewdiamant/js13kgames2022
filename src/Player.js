@@ -1,3 +1,4 @@
+import Building from "./Building";
 import Unit from "./Unit";
 
 const makeColors = ([skin, horns, eyes, body]) => ({
@@ -49,6 +50,11 @@ class Player {
     const colors = makeColors(["#50c878", "#50c878", this.color, "#a00"]);
     const newUnit = new Unit(x, y, colors);
     this.units.push(newUnit);
+  }
+
+  addBuilding({ type, x, y }) {
+    const newBuilding = new Building(x, y, this.color);
+    this.buildings.push(newBuilding);
   }
 
   static tick() {

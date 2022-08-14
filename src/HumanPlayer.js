@@ -11,6 +11,7 @@ class HumanPlayer extends Player {
     super();
     this.selected = [];
     this.color = "#A00";
+    this.addBuilding({ type: "base", x: 80 * 1, y: 80 * 4 });
   }
 
   dragSelect(mouseEvents, entities) {

@@ -3,7 +3,7 @@ import Map from "./Map";
 import Unit from "./Unit";
 
 class Building {
-  constructor(x, y) {
+  constructor(x, y, color) {
     this.x = x;
     this.y = y;
     this.sizeX = Map.tileSize * 3;
@@ -13,6 +13,7 @@ class Building {
     this.name = "base";
     this.type = "building";
     this.tasks = [];
+    this.color = color;
   }
 
   tick({ player }) {
@@ -258,7 +259,7 @@ class Building {
       ],
     });
     drawer.rect({
-      fillColor: "#DA0",
+      fillColor: this.color,
       rect: [
         this.x + this.sizeX / 2 + FLAGPOLE_WIDTH / 2,
         this.y - FLAGPOLE_HEIGHT + Map.tileSize,

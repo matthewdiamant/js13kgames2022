@@ -43,9 +43,7 @@ window.onload = () => {
   let mines = new MineCollection();
   let miniMap = new MiniMap();
   let humanPlayer = new HumanPlayer();
-  humanPlayer.buildings = [new Building(80 * 1, 80 * 4)];
   let cpuPlayer = new CPUPlayer();
-  cpuPlayer.buildings = [new Building(80 * 12, 80 * 4)];
 
   /*
   let sound = new Sound();
