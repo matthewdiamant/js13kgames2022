@@ -5,8 +5,8 @@ class CPUPlayer extends Player {
     super();
   }
 
-  tick({ mouseEvents }) {
-    Player.tick.call(this, { mouseEvents });
+  tick() {
+    Player.tick.call(this);
   }
 }
 

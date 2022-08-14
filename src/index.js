@@ -45,7 +45,7 @@ window.onload = () => {
   let humanPlayer = new HumanPlayer();
   humanPlayer.buildings = [new Building(80 * 1, 80 * 4)];
   let cpuPlayer = new CPUPlayer();
-  cpuPlayer.buildings = [new Building(80 * 10, 80 * 4)];
+  cpuPlayer.buildings = [new Building(80 * 12, 80 * 4)];
 
   /*
   let sound = new Sound();

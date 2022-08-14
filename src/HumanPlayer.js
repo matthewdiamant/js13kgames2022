@@ -57,7 +57,17 @@ class HumanPlayer extends Player {
 
   tick({ mouseEvents }) {
     this.select(mouseEvents);
-    Player.tick.call(this, { mouseEvents });
+
+    this.units.forEach((unit) => {
+      if (
+        unit.selected &&
+        (mouseEvents.rightClickTarget[0] || mouseEvents.rightClickTarget[1])
+      ) {
+        unit.setPath(mouseEvents.rightClickTarget);
+      }
+    });
+
+    Player.tick.call(this);
   }
 }
 

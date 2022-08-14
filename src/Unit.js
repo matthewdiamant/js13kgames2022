@@ -67,15 +67,8 @@ class Unit {
     this.y = this.pathY - this.bounce;
   }
 
-  tick({ mouseEvents }) {
+  tick() {
     this.lifespan += 1;
-
-    if (
-      this.selected &&
-      (mouseEvents.rightClickTarget[0] || mouseEvents.rightClickTarget[1])
-    ) {
-      this.setPath(mouseEvents.rightClickTarget);
-    }
 
     // blink
     if (Math.random() < 0.005) {

@@ -43,8 +43,8 @@ class Player {
     this.units.push(newUnit);
   }
 
-  static tick({ mouseEvents }) {
-    this.units.forEach((u) => u.tick({ mouseEvents }));
+  static tick() {
+    this.units.forEach((u) => u.tick());
     this.buildings.forEach((b) => b.tick({ player: this }));
   }
 
