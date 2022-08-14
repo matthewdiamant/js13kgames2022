@@ -73,7 +73,7 @@ class HUD {
 
   draw(drawer) {
     // resources
-    const RESOURCES_X = drawer.width - 120;
+    const RESOURCES_X = drawer.width - 140;
     const RESOURCES_Y = 15;
     drawer.rect({
       adjusted: false,
@@ -82,7 +82,7 @@ class HUD {
     });
     drawer.text({
       text: `${this.resources}`,
-      x: RESOURCES_X + 25,
+      x: RESOURCES_X + 30,
       y: RESOURCES_Y,
       size: 5,
     });

@@ -57,7 +57,8 @@ class Mouse {
   }
 
   mousemove({ clientX, clientY }) {
-    this.mouseLocation = [clientX + this.camera.x, clientY + this.camera.y];
+    if (this.camera)
+      this.mouseLocation = [clientX + this.camera.x, clientY + this.camera.y];
   }
 
   rightClick({ clientX, clientY }) {
