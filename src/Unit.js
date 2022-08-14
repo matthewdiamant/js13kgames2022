@@ -85,6 +85,10 @@ class Unit {
       this.blink -= 1;
     }
 
+    if (this.state === IDLE && Math.random() < 0.001) {
+      this.facing = this.facing ? 0 : 1;
+    }
+
     // bounce
     const BOUNCE_HEIGHT = 12;
     const BOUNCE_DURATION = 12;
@@ -151,7 +155,7 @@ class Unit {
           0,
           2 * Math.PI,
         ],
-        strokeColor: "#33f8",
+        strokeColor: "#4AC",
         strokeWidth: 5,
       });
     }

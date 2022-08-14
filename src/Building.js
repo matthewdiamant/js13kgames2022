@@ -7,7 +7,7 @@ class Building {
     this.x = x;
     this.y = y;
     this.sizeX = Map.tileSize * 3;
-    this.sizeY = Map.tileSize * 2;
+    this.sizeY = Map.tileSize * 3;
     this.lifespan = 0;
     this.selected = false;
     this.name = "base";
@@ -198,25 +198,52 @@ class Building {
   }
 
   draw(drawer) {
+    const height = this.sizeY - Map.tileSize;
     if (this.selected) {
       drawer.ellipse({
         ellipse: [
           this.x + this.sizeX / 2,
-          this.y + this.sizeY,
+          this.y + height,
           (this.sizeX + 40) / 2,
-          this.sizeY / 4,
+          height / 3,
           0,
           0,
           2 * Math.PI,
         ],
-        strokeColor: "#39C",
+        strokeColor: "#4AC",
         strokeWidth: 5,
       });
     }
 
     drawer.rect({
       fillColor: "#A33",
-      rect: [this.x, this.y, this.sizeX, this.sizeY],
+      rect: [this.x, this.y, this.sizeX, height],
+    });
+
+    drawer.ellipse({
+      ellipse: [
+        this.x + this.sizeX / 2,
+        this.y + height,
+        this.sizeX / 2,
+        height / 4,
+        0,
+        0,
+        2 * Math.PI,
+      ],
+      fillColor: "#A33",
+    });
+
+    drawer.ellipse({
+      ellipse: [
+        this.x + this.sizeX / 2,
+        this.y,
+        this.sizeX / 2,
+        height / 4,
+        0,
+        0,
+        2 * Math.PI,
+      ],
+      fillColor: "#A55",
     });
 
     drawer.miniMap({
