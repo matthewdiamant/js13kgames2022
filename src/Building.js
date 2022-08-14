@@ -19,14 +19,14 @@ class Building {
     console.log(x, y);
   }
 
-  tick() {
+  tick({ player }) {
     this.lifespan += 1;
     const [currentTask] = this.tasks;
     if (currentTask) {
       currentTask.time -= 1;
       if (currentTask.time <= 0) {
-        const completedTask = this.tasks.shift();
-        console.log(completedTask);
+        const { complete } = this.tasks.shift();
+        complete({ player });
       }
     }
   }
@@ -49,6 +49,13 @@ class Building {
               building.queueTask(this, { player });
             }
           }
+        },
+        complete: ({ player }) => {
+          player.addUnit({
+            type: "worker",
+            x: building.x + building.sizeX + 10,
+            y: building.y + building.sizeY + 10,
+          });
         },
         drawIcon: (drawer, x, y) => {
           Unit.hudDrawIcon(drawer, x, y);

@@ -86,10 +86,15 @@ class Player {
     }
   }
 
+  addUnit({ type, x, y }) {
+    const newUnit = new Unit(x, y);
+    this.units.push(newUnit);
+  }
+
   tick({ mouseEvents }) {
     this.select(mouseEvents);
     this.units.forEach((u) => u.tick({ mouseEvents }));
-    this.buildings.forEach((b) => b.tick());
+    this.buildings.forEach((b) => b.tick({ player: this }));
   }
 
   draw(drawer) {
