@@ -14,7 +14,13 @@ class Building {
     this.tasks = [];
   }
 
-  tick() {}
+  clickAction([x, y]) {
+    console.log(x, y);
+  }
+
+  tick() {
+    this.lifespan += 1;
+  }
 
   queueTask(type) {}
 

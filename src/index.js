@@ -81,7 +81,7 @@ window.onload = () => {
     const mouseEvents = mouse.tick({ camera });
     player.tick({ mouseEvents });
     mines.tick();
-    hud.tick({ player });
+    hud.tick({ drawer, mouseEvents, player });
 
     /*
     level.tick({
