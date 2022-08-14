@@ -15,10 +15,6 @@ class Building {
     this.tasks = [];
   }
 
-  clickAction([x, y]) {
-    console.log(x, y);
-  }
-
   tick({ player }) {
     this.lifespan += 1;
     const [currentTask] = this.tasks;
@@ -35,13 +31,16 @@ class Building {
     this.tasks.push({ ...task, totalTime: task.time });
   }
 
-  actions() {
+  actions({ player }) {
     const building = this;
     return [
       {
         name: "build worker",
         cost: 100,
         time: 5 * 30,
+        actionable: function () {
+          return this.cost <= player.resources;
+        },
         execute: function ({ player }) {
           if (building.tasks.length < 5) {
             if (player.resources >= this.cost) {
@@ -64,6 +63,9 @@ class Building {
       {
         name: "build worker",
         cost: 10000,
+        actionable: function () {
+          return this.cost <= player.resources;
+        },
         execute: ({ player }) => {
           this.queueTask("worker", { player });
         },

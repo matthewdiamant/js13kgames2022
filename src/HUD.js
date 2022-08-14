@@ -21,6 +21,7 @@ class HUD {
     this.actionboxY = this.drawerHeight - HUD.HUD_HEIGHT - HUD.HUD_PADDING;
     this.infoboxX = HUD.HUD_HEIGHT + HUD.HUD_PADDING * 2;
     this.infoboxY = drawer.height - HUD.HUD_HEIGHT - HUD.HUD_PADDING;
+    this.actionBoxes = this.getActionBoxes({ player });
 
     if (
       this.selected.length &&
@@ -33,7 +34,7 @@ class HUD {
   clickAction({ mouseEvents, player }) {
     let [mouseX, mouseY] = mouseEvents.clickTarget;
     if (mouseX || mouseY) {
-      this.actionBoxes().forEach(({ x, y, width, height, action }) => {
+      this.actionBoxes.forEach(({ x, y, width, height, action }) => {
         if (
           mouseX >= x &&
           mouseX < x + width &&
@@ -46,9 +47,10 @@ class HUD {
     }
   }
 
-  actionBoxes() {
+  getActionBoxes({ player }) {
+    if (this.selected.length === 0) return [];
     const [entity] = this.selected;
-    return entity.actions().map((action, i) => {
+    return entity.actions({ player }).map((action, i) => {
       const x =
         this.actionboxX +
         INFOBOX_PADDING +
@@ -59,13 +61,11 @@ class HUD {
         INFOBOX_PADDING +
         ICON_BOX_SIZE * Math.floor(i / ACTIONBOX_ROW_MAX) +
         ICON_BOX_MARGIN * (Math.floor(i / ACTIONBOX_ROW_MAX) - 1);
-      const actionable = action.cost <= this.resources;
       return {
         x,
         y,
         width: ICON_BOX_SIZE,
         height: ICON_BOX_SIZE,
-        actionable,
         icon: action.drawIcon,
         action,
       };
@@ -162,23 +162,23 @@ class HUD {
       rect: [this.actionboxX, this.actionboxY, HUD.HUD_HEIGHT, HUD.HUD_HEIGHT],
     });
     if (this.selected.length === 1) {
-      this.actionBoxes().forEach(
-        ({ x, y, width, height, actionable, icon }) => {
+      this.actionBoxes.forEach(({ x, y, width, height, icon, action }) => {
+        drawer.rect({
+          adjusted: false,
+          strokeColor: action.actionable()
+            ? "#0f0"
+            : "rgba(100, 100, 100, 0.7)",
+          rect: [x, y, width, height],
+        });
+        icon(drawer, x, y);
+        if (!action.actionable()) {
           drawer.rect({
             adjusted: false,
-            strokeColor: actionable ? "#0f0" : "rgba(100, 100, 100, 0.7)",
+            fillColor: "rgba(100, 100, 100, 0.7)",
             rect: [x, y, width, height],
           });
-          icon(drawer, x, y);
-          if (!actionable) {
-            drawer.rect({
-              adjusted: false,
-              fillColor: "rgba(100, 100, 100, 0.7)",
-              rect: [x, y, width, height],
-            });
-          }
         }
-      );
+      });
     }
   }
 }

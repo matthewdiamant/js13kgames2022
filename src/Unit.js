@@ -80,6 +80,7 @@ class Unit {
       {
         name: "move",
         cost: 0,
+        actionable: () => true,
         drawIcon: (drawer, x, y) => {},
         execute: () => {
           console.log("move");
