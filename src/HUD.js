@@ -22,31 +22,46 @@ class HUD {
     this.infoboxX = HUD.HUD_HEIGHT + HUD.HUD_PADDING * 2;
     this.infoboxY = drawer.height - HUD.HUD_HEIGHT - HUD.HUD_PADDING;
     this.actionBoxes = this.getActionBoxes({ player });
+    this.actionBoxText = "";
 
-    if (
-      this.selected.length &&
-      (mouseEvents.clickTarget[0] || mouseEvents.clickTarget[1])
-    ) {
-      this.clickAction({ mouseEvents, player });
+    if (this.selected.length) {
+      if (mouseEvents.clickTarget[0] || mouseEvents.clickTarget[1]) {
+        this.clickAction({ mouseEvents, player });
+      }
+      if (mouseEvents.mouseLocation[0] || mouseEvents.mouseLocation[1]) {
+        this.hoverActions({ mouseEvents });
+      }
     }
   }
 
   clickAction({ mouseEvents, player }) {
     let [mouseX, mouseY] = mouseEvents.clickTarget;
-    if (mouseX || mouseY) {
-      this.actionBoxes.forEach(({ x, y, width, height, action }) => {
-        if (
-          mouseX >= x &&
-          mouseX < x + width &&
-          mouseY >= y &&
-          mouseY < y + height
-        ) {
-          if (action.actionable()) {
-            action.execute({ player });
-          }
+    this.actionBoxes.forEach(({ x, y, width, height, action }) => {
+      if (
+        mouseX >= x &&
+        mouseX < x + width &&
+        mouseY >= y &&
+        mouseY < y + height
+      ) {
+        if (action.actionable()) {
+          action.execute({ player });
         }
-      });
-    }
+      }
+    });
+  }
+
+  hoverActions({ mouseEvents }) {
+    let [mouseX, mouseY] = mouseEvents.mouseLocation;
+    this.actionBoxes.forEach(({ x, y, width, height, action }) => {
+      if (
+        mouseX >= x &&
+        mouseX < x + width &&
+        mouseY >= y &&
+        mouseY < y + height
+      ) {
+        this.actionBoxText = action.name;
+      }
+    });
   }
 
   getActionBoxes({ player }) {
@@ -180,6 +195,18 @@ class HUD {
             rect: [x, y, width, height],
           });
         }
+      });
+    }
+
+    if (this.actionBoxText) {
+      drawer.text({
+        text: this.actionBoxText,
+        x: this.actionboxX + ICON_BOX_MARGIN,
+        y:
+          this.actionboxY +
+          (ICON_BOX_SIZE + ICON_BOX_MARGIN) * 3 +
+          ICON_BOX_MARGIN,
+        size: 3,
       });
     }
   }

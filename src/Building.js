@@ -61,7 +61,7 @@ class Building {
         },
       },
       {
-        name: "build worker",
+        name: "build big worker",
         cost: 10000,
         actionable: function () {
           return this.cost <= player.resources;
@@ -69,6 +69,62 @@ class Building {
         execute: ({ player }) => {
           this.queueTask("worker", { player });
         },
+        drawIcon: (drawer, x, y) => {
+          Unit.hudDrawIcon(drawer, x, y);
+        },
+      },
+      {
+        name: "build big worker",
+        actionable: () => {},
+        execute: () => {},
+        drawIcon: (drawer, x, y) => {
+          Unit.hudDrawIcon(drawer, x, y);
+        },
+      },
+      {
+        name: "build big worker",
+        actionable: () => {},
+        execute: () => {},
+        drawIcon: (drawer, x, y) => {
+          Unit.hudDrawIcon(drawer, x, y);
+        },
+      },
+      {
+        name: "build big worker",
+        actionable: () => {},
+        execute: () => {},
+        drawIcon: (drawer, x, y) => {
+          Unit.hudDrawIcon(drawer, x, y);
+        },
+      },
+      {
+        name: "build big worker",
+        actionable: () => {},
+        execute: () => {},
+        drawIcon: (drawer, x, y) => {
+          Unit.hudDrawIcon(drawer, x, y);
+        },
+      },
+      {
+        name: "build big worker",
+        actionable: () => {},
+        execute: () => {},
+        drawIcon: (drawer, x, y) => {
+          Unit.hudDrawIcon(drawer, x, y);
+        },
+      },
+      {
+        name: "build big worker",
+        actionable: () => {},
+        execute: () => {},
+        drawIcon: (drawer, x, y) => {
+          Unit.hudDrawIcon(drawer, x, y);
+        },
+      },
+      {
+        name: "build big worker",
+        actionable: () => {},
+        execute: () => {},
         drawIcon: (drawer, x, y) => {
           Unit.hudDrawIcon(drawer, x, y);
         },
