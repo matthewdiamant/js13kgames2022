@@ -20,10 +20,18 @@ class Building {
 
   tick() {
     this.lifespan += 1;
+    const currentTask = this.tasks[0];
+    if (currentTask) {
+      currentTask.time -= 1;
+      if (currentTask.time <= 0) {
+        const completedTask = this.tasks.shift();
+        console.log(completedTask);
+      }
+    }
   }
 
-  queueTask(type) {
-    console.log(type);
+  queueTask(type, time, { player }) {
+    this.tasks.push({ name: "worker", time: time * 30 });
   }
 
   actions() {
@@ -34,7 +42,7 @@ class Building {
         execute: ({ player }) => {
           if (player.resources >= 100) {
             player.resources -= 100;
-            this.queueTask("worker", { player });
+            this.queueTask("worker", 10, { player });
           }
         },
         drawIcon: (drawer, x, y) => {
