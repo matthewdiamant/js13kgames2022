@@ -53,6 +53,7 @@ class Player {
         { x: mx, y: my, w: endx - mx, h: endy - my }
       );
     });
+    if (collisions.length === 0) return;
     entities.forEach((entity) => (entity.selected = false));
     collisions.forEach((entity) => (entity.selected = true));
     this.selected = collisions;
