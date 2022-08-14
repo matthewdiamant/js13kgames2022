@@ -22,6 +22,17 @@ class Building {
     return [
       {
         name: "build worker",
+        cost: 100,
+        action: () => {
+          this.queueTask("worker");
+        },
+        drawIcon: (drawer, x, y) => {
+          Unit.hudDrawIcon(drawer, x, y);
+        },
+      },
+      {
+        name: "build worker",
+        cost: 10000,
         action: () => {
           this.queueTask("worker");
         },

@@ -15,9 +15,9 @@ class HUD {
   }
 
   draw(drawer) {
+    // resources
     const RESOURCES_X = drawer.width - 120;
     const RESOURCES_Y = 15;
-    // resources
     drawer.rect({
       adjusted: false,
       fillColor: "#69c",
@@ -93,6 +93,11 @@ class HUD {
           strokeColor: "#0f0",
           rect: [x, y, MULTISELECT_BOX_SIZE, MULTISELECT_BOX_SIZE],
         });
+        drawer.rect({
+          adjusted: false,
+          strokeColor: "#0f0",
+          rect: [x, y, MULTISELECT_BOX_SIZE, MULTISELECT_BOX_SIZE],
+        });
         unit.hudDrawIcon(drawer, x, y);
       });
     }
@@ -118,12 +123,20 @@ class HUD {
           INFOBOX_PADDING +
           MULTISELECT_BOX_SIZE * Math.floor(i / ACTIONBOX_ROW_MAX) +
           MULTISELECT_BOX_MARGIN * (Math.floor(i / ACTIONBOX_ROW_MAX) - 1);
+        const actionable = action.cost <= this.resources;
         drawer.rect({
           adjusted: false,
-          strokeColor: "#0f0",
+          strokeColor: actionable ? "#0f0" : "rgba(100, 100, 100, 0.7)",
           rect: [x, y, MULTISELECT_BOX_SIZE, MULTISELECT_BOX_SIZE],
         });
         action.drawIcon(drawer, x, y);
+        if (!actionable) {
+          drawer.rect({
+            adjusted: false,
+            fillColor: "rgba(100, 100, 100, 0.7)",
+            rect: [x, y, MULTISELECT_BOX_SIZE, MULTISELECT_BOX_SIZE],
+          });
+        }
       });
     }
   }

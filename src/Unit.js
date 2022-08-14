@@ -79,6 +79,7 @@ class Unit {
     return [
       {
         name: "move",
+        cost: 0,
         drawIcon: (drawer, x, y) => {},
       },
     ];
