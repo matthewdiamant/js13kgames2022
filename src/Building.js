@@ -203,7 +203,7 @@ class Building {
       drawer.ellipse({
         ellipse: [
           this.x + this.sizeX / 2,
-          this.y + height,
+          this.y + height + Map.tileSize,
           (this.sizeX + 40) / 2,
           height / 3,
           0,
@@ -217,13 +217,13 @@ class Building {
 
     drawer.rect({
       fillColor: "#A33",
-      rect: [this.x, this.y, this.sizeX, height],
+      rect: [this.x, this.y + Map.tileSize, this.sizeX, height],
     });
 
     drawer.ellipse({
       ellipse: [
         this.x + this.sizeX / 2,
-        this.y + height,
+        this.y + height + Map.tileSize,
         this.sizeX / 2,
         height / 4,
         0,
@@ -236,7 +236,7 @@ class Building {
     drawer.ellipse({
       ellipse: [
         this.x + this.sizeX / 2,
-        this.y,
+        this.y + Map.tileSize,
         this.sizeX / 2,
         height / 4,
         0,
@@ -252,7 +252,7 @@ class Building {
       fillColor: "#666",
       rect: [
         this.x + this.sizeX / 2 - FLAGPOLE_WIDTH / 2,
-        this.y - FLAGPOLE_HEIGHT,
+        this.y - FLAGPOLE_HEIGHT + Map.tileSize,
         FLAGPOLE_WIDTH,
         FLAGPOLE_HEIGHT,
       ],
@@ -261,11 +261,19 @@ class Building {
       fillColor: "#DA0",
       rect: [
         this.x + this.sizeX / 2 + FLAGPOLE_WIDTH / 2,
-        this.y - FLAGPOLE_HEIGHT,
+        this.y - FLAGPOLE_HEIGHT + Map.tileSize,
         60,
         40,
       ],
     });
+
+    const hitbox = false;
+    if (hitbox) {
+      drawer.rect({
+        fillColor: "#A006",
+        rect: [this.x, this.y, this.sizeX, this.sizeY],
+      });
+    }
 
     drawer.miniMap({
       x: this.x,
