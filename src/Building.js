@@ -246,6 +246,27 @@ class Building {
       fillColor: "#A55",
     });
 
+    const FLAGPOLE_WIDTH = 10;
+    const FLAGPOLE_HEIGHT = 100;
+    drawer.rect({
+      fillColor: "#666",
+      rect: [
+        this.x + this.sizeX / 2 - FLAGPOLE_WIDTH / 2,
+        this.y - FLAGPOLE_HEIGHT,
+        FLAGPOLE_WIDTH,
+        FLAGPOLE_HEIGHT,
+      ],
+    });
+    drawer.rect({
+      fillColor: "#DA0",
+      rect: [
+        this.x + this.sizeX / 2 + FLAGPOLE_WIDTH / 2,
+        this.y - FLAGPOLE_HEIGHT,
+        60,
+        40,
+      ],
+    });
+
     drawer.miniMap({
       x: this.x,
       y: this.y,
