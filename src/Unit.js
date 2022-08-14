@@ -1,7 +1,7 @@
 import { humanoid } from "./Sprites";
 
 const IDLE = "idle";
-const WALKING = "walking";
+const MOVING = "moving";
 
 const makeColors = ([skin, horns, eyes, body]) => ({
   skin,
@@ -14,6 +14,7 @@ class Unit {
   constructor(x, y) {
     this.x = x;
     this.y = y;
+    this.pathY = y;
     this.dx = 0;
     this.dy = 0;
     this.size = 8 * 5;
@@ -25,6 +26,8 @@ class Unit {
     this.colors = makeColors(["#50c878", "#50c878", "#c00", "#a00"]);
     this.name = "WORKER";
     this.type = "unit";
+    this.bounce = 0;
+    this.bounceTime = 0;
   }
 
   setPath(target) {
@@ -36,13 +39,13 @@ class Unit {
 
     // normalize vector
     let u = Math.sqrt(
-      Math.pow(this.x - targetX, 2) + Math.pow(this.y - targetY, 2)
+      Math.pow(this.x - targetX, 2) + Math.pow(this.pathY - targetY, 2)
     );
 
     // if close enough to destination, remove waypoint
     if (u > this.speed) {
       this.dx = this.speed * ((targetX - this.x) / Math.abs(u));
-      this.dy = this.speed * ((targetY - this.y) / Math.abs(u));
+      this.dy = this.speed * ((targetY - this.pathY) / Math.abs(u));
     } else {
       this.path.pop();
     }
@@ -51,7 +54,7 @@ class Unit {
   move() {
     if (this.path.length) {
       this.calculateSpeed();
-      this.state = WALKING;
+      this.state = MOVING;
       this.facing = this.dx > 0 ? 1 : 0;
     } else {
       this.dx = 0;
@@ -59,7 +62,8 @@ class Unit {
       this.state = IDLE;
     }
     this.x += this.dx;
-    this.y += this.dy;
+    this.pathY += this.dy;
+    this.y = this.pathY - this.bounce;
   }
 
   tick({ mouseEvents }) {
@@ -70,6 +74,21 @@ class Unit {
       (mouseEvents.rightClickTarget[0] || mouseEvents.rightClickTarget[1])
     ) {
       this.setPath(mouseEvents.rightClickTarget);
+    }
+
+    // bounce
+    const BOUNCE_HEIGHT = 12;
+    const BOUNCE_DURATION = 12;
+    if (this.state === MOVING && this.bounceTime === 0) {
+      this.bounceTime = BOUNCE_DURATION;
+    }
+    if (this.bounceTime > 0) {
+      this.bounceTime -= 1;
+      const a =
+        BOUNCE_DURATION * (Math.sqrt(BOUNCE_HEIGHT) / (BOUNCE_HEIGHT * 2));
+      this.bounce =
+        -Math.pow(this.bounceTime / a - Math.sqrt(BOUNCE_HEIGHT), 2) +
+        BOUNCE_HEIGHT;
     }
 
     this.move();
@@ -121,7 +140,7 @@ class Unit {
           0,
           2 * Math.PI,
         ],
-        strokeColor: "#39C",
+        strokeColor: "#33f8",
         strokeWidth: 5,
       });
     }
