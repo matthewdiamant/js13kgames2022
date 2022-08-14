@@ -1,7 +1,6 @@
 const MULTISELECT_BOX_SIZE = 60;
 const MULTISELECT_BOX_MARGIN = 10;
 const MULTISELECT_ROW_MAX = 8;
-const MULTISELECT_BOX_PADDING = 10;
 
 const ACTIONBOX_ROW_MAX = 3;
 
@@ -12,10 +11,26 @@ class HUD {
 
   tick({ player }) {
     this.selected = player.selected;
+    this.resources = player.resources;
   }
 
   draw(drawer) {
-    // background
+    const RESOURCES_X = drawer.width - 120;
+    const RESOURCES_Y = 15;
+    // resources
+    drawer.rect({
+      adjusted: false,
+      fillColor: "#69c",
+      rect: [RESOURCES_X, RESOURCES_Y + 2, 20, 20],
+    });
+    drawer.text({
+      text: `${this.resources}`,
+      x: RESOURCES_X + 25,
+      y: RESOURCES_Y,
+      size: 5,
+    });
+
+    // hud background
     drawer.rect({
       adjusted: false,
       fillColor: "#666",
