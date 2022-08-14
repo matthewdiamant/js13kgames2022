@@ -3,15 +3,8 @@ import { humanoid } from "./Sprites";
 const IDLE = "idle";
 const MOVING = "moving";
 
-const makeColors = ([skin, horns, eyes, body]) => ({
-  skin,
-  horns,
-  eyes,
-  body,
-});
-
 class Unit {
-  constructor(x, y) {
+  constructor(x, y, colors) {
     this.x = x;
     this.y = y;
     this.pathY = y;
@@ -23,7 +16,7 @@ class Unit {
     this.speed = 5;
     this.path = [];
     this.facing = 1;
-    this.colors = makeColors(["#50c878", "#50c878", "#c00", "#a00"]);
+    this.colors = colors;
     this.name = "WORKER";
     this.type = "unit";
     this.bounce = 0;

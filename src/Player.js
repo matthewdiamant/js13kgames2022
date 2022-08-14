@@ -1,5 +1,12 @@
 import Unit from "./Unit";
 
+const makeColors = ([skin, horns, eyes, body]) => ({
+  skin,
+  horns,
+  eyes,
+  body,
+});
+
 const sample_army = [
   new Unit(400, 300),
   new Unit(500, 300),
@@ -39,7 +46,8 @@ class Player {
   }
 
   addUnit({ type, x, y }) {
-    const newUnit = new Unit(x, y);
+    const colors = makeColors(["#50c878", "#50c878", this.color, "#a00"]);
+    const newUnit = new Unit(x, y, colors);
     this.units.push(newUnit);
   }
 
