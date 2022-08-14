@@ -1,11 +1,4 @@
-import Building from "./Building";
 import Unit from "./Unit";
-
-const boxCollision = (rect1, rect2) =>
-  rect1.x < rect2.x + rect2.w &&
-  rect1.x + rect1.w > rect2.x &&
-  rect1.y < rect2.y + rect2.h &&
-  rect1.h + rect1.y > rect2.y;
 
 const sample_army = [
   new Unit(400, 300),
@@ -42,51 +35,7 @@ class Player {
 
     this.units = [];
 
-    this.buildings = [new Building(80 * 1, 80 * 4)];
-    this.selected = [];
-  }
-
-  dragSelect(mouseEvents, entities) {
-    const collisions = entities.filter((entity) => {
-      let { x, y, size, sizeX, sizeY } = entity;
-      let [mx, my, endx, endy] = mouseEvents.releaseDrag;
-      return boxCollision(
-        { x, y, w: sizeX || size, h: sizeY || size },
-        { x: mx, y: my, w: endx - mx, h: endy - my }
-      );
-    });
-    if (collisions.length === 0) return;
-    entities.forEach((entity) => (entity.selected = false));
-    collisions.forEach((entity) => (entity.selected = true));
-    this.selected = collisions;
-  }
-
-  clickSelect(mouseEvents, entities) {
-    let [mouseX, mouseY] = mouseEvents.clickTarget;
-    if (mouseX || mouseY) {
-      entities.forEach((entity) => {
-        let { x, y, size, sizeX, sizeY } = entity;
-        if (
-          mouseX >= x &&
-          mouseX < x + (size || sizeX) &&
-          mouseY >= y &&
-          mouseY < y + (size || sizeY)
-        ) {
-          entities.forEach((entity) => (entity.selected = false));
-          this.selected = [entity];
-          entity.selected = true;
-        }
-      });
-    }
-  }
-
-  select(mouseEvents) {
-    const entities = [this.units, this.buildings].flat();
-    if (mouseEvents.releaseDrag) {
-      this.dragSelect(mouseEvents, entities);
-    } else {
-      this.clickSelect(mouseEvents, entities);
-    }
+    this.buildings = [];
   }
 
   addUnit({ type, x, y }) {
@@ -94,8 +43,7 @@ class Player {
     this.units.push(newUnit);
   }
 
-  tick({ mouseEvents }) {
-    this.select(mouseEvents);
+  static tick({ mouseEvents }) {
     this.units.forEach((u) => u.tick({ mouseEvents }));
     this.buildings.forEach((b) => b.tick({ player: this }));
   }

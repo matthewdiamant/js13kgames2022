@@ -1,12 +1,14 @@
 import Background from "./Background";
+import Building from "./Building";
+import CPUPlayer from "./CPUPlayer";
 import Drawer from "./Drawer";
 import Keyboard from "./Keyboard";
 import HUD from "./HUD";
+import HumanPlayer from "./HumanPlayer";
 import Map from "./Map";
 import MineCollection from "./MineCollection";
 import MiniMap from "./MiniMap";
 import Mouse from "./Mouse";
-import Player from "./Player";
 
 let fps = 60,
   interval = 1000 / fps,
@@ -40,7 +42,10 @@ window.onload = () => {
   let map = new Map();
   let mines = new MineCollection();
   let miniMap = new MiniMap();
-  let player = new Player();
+  let humanPlayer = new HumanPlayer();
+  humanPlayer.buildings = [new Building(80 * 1, 80 * 4)];
+  let cpuPlayer = new CPUPlayer();
+  cpuPlayer.buildings = [new Building(80 * 10, 80 * 4)];
 
   /*
   let sound = new Sound();
@@ -79,9 +84,10 @@ window.onload = () => {
     const { camera } = drawer;
     camera.tick({ keyboard });
     const mouseEvents = mouse.tick({ camera });
-    player.tick({ mouseEvents });
+    cpuPlayer.tick({ mouseEvents });
+    humanPlayer.tick({ mouseEvents });
     mines.tick();
-    hud.tick({ drawer, mouseEvents, player });
+    hud.tick({ drawer, mouseEvents, player: humanPlayer });
 
     /*
     level.tick({
@@ -119,7 +125,16 @@ window.onload = () => {
     */
   };
 
-  let drawObjects = () => [background, map, mines, player, mouse, hud, miniMap];
+  let drawObjects = () => [
+    background,
+    map,
+    mines,
+    cpuPlayer,
+    humanPlayer,
+    mouse,
+    hud,
+    miniMap,
+  ];
 
   gameLoop();
 };
