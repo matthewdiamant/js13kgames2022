@@ -1,6 +1,7 @@
-const MULTISELECT_BOX_SIZE = 60;
-const MULTISELECT_BOX_MARGIN = 10;
-const MULTISELECT_ROW_MAX = 8;
+export const ICON_BOX_SIZE = 60;
+export const ICON_BOX_MARGIN = 10;
+
+const INFOBOX_ICON_ROW_MAX = 8;
 
 const INFOBOX_PADDING = 20;
 
@@ -51,19 +52,19 @@ class HUD {
       const x =
         this.actionboxX +
         INFOBOX_PADDING +
-        MULTISELECT_BOX_SIZE * (i % ACTIONBOX_ROW_MAX) +
-        MULTISELECT_BOX_MARGIN * ((i % ACTIONBOX_ROW_MAX) - 1);
+        ICON_BOX_SIZE * (i % ACTIONBOX_ROW_MAX) +
+        ICON_BOX_MARGIN * ((i % ACTIONBOX_ROW_MAX) - 1);
       const y =
         this.infoboxY +
         INFOBOX_PADDING +
-        MULTISELECT_BOX_SIZE * Math.floor(i / ACTIONBOX_ROW_MAX) +
-        MULTISELECT_BOX_MARGIN * (Math.floor(i / ACTIONBOX_ROW_MAX) - 1);
+        ICON_BOX_SIZE * Math.floor(i / ACTIONBOX_ROW_MAX) +
+        ICON_BOX_MARGIN * (Math.floor(i / ACTIONBOX_ROW_MAX) - 1);
       const actionable = action.cost <= this.resources;
       return {
         x,
         y,
-        width: MULTISELECT_BOX_SIZE,
-        height: MULTISELECT_BOX_SIZE,
+        width: ICON_BOX_SIZE,
+        height: ICON_BOX_SIZE,
         actionable,
         icon: action.drawIcon,
         action,
@@ -128,27 +129,27 @@ class HUD {
       );
     } else if (this.selected.length > 1) {
       // multiple selected
-      const units = this.selected.slice(0, MULTISELECT_ROW_MAX * 3);
+      const units = this.selected.slice(0, INFOBOX_ICON_ROW_MAX * 3);
       units.forEach((unit, i) => {
         const x =
           this.infoboxX +
           INFOBOX_PADDING +
-          MULTISELECT_BOX_SIZE * (i % MULTISELECT_ROW_MAX) +
-          MULTISELECT_BOX_MARGIN * ((i % MULTISELECT_ROW_MAX) - 1);
+          ICON_BOX_SIZE * (i % INFOBOX_ICON_ROW_MAX) +
+          ICON_BOX_MARGIN * ((i % INFOBOX_ICON_ROW_MAX) - 1);
         const y =
           this.infoboxY +
           INFOBOX_PADDING +
-          MULTISELECT_BOX_SIZE * Math.floor(i / MULTISELECT_ROW_MAX) +
-          MULTISELECT_BOX_MARGIN * (Math.floor(i / MULTISELECT_ROW_MAX) - 1);
+          ICON_BOX_SIZE * Math.floor(i / INFOBOX_ICON_ROW_MAX) +
+          ICON_BOX_MARGIN * (Math.floor(i / INFOBOX_ICON_ROW_MAX) - 1);
         drawer.rect({
           adjusted: false,
           strokeColor: "#0f0",
-          rect: [x, y, MULTISELECT_BOX_SIZE, MULTISELECT_BOX_SIZE],
+          rect: [x, y, ICON_BOX_SIZE, ICON_BOX_SIZE],
         });
         drawer.rect({
           adjusted: false,
           strokeColor: "#0f0",
-          rect: [x, y, MULTISELECT_BOX_SIZE, MULTISELECT_BOX_SIZE],
+          rect: [x, y, ICON_BOX_SIZE, ICON_BOX_SIZE],
         });
         unit.hudDrawIcon(drawer, x, y);
       });

@@ -1,3 +1,4 @@
+import { ICON_BOX_SIZE, ICON_BOX_MARGIN } from "./HUD";
 import Map from "./Map";
 import Unit from "./Unit";
 
@@ -30,19 +31,23 @@ class Building {
     }
   }
 
-  queueTask(type, time, { player }) {
-    this.tasks.push({ name: "worker", time: time * 30, totalTime: time * 30 });
+  queueTask(task, { player }) {
+    this.tasks.push({ ...task, totalTime: task.time });
   }
 
   actions() {
+    const building = this;
     return [
       {
         name: "build worker",
         cost: 100,
-        execute: ({ player }) => {
-          if (player.resources >= 100) {
-            player.resources -= 100;
-            this.queueTask("worker", 10, { player });
+        time: 5 * 30,
+        execute: function ({ player }) {
+          if (building.tasks.length < 5) {
+            if (player.resources >= this.cost) {
+              player.resources -= this.cost;
+              building.queueTask(this, { player });
+            }
           }
         },
         drawIcon: (drawer, x, y) => {
@@ -62,38 +67,63 @@ class Building {
     ];
   }
 
+  hudDrawCurrentTask(drawer, x, y) {
+    const { name, time, totalTime, drawIcon } = this.tasks[0];
+    drawer.text({
+      text: `${name}`,
+      x: x + 200 + ICON_BOX_SIZE + ICON_BOX_MARGIN,
+      y: y + 13,
+      size: 5,
+    });
+
+    // progress bar
+    const PROGRESS_BAR_WIDTH = 200;
+    const PROGRESS_BAR_HEIGHT = 10;
+    const PROGRESS_BAR_X = x + 200 + ICON_BOX_SIZE + ICON_BOX_MARGIN;
+    const PROGRESS_BAR_Y = y + ICON_BOX_SIZE - PROGRESS_BAR_HEIGHT;
+    drawer.rect({
+      strokeColor: "#0f0",
+      rect: [
+        PROGRESS_BAR_X,
+        PROGRESS_BAR_Y,
+        PROGRESS_BAR_WIDTH,
+        PROGRESS_BAR_HEIGHT,
+      ],
+    });
+    drawer.rect({
+      fillColor: "#0f0",
+      rect: [
+        PROGRESS_BAR_X,
+        PROGRESS_BAR_Y,
+        ((totalTime - time) / totalTime) * PROGRESS_BAR_WIDTH,
+        PROGRESS_BAR_HEIGHT,
+      ],
+    });
+    drawer.rect({
+      strokeColor: "#0f0",
+      rect: [x + 200, y, ICON_BOX_SIZE, ICON_BOX_SIZE],
+    });
+    drawIcon(drawer, x + 200, y);
+  }
+
   hudDraw(drawer, x, y) {
     if (this.tasks.length) {
-      const { name, time, totalTime } = this.tasks[0];
-      drawer.text({
-        text: `${name}`,
-        x: x + 200,
-        y: y,
-        size: 5,
-      });
-
-      // progress bar
-      const PROGRESS_BAR_X = x + 200;
-      const PROGRESS_BAR_Y = y + 60;
-      const PROGRESS_BAR_WIDTH = 100;
-      const PROGRESS_BAR_HEIGHT = 10;
-      drawer.rect({
-        strokeColor: "#0f0",
-        rect: [
-          PROGRESS_BAR_X,
-          PROGRESS_BAR_Y,
-          PROGRESS_BAR_WIDTH,
-          PROGRESS_BAR_HEIGHT,
-        ],
-      });
-      drawer.rect({
-        fillColor: "#0f0",
-        rect: [
-          PROGRESS_BAR_X,
-          PROGRESS_BAR_Y,
-          ((totalTime - time) / totalTime) * PROGRESS_BAR_WIDTH,
-          PROGRESS_BAR_HEIGHT,
-        ],
+      this.hudDrawCurrentTask(drawer, x, y);
+      this.tasks.slice(1).forEach(({ drawIcon }, i) => {
+        drawer.rect({
+          strokeColor: "#0f0",
+          rect: [
+            x + 200 + (ICON_BOX_MARGIN + ICON_BOX_SIZE) * i,
+            y + ICON_BOX_SIZE + ICON_BOX_MARGIN,
+            ICON_BOX_SIZE,
+            ICON_BOX_SIZE,
+          ],
+        });
+        drawIcon(
+          drawer,
+          x + 200 + (ICON_BOX_MARGIN + ICON_BOX_SIZE) * i,
+          y + ICON_BOX_MARGIN + ICON_BOX_SIZE
+        );
       });
     }
   }
