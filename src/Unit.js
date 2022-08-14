@@ -28,6 +28,7 @@ class Unit {
     this.type = "unit";
     this.bounce = 0;
     this.bounceTime = 0;
+    this.blink = 0;
   }
 
   setPath(target) {
@@ -76,10 +77,20 @@ class Unit {
       this.setPath(mouseEvents.rightClickTarget);
     }
 
+    // blink
+    if (Math.random() < 0.005) {
+      this.blink = 10;
+    }
+    if (this.blink > 0) {
+      this.blink -= 1;
+    }
+
     // bounce
     const BOUNCE_HEIGHT = 12;
     const BOUNCE_DURATION = 12;
-    if (this.state === MOVING && this.bounceTime === 0) {
+    const shouldMoveBounce = this.state === MOVING && this.bounceTime === 0;
+    const shouldIdleBounce = this.state === IDLE && Math.random() < 0.01;
+    if (shouldMoveBounce || shouldIdleBounce) {
       this.bounceTime = BOUNCE_DURATION;
     }
     if (this.bounceTime > 0) {
@@ -145,7 +156,9 @@ class Unit {
       });
     }
 
-    humanoid(this.x, this.y, this.facing, this.colors).forEach(({ c, r }) =>
+    humanoid(this.x, this.y, this.facing, this.colors, {
+      blink: this.blink > 0,
+    }).forEach(({ c, r }) =>
       drawer.rect({
         fillColor: c,
         rect: r,

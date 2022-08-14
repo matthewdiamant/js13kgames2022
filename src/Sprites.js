@@ -1,6 +1,10 @@
 export const humanoid = (x, y, facing, colors, options = {}) => {
-  const { skin, horns, eyes, body } = colors;
+  let { skin, horns, eyes, body } = colors;
   let parts = [];
+
+  if (options.blink) {
+    eyes = "#0000";
+  }
 
   let upper = [
     [skin, [0, 0, 5, 3]], // head
