@@ -81,6 +81,9 @@ class Unit {
         name: "move",
         cost: 0,
         drawIcon: (drawer, x, y) => {},
+        execute: () => {
+          console.log("move");
+        },
       },
     ];
   }

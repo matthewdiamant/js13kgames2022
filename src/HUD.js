@@ -25,7 +25,23 @@ class HUD {
       this.selected.length &&
       (mouseEvents.clickTarget[0] || mouseEvents.clickTarget[1])
     ) {
-      console.log(this.selected[0]);
+      this.clickAction({ mouseEvents, player });
+    }
+  }
+
+  clickAction({ mouseEvents, player }) {
+    let [mouseX, mouseY] = mouseEvents.clickTarget;
+    if (mouseX || mouseY) {
+      this.actionBoxes().forEach(({ x, y, width, height, action }) => {
+        if (
+          mouseX >= x &&
+          mouseX < x + width &&
+          mouseY >= y &&
+          mouseY < y + height
+        ) {
+          action.execute({ player });
+        }
+      });
     }
   }
 
@@ -43,14 +59,15 @@ class HUD {
         MULTISELECT_BOX_SIZE * Math.floor(i / ACTIONBOX_ROW_MAX) +
         MULTISELECT_BOX_MARGIN * (Math.floor(i / ACTIONBOX_ROW_MAX) - 1);
       const actionable = action.cost <= this.resources;
-      return [
+      return {
         x,
         y,
-        MULTISELECT_BOX_SIZE,
-        MULTISELECT_BOX_SIZE,
+        width: MULTISELECT_BOX_SIZE,
+        height: MULTISELECT_BOX_SIZE,
         actionable,
-        action.drawIcon,
-      ];
+        icon: action.drawIcon,
+        action,
+      };
     });
   }
 
@@ -146,23 +163,23 @@ class HUD {
       rect: [this.actionboxX, this.actionboxY, HUD.HUD_HEIGHT, HUD.HUD_HEIGHT],
     });
     if (this.selected.length === 1) {
-      this.actionBoxes().forEach((actionBox) => {
-        const [x, y, width, height, actionable, icon] = actionBox;
-
-        drawer.rect({
-          adjusted: false,
-          strokeColor: actionable ? "#0f0" : "rgba(100, 100, 100, 0.7)",
-          rect: [x, y, width, height],
-        });
-        icon(drawer, x, y);
-        if (!actionable) {
+      this.actionBoxes().forEach(
+        ({ x, y, width, height, actionable, icon }) => {
           drawer.rect({
             adjusted: false,
-            fillColor: "rgba(100, 100, 100, 0.7)",
+            strokeColor: actionable ? "#0f0" : "rgba(100, 100, 100, 0.7)",
             rect: [x, y, width, height],
           });
+          icon(drawer, x, y);
+          if (!actionable) {
+            drawer.rect({
+              adjusted: false,
+              fillColor: "rgba(100, 100, 100, 0.7)",
+              rect: [x, y, width, height],
+            });
+          }
         }
-      });
+      );
     }
   }
 }

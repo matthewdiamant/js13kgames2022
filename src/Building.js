@@ -22,15 +22,17 @@ class Building {
     this.lifespan += 1;
   }
 
-  queueTask(type) {}
+  queueTask(type, { player }) {
+    console.log(type, player.resources);
+  }
 
   actions() {
     return [
       {
         name: "build worker",
         cost: 100,
-        action: () => {
-          this.queueTask("worker");
+        execute: ({ player }) => {
+          this.queueTask("worker", { player });
         },
         drawIcon: (drawer, x, y) => {
           Unit.hudDrawIcon(drawer, x, y);
@@ -39,8 +41,8 @@ class Building {
       {
         name: "build worker",
         cost: 10000,
-        action: () => {
-          this.queueTask("worker");
+        execute: ({ player }) => {
+          this.queueTask("worker", { player });
         },
         drawIcon: (drawer, x, y) => {
           Unit.hudDrawIcon(drawer, x, y);
