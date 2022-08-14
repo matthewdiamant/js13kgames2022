@@ -41,7 +41,9 @@ class HUD {
           mouseY >= y &&
           mouseY < y + height
         ) {
-          action.execute({ player });
+          if (action.actionable()) {
+            action.execute({ player });
+          }
         }
       });
     }
