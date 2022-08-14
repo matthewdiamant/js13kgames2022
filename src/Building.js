@@ -10,9 +10,24 @@ class Building {
     this.selected = false;
     this.name = "base";
     this.type = "building";
+    this.tasks = [];
   }
 
   tick() {}
+
+  queueTask(type) {}
+
+  actions() {
+    return [
+      {
+        name: "build worker",
+        action: () => {
+          this.queueTask("worker");
+        },
+        graphic: () => {},
+      },
+    ];
+  }
 
   draw(drawer) {
     if (this.selected) {

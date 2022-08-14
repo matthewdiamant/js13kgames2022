@@ -9,6 +9,8 @@ const boxCollision = (rect1, rect2) =>
 
 class Player {
   constructor() {
+    this.resources = 1000;
+
     this.units = [
       new Unit(400, 300),
       new Unit(500, 300),
@@ -91,8 +93,8 @@ class Player {
   }
 
   draw(drawer) {
-    this.units.forEach((u) => u.draw(drawer));
     this.buildings.forEach((b) => b.draw(drawer));
+    this.units.forEach((u) => u.draw(drawer));
   }
 }
 

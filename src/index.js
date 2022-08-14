@@ -119,7 +119,7 @@ window.onload = () => {
     */
   };
 
-  let drawObjects = () => [background, map, player, mines, mouse, hud, miniMap];
+  let drawObjects = () => [background, map, mines, player, mouse, hud, miniMap];
 
   gameLoop();
 };

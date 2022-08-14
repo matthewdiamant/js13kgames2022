@@ -75,13 +75,17 @@ class Unit {
     this.move();
   }
 
+  actions() {
+    return [{ name: "move" }];
+  }
+
   draw(drawer) {
     if (this.selected) {
       drawer.ellipse({
         ellipse: [
           this.x + this.size / 2,
           this.y + this.size,
-          (this.size + 20) / 2,
+          (this.size + 15) / 2,
           this.size / 3,
           0,
           0,
