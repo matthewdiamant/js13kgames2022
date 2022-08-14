@@ -60,6 +60,7 @@ class HUD {
         { size: 12 }
       ).forEach(({ c, r }) =>
         drawer.rect({
+          adjusted: false,
           fillColor: c,
           rect: r,
         })
@@ -100,6 +101,7 @@ class HUD {
           colors
         ).forEach(({ c, r }) =>
           drawer.rect({
+            adjusted: false,
             fillColor: c,
             rect: r,
           })
