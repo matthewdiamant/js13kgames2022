@@ -76,7 +76,16 @@ class Unit {
   }
 
   actions() {
-    return [{ name: "move" }];
+    return [
+      {
+        name: "move",
+        drawIcon: (drawer, x, y) => {},
+      },
+    ];
+  }
+
+  hudDrawIcon(drawer, x, y) {
+    Unit.hudDrawIcon(drawer, x, y);
   }
 
   hudDraw(drawer, x, y) {
@@ -87,22 +96,6 @@ class Unit {
       body: "#666",
     };
     humanoid(x, y, 1, colors, { size: 12 }).forEach(({ c, r }) =>
-      drawer.rect({
-        adjusted: false,
-        fillColor: c,
-        rect: r,
-      })
-    );
-  }
-
-  hudDrawIcon(drawer, x, y) {
-    const colors = {
-      skin: "#0f0",
-      horns: "#0f0",
-      eyes: "#666",
-      body: "#666",
-    };
-    humanoid(x, y, 1, colors).forEach(({ c, r }) =>
       drawer.rect({
         adjusted: false,
         fillColor: c,
@@ -152,5 +145,21 @@ class Unit {
     });
   }
 }
+
+Unit.hudDrawIcon = (drawer, x, y) => {
+  const colors = {
+    skin: "#0f0",
+    horns: "#0f0",
+    eyes: "#666",
+    body: "#666",
+  };
+  humanoid(x + 14, y + 18, 1, colors, { size: 6 }).forEach(({ c, r }) =>
+    drawer.rect({
+      adjusted: false,
+      fillColor: c,
+      rect: r,
+    })
+  );
+};
 
 export default Unit;

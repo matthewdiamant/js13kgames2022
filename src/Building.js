@@ -1,4 +1,5 @@
 import Map from "./Map";
+import Unit from "./Unit";
 
 class Building {
   constructor(x, y) {
@@ -24,12 +25,16 @@ class Building {
         action: () => {
           this.queueTask("worker");
         },
-        graphic: () => {},
+        drawIcon: (drawer, x, y) => {
+          Unit.hudDrawIcon(drawer, x, y);
+        },
       },
     ];
   }
 
-  hudDrawIcon(drawer, x, y) {}
+  hudDrawIcon(drawer, x, y) {
+    Building.hudDrawIcon(drawer, x, y);
+  }
 
   draw(drawer) {
     if (this.selected) {
@@ -62,5 +67,7 @@ class Building {
     });
   }
 }
+
+Building.hudDrawIcon = (drawer, x, y) => {};
 
 export default Building;

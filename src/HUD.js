@@ -1,5 +1,3 @@
-import { humanoid } from "./Sprites";
-
 const MULTISELECT_BOX_SIZE = 60;
 const MULTISELECT_BOX_MARGIN = 10;
 const MULTISELECT_ROW_MAX = 8;
@@ -80,11 +78,7 @@ class HUD {
           strokeColor: "#0f0",
           rect: [x, y, MULTISELECT_BOX_SIZE, MULTISELECT_BOX_SIZE],
         });
-        unit.hudDrawIcon(
-          drawer,
-          x + MULTISELECT_BOX_PADDING,
-          y + MULTISELECT_BOX_PADDING * 1.5
-        );
+        unit.hudDrawIcon(drawer, x, y);
       });
     }
 
@@ -114,6 +108,7 @@ class HUD {
           strokeColor: "#0f0",
           rect: [x, y, MULTISELECT_BOX_SIZE, MULTISELECT_BOX_SIZE],
         });
+        action.drawIcon(drawer, x, y);
       });
     }
   }
