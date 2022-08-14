@@ -2,7 +2,7 @@ import Mine from "./Mine";
 
 class MineCollection {
   constructor() {
-    this.mines = [new Mine(100, 600)];
+    this.mines = [new Mine(80 * 6, 80)];
   }
 
   tick() {
