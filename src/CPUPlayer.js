@@ -18,7 +18,7 @@ class CPUPlayer extends Player {
       const unit = sample(this.units);
       const path = [
         Math.floor(80 * 8 + 80 * Math.random() * 5),
-        Math.floor(80 * Math.random() * 7),
+        Math.floor(80 + 80 * Math.random() * 7),
       ];
       const success = unit.setPath(path, map);
       if (success) unit.state = STATES.MOVING;

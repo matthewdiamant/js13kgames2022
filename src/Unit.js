@@ -11,17 +11,22 @@ class Unit {
   constructor(x, y, colors) {
     this.x = x;
     this.y = y;
+    this.size = 8 * 5;
+    this.speed = 5;
+    this.colors = colors;
+    this.name = "WORKER";
+
+    this.range = 200;
+    this.cooldown = 60;
+    this.firingTotalTime = 30 * 3;
+
     this.pathY = y;
     this.dx = 0;
     this.dy = 0;
-    this.size = 8 * 5;
     this.lifespan = 0;
     this.selected = false;
-    this.speed = 5;
     this.path = [];
     this.facing = 1;
-    this.colors = colors;
-    this.name = "WORKER";
     this.type = "unit";
     this.bounce = 0;
     this.bounceTime = 0;
@@ -30,6 +35,8 @@ class Unit {
     this.attackSelected = 0;
     this.recalculateTarget = 0;
     this.state = STATES.IDLE;
+
+    this.firingTime = 0;
   }
 
   attacked() {
@@ -138,9 +145,20 @@ class Unit {
         this.setPath([this.target.x, this.target.y], map);
         this.recalculateTarget = 15;
       }
+
+      const dx = Math.abs(this.x - this.target.x);
+      const dy = Math.abs(this.y - this.target.y);
+      const distanceFromTarget = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+      if (this.firingTime > 0) this.firingTime -= 1;
+      if (distanceFromTarget <= this.range && this.firingTime === 0) {
+        this.firingTime = this.firingTotalTime;
+        console.log("fire");
+      }
     }
 
-    this.move();
+    if (this.firingTime === 0) {
+      this.move();
+    }
 
     if (this.attackSelected > 0) this.attackSelected -= 1;
   }
