@@ -150,11 +150,13 @@ class Unit {
   }
 
   draw(drawer) {
+    const x = this.x - this.size / 2;
+    const y = this.y - this.size / 2;
     if (this.selected) {
       drawer.ellipse({
         ellipse: [
-          this.x + this.size / 2,
-          this.y + this.size,
+          x + this.size / 2,
+          y + this.size,
           (this.size + 15) / 2,
           this.size / 3,
           0,
@@ -166,7 +168,7 @@ class Unit {
       });
     }
 
-    humanoid(this.x, this.y, this.facing, this.colors, {
+    humanoid(x, y, this.facing, this.colors, {
       blink: this.blink > 0,
     }).forEach(({ c, r }) =>
       drawer.rect({
@@ -180,13 +182,13 @@ class Unit {
     if (hitbox) {
       drawer.rect({
         fillColor: "#c66",
-        rect: [this.x, this.y, this.size, this.size],
+        rect: [x, y, this.size, this.size],
       });
     }
 
     drawer.miniMap({
-      x: this.x,
-      y: this.y,
+      x: x,
+      y: y,
       color: "#0f0",
       size: Math.ceil(this.size / 20),
     });
