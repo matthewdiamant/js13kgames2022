@@ -13,8 +13,23 @@ class CPUPlayer extends Player {
   cpuActions() {
     if (Math.random() < 0.01) {
       const unit = sample(this.units);
-      const path = [80 * 8 + 80 * Math.random() * 5, 80 * Math.random() * 7];
+      const path = [
+        Math.floor(80 * 8 + 80 * Math.random() * 5),
+        Math.floor(80 * Math.random() * 7),
+      ];
       unit.setPath(path);
+      console.log(`cpu moving ${unit.name} to ${path}`);
+    }
+    if (Math.random() < 0.001) {
+      const base = this.buildings[0];
+      const [buildWorker] = base
+        .actions({ player: this })
+        .filter(({ name }) => name === "build worker");
+
+      buildWorker.execute({ player: this });
+      console.log(
+        `cpu executing ${buildWorker.name} on ${base.name} and has ${this.resources} left`
+      );
     }
   }
 

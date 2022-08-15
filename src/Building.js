@@ -43,11 +43,9 @@ class Building {
           return this.cost <= player.resources;
         },
         execute: function ({ player }) {
-          if (building.tasks.length < 5) {
-            if (player.resources >= this.cost) {
-              player.resources -= this.cost;
-              building.queueTask(this, { player });
-            }
+          if (building.tasks.length < 5 && player.resources >= this.cost) {
+            player.resources -= this.cost;
+            building.queueTask(this, { player });
           }
         },
         complete: ({ player }) => {
