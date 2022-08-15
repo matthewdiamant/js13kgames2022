@@ -49,9 +49,14 @@ class Mouse {
     this.clickCoords = [clientX + this.camera.x, clientY + this.camera.y];
   }
 
-  mousedown({ clientX, clientY }) {
-    this.startDragLocation = [clientX + this.camera.x, clientY + this.camera.y];
-    this.dragging = true;
+  mousedown({ clientX, clientY, which }) {
+    if (which === 1) {
+      this.startDragLocation = [
+        clientX + this.camera.x,
+        clientY + this.camera.y,
+      ];
+      this.dragging = true;
+    }
   }
 
   mouseup() {
