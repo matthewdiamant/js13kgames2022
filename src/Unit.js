@@ -15,6 +15,8 @@ class Unit {
     this.speed = 5;
     this.colors = colors;
     this.name = "WORKER";
+    this.health = 50;
+    this.damage = 10;
 
     this.range = 200;
     this.cooldown = 60;
@@ -91,6 +93,12 @@ class Unit {
     }
   }
 
+  takeDamage(amount) {
+    this.health -= amount;
+    console.log(this.health);
+    return this.health <= 0;
+  }
+
   move() {
     if (this.path.length) {
       this.calculateSpeed();
@@ -139,6 +147,7 @@ class Unit {
     }
 
     // attacking
+    if (this.firingTime > 0) this.firingTime -= 1;
     if (this.state === ATTACKING) {
       this.recalculateTarget -= 1;
       if (this.recalculateTarget === 0) {
@@ -149,10 +158,14 @@ class Unit {
       const dx = Math.abs(this.x - this.target.x);
       const dy = Math.abs(this.y - this.target.y);
       const distanceFromTarget = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-      if (this.firingTime > 0) this.firingTime -= 1;
       if (distanceFromTarget <= this.range && this.firingTime === 0) {
         this.firingTime = this.firingTotalTime;
-        console.log("fire");
+        const killed = this.target.takeDamage(this.damage);
+        if (killed) {
+          this.target = null;
+          this.state = STATES.IDLE;
+          this.path = [];
+        }
       }
     }
 

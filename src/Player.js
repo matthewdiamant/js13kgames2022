@@ -59,6 +59,13 @@ class Player {
 
   static tick({ map }) {
     this.units.forEach((u) => u.tick({ map }));
+    this.units = this.units.reduce((units, unit) => {
+      if (unit.health <= 0) {
+      } else {
+        units.push(unit);
+      }
+      return units;
+    }, []);
     this.buildings.forEach((b) => b.tick({ player: this }));
   }
 
