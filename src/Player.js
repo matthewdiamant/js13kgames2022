@@ -47,7 +47,7 @@ class Player {
   }
 
   addUnit({ type, x, y }) {
-    const colors = makeColors(["#50c878", "#50c878", this.color, "#a00"]);
+    const colors = makeColors(["#50c878", "#50c878", this.color, this.color]);
     const newUnit = new Unit(x, y, colors);
     this.units.push(newUnit);
   }

@@ -11,6 +11,7 @@ class HumanPlayer extends Player {
     super();
     this.selected = [];
     this.color = "#A00";
+    this.addUnit({ type: "worker", x: 0, y: 0 });
     this.addBuilding({ type: "base", x: 80 * 1, y: 80 * 4 });
   }
 
@@ -57,7 +58,7 @@ class HumanPlayer extends Player {
     }
   }
 
-  tick({ mouseEvents }) {
+  tick({ map, mouseEvents }) {
     this.select(mouseEvents);
 
     this.units.forEach((unit) => {
@@ -65,7 +66,7 @@ class HumanPlayer extends Player {
         unit.selected &&
         (mouseEvents.rightClickTarget[0] || mouseEvents.rightClickTarget[1])
       ) {
-        unit.setPath(mouseEvents.rightClickTarget);
+        unit.setPath(mouseEvents.rightClickTarget, map);
       }
     });
 

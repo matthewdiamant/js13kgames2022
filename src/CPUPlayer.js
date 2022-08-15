@@ -10,32 +10,36 @@ class CPUPlayer extends Player {
     this.addBuilding({ type: "base", x: 80 * 12, y: 80 * 4 });
   }
 
-  cpuActions() {
-    if (Math.random() < 0.01) {
+  cpuActions({ map }) {
+    const MOVE_RATE = 0;
+    const WORKER_BUILD_RATE = 0;
+    if (Math.random() < MOVE_RATE) {
       const unit = sample(this.units);
       const path = [
         Math.floor(80 * 8 + 80 * Math.random() * 5),
         Math.floor(80 * Math.random() * 7),
       ];
-      unit.setPath(path);
+      unit.setPath(path, map);
       console.log(`cpu moving ${unit.name} to ${path}`);
     }
-    if (Math.random() < 0.001) {
+    if (Math.random() < WORKER_BUILD_RATE) {
       const base = this.buildings[0];
       const [buildWorker] = base
         .actions({ player: this })
         .filter(({ name }) => name === "build worker");
 
-      buildWorker.execute({ player: this });
+      const success = buildWorker.execute({ player: this });
       console.log(
-        `cpu executing ${buildWorker.name} on ${base.name} and has ${this.resources} left`
+        `cpu executing ${buildWorker.name} on ${base.name}, ${
+          success ? "" : "but failed,"
+        } and has ${this.resources} left`
       );
     }
   }
 
-  tick() {
-    this.cpuActions();
-    Player.tick.call(this);
+  tick({ map }) {
+    this.cpuActions({ map });
+    Player.tick.call(this, { map });
   }
 }
 

@@ -46,7 +46,9 @@ class Building {
           if (building.tasks.length < 5 && player.resources >= this.cost) {
             player.resources -= this.cost;
             building.queueTask(this, { player });
+            return true;
           }
+          return false;
         },
         complete: ({ player }) => {
           player.addUnit({

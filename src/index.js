@@ -1,5 +1,4 @@
 import Background from "./Background";
-import Building from "./Building";
 import CPUPlayer from "./CPUPlayer";
 import Drawer from "./Drawer";
 import Keyboard from "./Keyboard";
@@ -82,8 +81,8 @@ window.onload = () => {
     const { camera } = drawer;
     camera.tick({ keyboard });
     const mouseEvents = mouse.tick({ camera });
-    cpuPlayer.tick({ mouseEvents });
-    humanPlayer.tick({ mouseEvents });
+    cpuPlayer.tick({ map });
+    humanPlayer.tick({ map, mouseEvents });
     mines.tick();
     hud.tick({ drawer, mouseEvents, player: humanPlayer });
 

@@ -1,3 +1,4 @@
+import AStarFinder, { Grid } from "./AStar";
 import { humanoid } from "./Sprites";
 
 const IDLE = "idle";
@@ -24,8 +25,24 @@ class Unit {
     this.blink = 0;
   }
 
-  setPath(target) {
-    this.path = [target];
+  setPath(target, map) {
+    const [targetX, targetY] = target;
+
+    const [startX, startY] = map.coordsToTile(this.x, this.pathY);
+    const [endX, endY] = map.coordsToTile(targetX, targetY);
+
+    const finder = new AStarFinder();
+    const grid = new Grid(map.grid);
+    const p = finder.findPath(startX, startY, endX, endY, grid);
+
+    if (p.length === 0) return;
+
+    const path = p
+      .map(([x, y]) => map.tileToCoords(x, y))
+      .slice(1, -1)
+      .concat([target]);
+
+    this.path = path;
   }
 
   calculateSpeed() {
@@ -41,7 +58,7 @@ class Unit {
       this.dx = this.speed * ((targetX - this.x) / Math.abs(u));
       this.dy = this.speed * ((targetY - this.pathY) / Math.abs(u));
     } else {
-      this.path.pop();
+      this.path.shift();
     }
   }
 
