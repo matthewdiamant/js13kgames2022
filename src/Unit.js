@@ -1,4 +1,4 @@
-import AStarFinder, { Grid } from "./AStar";
+import AStarFinder, { Grid, smoothenPath } from "./AStar";
 import { humanoid } from "./Sprites";
 
 const IDLE = "idle";
@@ -33,7 +33,10 @@ class Unit {
 
     const finder = new AStarFinder();
     const grid = new Grid(map.grid);
-    const p = finder.findPath(startX, startY, endX, endY, grid);
+    const p = smoothenPath(
+      grid,
+      finder.findPath(startX, startY, endX, endY, grid)
+    );
 
     if (p.length === 0) return;
 

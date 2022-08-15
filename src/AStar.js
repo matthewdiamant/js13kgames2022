@@ -512,7 +512,7 @@ function expandPath(path) {
  * @param {PF.Grid} grid
  * @param {Array<Array<number>>} path The path
  */
-function smoothenPath(grid, path) {
+export function smoothenPath(grid, path) {
   var len = path.length,
     x0 = path[0][0], // path start x
     y0 = path[0][1], // path start y
@@ -528,7 +528,8 @@ function smoothenPath(grid, path) {
     coord,
     line,
     testCoord,
-    blocked;
+    blocked,
+    lastValidCoord;
 
   sx = x0;
   sy = y0;
