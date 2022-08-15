@@ -127,7 +127,7 @@ class Unit {
   }
 
   explode({ bloods, bloodChunks, sound }) {
-    // sound.play("death");
+    sound.play("death");
     for (let i = 0; i < 100; i++) {
       bloods.add(
         new Blood(

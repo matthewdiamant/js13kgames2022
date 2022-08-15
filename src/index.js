@@ -10,24 +10,12 @@ import Map from "./Map";
 import MineCollection from "./MineCollection";
 import MiniMap from "./MiniMap";
 import Mouse from "./Mouse";
+import Sound from "./Sound";
 
 let fps = 60,
   interval = 1000 / fps,
   lastTime = 0,
   delta = 0;
-
-/*
-import Sound from "./Sound";
-import CollisionDetector from "./CollisionDetector";
-
-import Level from "./Level";
-import Map from "./Map";
-import HUD from "./HUD";
-import EnemyCollection from "./EnemyCollection";
-import ProjectileCollection from "./ProjectileCollection";
-import BloodCollection from "./BloodCollection";
-import PackageCollection from "./PackageCollection";
-*/
 
 window.onload = () => {
   let drawer = new Drawer();
@@ -38,6 +26,7 @@ window.onload = () => {
   });
   let keyboard = new Keyboard();
   let mouse = new Mouse();
+  let sound = new Sound();
 
   let bloods = new BloodCollection();
   let bloodChunks = new BloodChunkCollection();
@@ -47,28 +36,6 @@ window.onload = () => {
   let miniMap = new MiniMap();
   let humanPlayer = new HumanPlayer();
   let cpuPlayer = new CPUPlayer();
-
-  /*
-  let sound = new Sound();
-  let collisionDetector = new CollisionDetector();
-
-
-  let level = new Level();
-  let enemies = new EnemyCollection();
-  let projectiles = new ProjectileCollection();
-  let spurts = new BloodCollection();
-  let chunks = { chunks: [] };
-  let packages = new PackageCollection();
-
-  level.initializeLevel(1, {
-    player,
-    enemies,
-    chunks,
-    spurts,
-    packages,
-    map,
-  });
-  */
 
   let gameLoop = (currentTime) => {
     window.requestAnimationFrame(gameLoop);
@@ -89,6 +56,7 @@ window.onload = () => {
       bloods,
       bloodChunks,
       map,
+      sound,
       targets: humanPlayer.entities(),
     });
     humanPlayer.tick({
@@ -97,47 +65,13 @@ window.onload = () => {
       cpuPlayer,
       map,
       mouse,
+      sound,
       targets: cpuPlayer.entities(),
     });
     mines.tick();
     hud.tick({ drawer, mouse, player: humanPlayer });
     bloods.tick();
     bloodChunks.tick();
-
-    /*
-    level.tick({
-      player,
-      enemies,
-      chunks,
-      spurts,
-      packages,
-      sound,
-      map,
-      background,
-    });
-    player.tick({ camera, keyboard, map, projectiles, sound, chunks, spurts });
-    enemies.tick({
-      camera,
-      map,
-      projectiles,
-      spurts,
-      chunks,
-      player,
-      sound,
-      level,
-    });
-    camera.tick({ player, map });
-    projectiles.tick();
-    spurts.tick();
-
-    if (chunks.chunks.length > 1000) {
-      chunks.chunks = chunks.chunks.slice(chunks.chunks.length - 1000);
-    }
-    chunks.chunks.forEach((chunk) => chunk.tick());
-
-    hud.tick(player, enemies, level.level.enemyColor);
-    packages.tick(map, level.level.level);
-    */
   };
 
   let drawObjects = () => [

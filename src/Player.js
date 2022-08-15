@@ -62,11 +62,11 @@ class Player {
     return this.units.concat(this.buildings);
   }
 
-  static tick({ bloods, bloodChunks, map, targets }) {
+  static tick({ bloods, bloodChunks, map, sound, targets }) {
     this.units.forEach((u) => u.tick({ bloods, map, targets }));
     this.units = this.units.reduce((units, unit) => {
       if (unit.health <= 0) {
-        unit.explode({ bloods, bloodChunks });
+        unit.explode({ bloods, bloodChunks, sound });
       } else {
         units.push(unit);
       }
