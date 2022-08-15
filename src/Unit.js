@@ -25,6 +25,11 @@ class Unit {
     this.bounceTime = 0;
     this.blink = 0;
     this.target = null;
+    this.attackSelected = 0;
+  }
+
+  attacked() {
+    this.attackSelected = 30;
   }
 
   setPath(target, map) {
@@ -53,6 +58,7 @@ class Unit {
   setTarget(enemy, map) {
     this.target = enemy;
     this.state = ATTACKING;
+    enemy.attacked();
     this.setPath([enemy.x, enemy.y], map);
   }
 
@@ -121,6 +127,8 @@ class Unit {
     }
 
     this.move();
+
+    if (this.attackSelected > 0) this.attackSelected -= 1;
   }
 
   actions() {
@@ -160,7 +168,8 @@ class Unit {
   draw(drawer) {
     const x = this.x - this.size / 2;
     const y = this.y - this.size / 2;
-    if (this.selected) {
+
+    const drawRing = (color) => {
       drawer.ellipse({
         ellipse: [
           x + this.size / 2,
@@ -171,10 +180,12 @@ class Unit {
           0,
           2 * Math.PI,
         ],
-        strokeColor: "#4AC",
+        strokeColor: color,
         strokeWidth: 5,
       });
-    }
+    };
+    if (this.selected) drawRing("#4AC");
+    if (this.attackSelected > 0) drawRing("#A00");
 
     humanoid(x, y, this.facing, this.colors, {
       blink: this.blink > 0,

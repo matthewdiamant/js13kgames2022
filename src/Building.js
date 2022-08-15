@@ -14,6 +14,11 @@ class Building {
     this.type = "building";
     this.tasks = [];
     this.color = color;
+    this.attackSelected = 0;
+  }
+
+  attacked() {
+    this.attackSelected = 30;
   }
 
   tick({ player }) {
@@ -26,6 +31,8 @@ class Building {
         complete({ player });
       }
     }
+
+    if (this.attackSelected > 0) this.attackSelected -= 1;
   }
 
   queueTask(task, { player }) {
@@ -215,6 +222,24 @@ class Building {
         strokeWidth: 5,
       });
     }
+
+    const drawRing = (color) => {
+      drawer.ellipse({
+        ellipse: [
+          this.x + this.sizeX / 2,
+          this.y + height + Map.tileSize,
+          (this.sizeX + 40) / 2,
+          height / 3,
+          0,
+          0,
+          2 * Math.PI,
+        ],
+        strokeColor: color,
+        strokeWidth: 5,
+      });
+    };
+    if (this.selected) drawRing("#4AC");
+    if (this.attackSelected > 0) drawRing("#A00");
 
     drawer.rect({
       fillColor: "#A33",
