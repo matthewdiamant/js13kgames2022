@@ -33,19 +33,19 @@ class Unit {
 
     const finder = new AStarFinder();
     const grid = new Grid(map.grid);
-    const p = smoothenPath(
-      grid,
-      finder.findPath(startX, startY, endX, endY, grid)
-    );
+    const p = finder.findPath(startX, startY, endX, endY, grid);
 
-    if (p.length === 0) return;
+    if (p.length === 0) return false;
+    const smoothPath = smoothenPath(grid, p);
 
-    const path = p
+    const path = smoothPath
       .map(([x, y]) => map.tileToCoords(x, y))
       .slice(1, -1)
       .concat([target]);
 
     this.path = path;
+
+    return true;
   }
 
   calculateSpeed() {

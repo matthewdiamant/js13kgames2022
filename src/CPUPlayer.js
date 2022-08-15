@@ -11,16 +11,18 @@ class CPUPlayer extends Player {
   }
 
   cpuActions({ map }) {
-    const MOVE_RATE = 0;
-    const WORKER_BUILD_RATE = 0;
+    const MOVE_RATE = 0.01;
+    const WORKER_BUILD_RATE = 0.001;
     if (Math.random() < MOVE_RATE) {
       const unit = sample(this.units);
       const path = [
         Math.floor(80 * 8 + 80 * Math.random() * 5),
         Math.floor(80 * Math.random() * 7),
       ];
-      unit.setPath(path, map);
-      console.log(`cpu moving ${unit.name} to ${path}`);
+      const success = unit.setPath(path, map);
+      console.log(
+        `cpu moving ${unit.name} to ${path}${success ? "" : ", but failed"}`
+      );
     }
     if (Math.random() < WORKER_BUILD_RATE) {
       const base = this.buildings[0];
@@ -30,9 +32,9 @@ class CPUPlayer extends Player {
 
       const success = buildWorker.execute({ player: this });
       console.log(
-        `cpu executing ${buildWorker.name} on ${base.name}, ${
-          success ? "" : "but failed,"
-        } and has ${this.resources} left`
+        `cpu executing ${buildWorker.name} on ${base.name}${
+          success ? "" : ", but failed"
+        }, and has ${this.resources} left`
       );
     }
   }
