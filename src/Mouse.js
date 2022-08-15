@@ -40,12 +40,9 @@ class Mouse {
     }
     this.prevDragging = this.dragging;
 
-    const clickTarget = this.clickCoords;
-    const rightClickTarget = this.rightClickCoords;
-    const mouseLocation = this.mouseLocation;
-    const releaseDrag = this.releaseDrag;
+    this.clickTarget = this.clickCoords;
+    this.rightClickTarget = this.rightClickCoords;
     this.clickCoords = this.rightClickCoords = [null, null];
-    return { clickTarget, rightClickTarget, mouseLocation, releaseDrag };
   }
 
   click({ clientX, clientY }) {

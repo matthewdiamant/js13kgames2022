@@ -12,7 +12,7 @@ class HUD {
     this.selected = [];
   }
 
-  tick({ drawer, mouseEvents, player }) {
+  tick({ drawer, mouse, player }) {
     this.selected = player.selected;
     this.resources = player.resources;
     this.drawerWidth = drawer.width;
@@ -25,17 +25,17 @@ class HUD {
     this.actionBoxText = "";
 
     if (this.selected.length) {
-      if (mouseEvents.clickTarget[0] || mouseEvents.clickTarget[1]) {
-        this.clickAction({ mouseEvents, player });
+      if (mouse.clickTarget[0] || mouse.clickTarget[1]) {
+        this.clickAction({ mouse, player });
       }
-      if (mouseEvents.mouseLocation[0] || mouseEvents.mouseLocation[1]) {
-        this.hoverActions({ mouseEvents });
+      if (mouse.mouseLocation[0] || mouse.mouseLocation[1]) {
+        this.hoverActions({ mouse });
       }
     }
   }
 
-  clickAction({ mouseEvents, player }) {
-    let [mouseX, mouseY] = mouseEvents.clickTarget;
+  clickAction({ mouse, player }) {
+    let [mouseX, mouseY] = mouse.clickTarget;
     this.actionBoxes.forEach(({ x, y, width, height, action }) => {
       if (
         mouseX >= x &&
@@ -50,8 +50,8 @@ class HUD {
     });
   }
 
-  hoverActions({ mouseEvents }) {
-    let [mouseX, mouseY] = mouseEvents.mouseLocation;
+  hoverActions({ mouse }) {
+    let [mouseX, mouseY] = mouse.mouseLocation;
     this.actionBoxes.forEach(({ x, y, width, height, action }) => {
       if (
         mouseX >= x &&

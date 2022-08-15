@@ -21,10 +21,10 @@ class HumanPlayer extends Player {
     this.addBuilding({ type: "base", x: 80 * 1, y: 80 * 4 });
   }
 
-  dragSelect(mouseEvents, entities) {
+  dragSelect(mouse, entities) {
     const collisions = entities.filter((entity) => {
       let { x, y, size, sizeX, sizeY } = entity;
-      let [mx, my, endx, endy] = mouseEvents.releaseDrag;
+      let [mx, my, endx, endy] = mouse.releaseDrag;
       return boxCollision(
         { x, y, w: sizeX || size, h: sizeY || size },
         { x: mx, y: my, w: endx - mx, h: endy - my }
@@ -36,8 +36,8 @@ class HumanPlayer extends Player {
     this.selected = collisions;
   }
 
-  clickSelect(mouseEvents, entities) {
-    let [mouseX, mouseY] = mouseEvents.clickTarget;
+  clickSelect(mouse, entities) {
+    let [mouseX, mouseY] = mouse.clickTarget;
     if (mouseX || mouseY) {
       entities.forEach((entity) => {
         if (pointCollision(entity, { x: mouseX, y: mouseY })) {
@@ -49,12 +49,12 @@ class HumanPlayer extends Player {
     }
   }
 
-  select(mouseEvents) {
+  select(mouse) {
     const entities = [this.units, this.buildings].flat();
-    if (mouseEvents.releaseDrag) {
-      this.dragSelect(mouseEvents, entities);
+    if (mouse.releaseDrag) {
+      this.dragSelect(mouse, entities);
     } else {
-      this.clickSelect(mouseEvents, entities);
+      this.clickSelect(mouse, entities);
     }
   }
 
@@ -66,23 +66,20 @@ class HumanPlayer extends Player {
     });
   }
 
-  tick({ cpuPlayer, map, mouseEvents }) {
-    this.select(mouseEvents);
+  tick({ cpuPlayer, map, mouse }) {
+    this.select(mouse);
 
     this.units.forEach((unit) => {
       if (unit.selected) {
-        if (
-          mouseEvents.rightClickTarget[0] ||
-          mouseEvents.rightClickTarget[1]
-        ) {
+        if (mouse.rightClickTarget[0] || mouse.rightClickTarget[1]) {
           const [enemy] = this.enemyEntities({
             cpuPlayer,
-            target: mouseEvents.rightClickTarget,
+            target: mouse.rightClickTarget,
           });
           if (enemy) {
             unit.setTarget(enemy, map);
           } else {
-            unit.setPath(mouseEvents.rightClickTarget, map);
+            unit.setPath(mouse.rightClickTarget, map);
           }
         }
       }
