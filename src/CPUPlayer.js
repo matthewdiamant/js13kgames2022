@@ -1,4 +1,5 @@
 import Player from "./Player";
+import { STATES } from "./Unit";
 
 const sample = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -20,6 +21,7 @@ class CPUPlayer extends Player {
         Math.floor(80 * Math.random() * 7),
       ];
       const success = unit.setPath(path, map);
+      if (success) unit.state = STATES.MOVING;
       console.log(
         `cpu moving ${unit.name} to ${path}${success ? "" : ", but failed"}`
       );

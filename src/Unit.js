@@ -5,6 +5,8 @@ const IDLE = "idle";
 const MOVING = "moving";
 const ATTACKING = "attacking";
 
+export const STATES = { IDLE, MOVING, ATTACKING };
+
 class Unit {
   constructor(x, y, colors) {
     this.x = x;
@@ -26,6 +28,8 @@ class Unit {
     this.blink = 0;
     this.target = null;
     this.attackSelected = 0;
+    this.recalculateTarget = 0;
+    this.state = STATES.IDLE;
   }
 
   attacked() {
@@ -57,9 +61,10 @@ class Unit {
 
   setTarget(enemy, map) {
     this.target = enemy;
-    this.state = ATTACKING;
-    enemy.attacked();
-    this.setPath([enemy.x, enemy.y], map);
+    this.state = STATES.ATTACKING;
+    this.recalculateTarget = 15;
+    this.target.attacked();
+    this.setPath([this.target.x, this.target.y], map);
   }
 
   calculateSpeed() {
@@ -82,19 +87,18 @@ class Unit {
   move() {
     if (this.path.length) {
       this.calculateSpeed();
-      this.state = MOVING;
       this.facing = this.dx > 0 ? 1 : 0;
     } else {
       this.dx = 0;
       this.dy = 0;
-      this.state = IDLE;
+      if (this.state === STATES.MOVING) this.state = STATES.IDLE;
     }
     this.x += this.dx;
     this.pathY += this.dy;
     this.y = this.pathY - this.bounce;
   }
 
-  tick() {
+  tick({ map }) {
     this.lifespan += 1;
 
     // blink
@@ -105,15 +109,16 @@ class Unit {
       this.blink -= 1;
     }
 
-    if (this.state === IDLE && Math.random() < 0.001) {
+    if (this.state === STATES.IDLE && Math.random() < 0.001) {
       this.facing = this.facing ? 0 : 1;
     }
 
     // bounce
     const BOUNCE_HEIGHT = 12;
     const BOUNCE_DURATION = 12;
-    const shouldMoveBounce = this.state === MOVING && this.bounceTime === 0;
-    const shouldIdleBounce = this.state === IDLE && Math.random() < 0.01;
+    const shouldMoveBounce =
+      this.state === STATES.MOVING && this.bounceTime === 0;
+    const shouldIdleBounce = this.state === STATES.IDLE && Math.random() < 0.01;
     if (shouldMoveBounce || shouldIdleBounce) {
       this.bounceTime = BOUNCE_DURATION;
     }
@@ -124,6 +129,15 @@ class Unit {
       this.bounce =
         -Math.pow(this.bounceTime / a - Math.sqrt(BOUNCE_HEIGHT), 2) +
         BOUNCE_HEIGHT;
+    }
+
+    // attacking
+    if (this.state === ATTACKING) {
+      this.recalculateTarget -= 1;
+      if (this.recalculateTarget === 0) {
+        this.setPath([this.target.x, this.target.y], map);
+        this.recalculateTarget = 15;
+      }
     }
 
     this.move();

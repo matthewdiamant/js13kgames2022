@@ -57,8 +57,8 @@ class Player {
     this.buildings.push(newBuilding);
   }
 
-  static tick() {
-    this.units.forEach((u) => u.tick());
+  static tick({ map }) {
+    this.units.forEach((u) => u.tick({ map }));
     this.buildings.forEach((b) => b.tick({ player: this }));
   }
 

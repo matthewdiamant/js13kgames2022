@@ -1,4 +1,5 @@
 import Player from "./Player";
+import { STATES } from "./Unit";
 
 const boxCollision = (rect1, rect2) =>
   rect1.x < rect2.x + rect2.w &&
@@ -80,12 +81,13 @@ class HumanPlayer extends Player {
             unit.setTarget(enemy, map);
           } else {
             unit.setPath(mouse.rightClickTarget, map);
+            unit.state = STATES.MOVING;
           }
         }
       }
     });
 
-    Player.tick.call(this);
+    Player.tick.call(this, { map });
   }
 }
 
