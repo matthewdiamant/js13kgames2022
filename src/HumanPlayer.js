@@ -6,11 +6,18 @@ const boxCollision = (rect1, rect2) =>
   rect1.y < rect2.y + rect2.h &&
   rect1.h + rect1.y > rect2.y;
 
+const pointCollision = (rect, point) =>
+  point.x >= rect.x &&
+  point.x < rect.x + (rect.size || rect.sizeX) &&
+  point.y >= rect.y &&
+  point.y < rect.y + (rect.size || rect.sizeY);
+
 class HumanPlayer extends Player {
   constructor() {
     super();
     this.selected = [];
     this.color = "#A00";
+    this.addUnit({ type: "worker", x: 400, y: 580 });
     this.addBuilding({ type: "base", x: 80 * 1, y: 80 * 4 });
   }
 
@@ -33,13 +40,7 @@ class HumanPlayer extends Player {
     let [mouseX, mouseY] = mouseEvents.clickTarget;
     if (mouseX || mouseY) {
       entities.forEach((entity) => {
-        let { x, y, size, sizeX, sizeY } = entity;
-        if (
-          mouseX >= x &&
-          mouseX < x + (size || sizeX) &&
-          mouseY >= y &&
-          mouseY < y + (size || sizeY)
-        ) {
+        if (pointCollision(entity, { x: mouseX, y: mouseY })) {
           entities.forEach((entity) => (entity.selected = false));
           this.selected = [entity];
           entity.selected = true;
@@ -57,15 +58,33 @@ class HumanPlayer extends Player {
     }
   }
 
-  tick({ map, mouseEvents }) {
+  enemyEntities({ cpuPlayer, target }) {
+    const { buildings, units } = cpuPlayer;
+    const enemies = units.concat(buildings);
+    return enemies.filter((enemy) => {
+      return pointCollision(enemy, { x: target[0], y: target[1] });
+    });
+  }
+
+  tick({ cpuPlayer, map, mouseEvents }) {
     this.select(mouseEvents);
 
     this.units.forEach((unit) => {
-      if (
-        unit.selected &&
-        (mouseEvents.rightClickTarget[0] || mouseEvents.rightClickTarget[1])
-      ) {
-        unit.setPath(mouseEvents.rightClickTarget, map);
+      if (unit.selected) {
+        if (
+          mouseEvents.rightClickTarget[0] ||
+          mouseEvents.rightClickTarget[1]
+        ) {
+          const [enemy] = this.enemyEntities({
+            cpuPlayer,
+            target: mouseEvents.rightClickTarget,
+          });
+          if (enemy) {
+            unit.setTarget(enemy, map);
+          } else {
+            unit.setPath(mouseEvents.rightClickTarget, map);
+          }
+        }
       }
     });
 

@@ -3,6 +3,7 @@ import { humanoid } from "./Sprites";
 
 const IDLE = "idle";
 const MOVING = "moving";
+const ATTACKING = "attacking";
 
 class Unit {
   constructor(x, y, colors) {
@@ -23,6 +24,7 @@ class Unit {
     this.bounce = 0;
     this.bounceTime = 0;
     this.blink = 0;
+    this.target = null;
   }
 
   setPath(target, map) {
@@ -46,6 +48,12 @@ class Unit {
     this.path = path;
 
     return true;
+  }
+
+  setTarget(enemy, map) {
+    this.target = enemy;
+    this.state = ATTACKING;
+    this.setPath([enemy.x, enemy.y], map);
   }
 
   calculateSpeed() {

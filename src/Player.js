@@ -39,7 +39,7 @@ const sample_army = [
 
 class Player {
   constructor() {
-    this.resources = 1000;
+    this.resources = 0;
 
     this.units = [];
 

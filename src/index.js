@@ -82,7 +82,7 @@ window.onload = () => {
     camera.tick({ keyboard });
     const mouseEvents = mouse.tick({ camera });
     cpuPlayer.tick({ map });
-    humanPlayer.tick({ map, mouseEvents });
+    humanPlayer.tick({ cpuPlayer, map, mouseEvents });
     mines.tick();
     hud.tick({ drawer, mouseEvents, player: humanPlayer });
 
