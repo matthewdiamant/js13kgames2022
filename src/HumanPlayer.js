@@ -67,7 +67,7 @@ class HumanPlayer extends Player {
     });
   }
 
-  tick({ bloods, cpuPlayer, map, mouse }) {
+  tick({ bloods, bloodChunks, cpuPlayer, map, mouse }) {
     this.select(mouse);
 
     this.units.forEach((unit) => {
@@ -87,7 +87,7 @@ class HumanPlayer extends Player {
       }
     });
 
-    Player.tick.call(this, { bloods, map });
+    Player.tick.call(this, { bloods, bloodChunks, map });
   }
 }
 

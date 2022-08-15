@@ -1,5 +1,6 @@
 import AStarFinder, { Grid, smoothenPath } from "./AStar";
 import Blood from "./Blood";
+import BloodChunk from "./BloodChunk";
 import { humanoid } from "./Sprites";
 
 const IDLE = "idle";
@@ -103,13 +104,39 @@ class Unit {
         new Blood(
           this.x,
           this.y + this.size / 2,
-          Math.random() * 5 - 2.5,
-          -10 * Math.random(),
+          Math.random() * 6 - 3,
+          Math.random() * -6 - 6,
           this.bloodColor
         )
       );
     }
     return this.health <= 0;
+  }
+
+  explode({ bloods, bloodChunks, sound }) {
+    // sound.play("death");
+    for (let i = 0; i < 100; i++) {
+      bloods.add(
+        new Blood(
+          this.x,
+          this.y,
+          Math.random() * 6 - 3,
+          Math.random() * -8 - 6,
+          this.bloodColor
+        )
+      );
+    }
+    for (let i = 0; i < 5; i++) {
+      bloodChunks.add(
+        new BloodChunk(
+          this.x,
+          this.y,
+          Math.random() * 6 - 3,
+          Math.random() * -6 - 6,
+          "red"
+        )
+      );
+    }
   }
 
   move() {

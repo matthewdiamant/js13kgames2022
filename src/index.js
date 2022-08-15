@@ -1,5 +1,6 @@
 import Background from "./Background";
 import BloodCollection from "./BloodCollection";
+import BloodChunkCollection from "./BloodChunkCollection";
 import CPUPlayer from "./CPUPlayer";
 import Drawer from "./Drawer";
 import Keyboard from "./Keyboard";
@@ -39,6 +40,7 @@ window.onload = () => {
   let mouse = new Mouse();
 
   let bloods = new BloodCollection();
+  let bloodChunks = new BloodChunkCollection();
   let hud = new HUD();
   let map = new Map();
   let mines = new MineCollection();
@@ -83,11 +85,12 @@ window.onload = () => {
     const { camera } = drawer;
     camera.tick({ keyboard });
     mouse.tick({ camera });
-    cpuPlayer.tick({ bloods, map });
-    humanPlayer.tick({ bloods, cpuPlayer, map, mouse });
+    cpuPlayer.tick({ bloods, bloodChunks, map });
+    humanPlayer.tick({ bloods, bloodChunks, cpuPlayer, map, mouse });
     mines.tick();
     hud.tick({ drawer, mouse, player: humanPlayer });
     bloods.tick();
+    bloodChunks.tick();
 
     /*
     level.tick({
@@ -129,6 +132,7 @@ window.onload = () => {
     background,
     map,
     bloods,
+    bloodChunks,
     mines,
     cpuPlayer,
     humanPlayer,

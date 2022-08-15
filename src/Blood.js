@@ -7,7 +7,7 @@ class Blood {
     this.dy = dy;
     this.color = color;
     this.stuck = false;
-    this.grav = 0.4;
+    this.grav = 0.6;
   }
 
   stick() {

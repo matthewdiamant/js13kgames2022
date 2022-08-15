@@ -39,7 +39,7 @@ const sample_army = [
 
 class Player {
   constructor() {
-    this.resources = 0;
+    this.resources = 1000;
 
     this.units = [];
 
@@ -57,10 +57,11 @@ class Player {
     this.buildings.push(newBuilding);
   }
 
-  static tick({ bloods, map }) {
+  static tick({ bloods, bloodChunks, map }) {
     this.units.forEach((u) => u.tick({ bloods, map }));
     this.units = this.units.reduce((units, unit) => {
       if (unit.health <= 0) {
+        unit.explode({ bloods, bloodChunks });
       } else {
         units.push(unit);
       }

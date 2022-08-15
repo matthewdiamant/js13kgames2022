@@ -43,9 +43,9 @@ class CPUPlayer extends Player {
     }
   }
 
-  tick({ bloods, map }) {
+  tick({ bloods, bloodChunks, map }) {
     this.cpuActions({ map });
-    Player.tick.call(this, { bloods, map });
+    Player.tick.call(this, { bloods, bloodChunks, map });
   }
 }
 
