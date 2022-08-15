@@ -6,6 +6,7 @@ class Building {
   constructor(x, y, color) {
     this.x = x;
     this.y = y;
+    this.health = 1000;
     this.sizeX = Map.tileSize * 3;
     this.sizeY = Map.tileSize * 3;
     this.lifespan = 0;
@@ -19,6 +20,10 @@ class Building {
 
   attacked() {
     this.attackSelected = 30;
+  }
+
+  takeDamage(amount) {
+    this.health -= amount;
   }
 
   tick({ player }) {
