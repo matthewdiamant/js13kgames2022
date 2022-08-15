@@ -165,7 +165,7 @@ class Unit {
     this.pathY += this.dy;
   }
 
-  tick({ bloods, map, targets }) {
+  tick({ bloods, map, sound, targets }) {
     this.lifespan += 1;
 
     // blink
@@ -221,6 +221,7 @@ class Unit {
       }
 
       if (targetInRange && this.cooldownTime === 0) {
+        sound.play("gun");
         this.cooldownTime = this.cooldownTotalTime;
         this.firingTime = this.firingTotalTime;
         this.path = [];
