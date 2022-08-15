@@ -30,8 +30,8 @@ class Unit {
     this.aggro = false;
 
     this.range = 200;
-    this.cooldown = 60;
-    this.firingTotalTime = 30 * 3;
+    this.cooldownTotalTime = 90;
+    this.firingTotalTime = 60;
 
     this.pathY = y;
     this.dx = 0;
@@ -49,6 +49,7 @@ class Unit {
     this.recalculateTarget = 0;
     this.state = STATES.IDLE;
 
+    this.cooldownTime = 0;
     this.firingTime = 0;
   }
 
@@ -84,7 +85,12 @@ class Unit {
     this.state = STATES.ATTACKING;
     this.recalculateTarget = 15;
     this.target.attacked();
-    this.setPath([this.target.x, this.target.y], map);
+
+    const distanceFromTarget = distance(this, this.target);
+    const targetInRange = distanceFromTarget <= this.range;
+    if (!targetInRange) {
+      this.setPath([this.target.x, this.target.y], map);
+    }
   }
 
   calculateSpeed() {
@@ -203,21 +209,25 @@ class Unit {
 
     // attacking
     if (this.firingTime > 0) this.firingTime -= 1;
+    if (this.cooldownTime > 0) this.cooldownTime -= 1;
     if (this.state === STATES.ATTACKING) {
+      const distanceFromTarget = distance(this, this.target);
+      const targetInRange = distanceFromTarget <= this.range;
+
       this.recalculateTarget -= 1;
-      if (this.recalculateTarget === 0) {
+      if (this.recalculateTarget < 0 && !targetInRange) {
         this.setPath([this.target.x, this.target.y], map);
         this.recalculateTarget = 15;
       }
 
-      const distanceFromTarget = distance(this, this.target);
-      if (distanceFromTarget <= this.range && this.firingTime === 0) {
+      if (targetInRange && this.cooldownTime === 0) {
+        this.cooldownTime = this.cooldownTotalTime;
         this.firingTime = this.firingTotalTime;
+        this.path = [];
         const killed = this.target.takeDamage(this.damage, { bloods });
         if (killed) {
           this.target = null;
           this.state = STATES.IDLE;
-          this.path = [];
         }
       }
     }

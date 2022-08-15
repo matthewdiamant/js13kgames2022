@@ -12,7 +12,7 @@ class CPUPlayer extends Player {
   }
 
   cpuActions({ map }) {
-    const MOVE_RATE = 0.01;
+    const MOVE_RATE = 0.05;
     const WORKER_BUILD_RATE = 0.001;
     if (Math.random() < MOVE_RATE) {
       const unit = sample(this.units);
