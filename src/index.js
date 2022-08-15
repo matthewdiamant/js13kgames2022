@@ -85,8 +85,20 @@ window.onload = () => {
     const { camera } = drawer;
     camera.tick({ keyboard });
     mouse.tick({ camera });
-    cpuPlayer.tick({ bloods, bloodChunks, map });
-    humanPlayer.tick({ bloods, bloodChunks, cpuPlayer, map, mouse });
+    cpuPlayer.tick({
+      bloods,
+      bloodChunks,
+      map,
+      targets: humanPlayer.entities(),
+    });
+    humanPlayer.tick({
+      bloods,
+      bloodChunks,
+      cpuPlayer,
+      map,
+      mouse,
+      targets: cpuPlayer.entities(),
+    });
     mines.tick();
     hud.tick({ drawer, mouse, player: humanPlayer });
     bloods.tick();

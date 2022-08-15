@@ -9,6 +9,12 @@ const ATTACKING = "attacking";
 
 export const STATES = { IDLE, MOVING, ATTACKING };
 
+const distance = (source, dest) => {
+  const dx = Math.abs(source.x - dest.x);
+  const dy = Math.abs(source.y - dest.y);
+  return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+};
+
 class Unit {
   constructor(x, y, colors) {
     this.x = x;
@@ -21,6 +27,7 @@ class Unit {
     this.damage = 10;
     // this.bloodColor = "#32CD32";
     this.bloodColor = "#A00";
+    this.aggro = false;
 
     this.range = 200;
     this.cooldown = 60;
@@ -150,10 +157,9 @@ class Unit {
     }
     this.x += this.dx;
     this.pathY += this.dy;
-    this.y = this.pathY - this.bounce;
   }
 
-  tick({ bloods, map }) {
+  tick({ bloods, map, targets }) {
     this.lifespan += 1;
 
     // blink
@@ -186,18 +192,25 @@ class Unit {
         BOUNCE_HEIGHT;
     }
 
+    if (this.aggro && this.state === STATES.IDLE) {
+      const [nearTarget] = targets.filter(
+        (entity) => distance(this, entity) <= this.range
+      );
+      if (nearTarget) {
+        this.setTarget(nearTarget, map);
+      }
+    }
+
     // attacking
     if (this.firingTime > 0) this.firingTime -= 1;
-    if (this.state === ATTACKING) {
+    if (this.state === STATES.ATTACKING) {
       this.recalculateTarget -= 1;
       if (this.recalculateTarget === 0) {
         this.setPath([this.target.x, this.target.y], map);
         this.recalculateTarget = 15;
       }
 
-      const dx = Math.abs(this.x - this.target.x);
-      const dy = Math.abs(this.y - this.target.y);
-      const distanceFromTarget = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+      const distanceFromTarget = distance(this, this.target);
       if (distanceFromTarget <= this.range && this.firingTime === 0) {
         this.firingTime = this.firingTotalTime;
         const killed = this.target.takeDamage(this.damage, { bloods });
@@ -212,6 +225,7 @@ class Unit {
     if (this.firingTime === 0) {
       this.move();
     }
+    this.y = this.pathY - this.bounce;
 
     if (this.attackSelected > 0) this.attackSelected -= 1;
   }

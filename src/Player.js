@@ -46,9 +46,10 @@ class Player {
     this.buildings = [];
   }
 
-  addUnit({ type, x, y }) {
+  addUnit({ type, x, y, aggro }) {
     const colors = makeColors(["#50c878", "#50c878", this.color, this.color]);
     const newUnit = new Unit(x, y, colors);
+    if (aggro) newUnit.aggro = true;
     this.units.push(newUnit);
   }
 
@@ -57,8 +58,12 @@ class Player {
     this.buildings.push(newBuilding);
   }
 
-  static tick({ bloods, bloodChunks, map }) {
-    this.units.forEach((u) => u.tick({ bloods, map }));
+  entities() {
+    return this.units.concat(this.buildings);
+  }
+
+  static tick({ bloods, bloodChunks, map, targets }) {
+    this.units.forEach((u) => u.tick({ bloods, map, targets }));
     this.units = this.units.reduce((units, unit) => {
       if (unit.health <= 0) {
         unit.explode({ bloods, bloodChunks });

@@ -18,7 +18,7 @@ class HumanPlayer extends Player {
     super();
     this.selected = [];
     this.color = "#A00";
-    this.addUnit({ type: "worker", x: 400, y: 580 });
+    this.addUnit({ type: "worker", x: 400, y: 580, aggro: true });
     this.addBuilding({ type: "base", x: 80 * 1, y: 80 * 4 });
   }
 
@@ -67,7 +67,7 @@ class HumanPlayer extends Player {
     });
   }
 
-  tick({ bloods, bloodChunks, cpuPlayer, map, mouse }) {
+  tick({ bloods, bloodChunks, cpuPlayer, map, mouse, targets }) {
     this.select(mouse);
 
     this.units.forEach((unit) => {
@@ -87,7 +87,7 @@ class HumanPlayer extends Player {
       }
     });
 
-    Player.tick.call(this, { bloods, bloodChunks, map });
+    Player.tick.call(this, { bloods, bloodChunks, map, targets });
   }
 }
 
