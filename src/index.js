@@ -1,4 +1,5 @@
 import Background from "./Background";
+import BloodCollection from "./BloodCollection";
 import CPUPlayer from "./CPUPlayer";
 import Drawer from "./Drawer";
 import Keyboard from "./Keyboard";
@@ -37,6 +38,7 @@ window.onload = () => {
   let keyboard = new Keyboard();
   let mouse = new Mouse();
 
+  let bloods = new BloodCollection();
   let hud = new HUD();
   let map = new Map();
   let mines = new MineCollection();
@@ -81,10 +83,11 @@ window.onload = () => {
     const { camera } = drawer;
     camera.tick({ keyboard });
     mouse.tick({ camera });
-    cpuPlayer.tick({ map });
-    humanPlayer.tick({ cpuPlayer, map, mouse });
+    cpuPlayer.tick({ bloods, map });
+    humanPlayer.tick({ bloods, cpuPlayer, map, mouse });
     mines.tick();
     hud.tick({ drawer, mouse, player: humanPlayer });
+    bloods.tick();
 
     /*
     level.tick({
@@ -125,6 +128,7 @@ window.onload = () => {
   let drawObjects = () => [
     background,
     map,
+    bloods,
     mines,
     cpuPlayer,
     humanPlayer,

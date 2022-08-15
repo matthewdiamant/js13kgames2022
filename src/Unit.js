@@ -1,4 +1,5 @@
 import AStarFinder, { Grid, smoothenPath } from "./AStar";
+import Blood from "./Blood";
 import { humanoid } from "./Sprites";
 
 const IDLE = "idle";
@@ -17,6 +18,8 @@ class Unit {
     this.name = "WORKER";
     this.health = 50;
     this.damage = 10;
+    // this.bloodColor = "#32CD32";
+    this.bloodColor = "#A00";
 
     this.range = 200;
     this.cooldown = 60;
@@ -93,9 +96,19 @@ class Unit {
     }
   }
 
-  takeDamage(amount) {
+  takeDamage(amount, { bloods }) {
     this.health -= amount;
-    console.log(this.health);
+    for (let i = 0; i < amount; i++) {
+      bloods.add(
+        new Blood(
+          this.x,
+          this.y + this.size / 2,
+          Math.random() * 5 - 2.5,
+          -10 * Math.random(),
+          this.bloodColor
+        )
+      );
+    }
     return this.health <= 0;
   }
 
@@ -113,7 +126,7 @@ class Unit {
     this.y = this.pathY - this.bounce;
   }
 
-  tick({ map }) {
+  tick({ bloods, map }) {
     this.lifespan += 1;
 
     // blink
@@ -160,7 +173,7 @@ class Unit {
       const distanceFromTarget = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
       if (distanceFromTarget <= this.range && this.firingTime === 0) {
         this.firingTime = this.firingTotalTime;
-        const killed = this.target.takeDamage(this.damage);
+        const killed = this.target.takeDamage(this.damage, { bloods });
         if (killed) {
           this.target = null;
           this.state = STATES.IDLE;

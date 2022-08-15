@@ -57,8 +57,8 @@ class Player {
     this.buildings.push(newBuilding);
   }
 
-  static tick({ map }) {
-    this.units.forEach((u) => u.tick({ map }));
+  static tick({ bloods, map }) {
+    this.units.forEach((u) => u.tick({ bloods, map }));
     this.units = this.units.reduce((units, unit) => {
       if (unit.health <= 0) {
       } else {
