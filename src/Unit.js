@@ -6,8 +6,9 @@ import { humanoid } from "./Sprites";
 const IDLE = "idle";
 const MOVING = "moving";
 const ATTACKING = "attacking";
+const MINING = "mining";
 
-export const STATES = { IDLE, MOVING, ATTACKING };
+export const STATES = { IDLE, MOVING, ATTACKING, MINING };
 
 const distance = (source, dest) => {
   const dx = Math.abs(source.x - dest.x);
@@ -18,12 +19,13 @@ const distance = (source, dest) => {
 class Unit {
   constructor(x, y, unitType) {
     // prettier-ignore
-    const { aggro, attackSound, bloodColor, bodyless, bouncy, cooldownTotalTime, colors, damage, firingTotalTime, health, range, size, speed, type } = unitType;
+    const { aggro, attackSound, bloodColor, bodyless, bouncy, canMine, cooldownTotalTime, colors, damage, firingTotalTime, health, range, size, speed, type } = unitType;
     this.aggro = aggro;
     this.attackSound = attackSound;
     this.bloodColor = bloodColor;
     this.bodyless = bodyless;
     this.bouncy = bouncy;
+    this.canMine = canMine;
     this.colors = colors;
     this.health = health;
     this.name = type;
@@ -52,6 +54,9 @@ class Unit {
     this.attackSelected = 0;
     this.recalculateTarget = 0;
     this.state = STATES.IDLE;
+
+    this.carryingResource = false;
+    this.miningTarget = null;
 
     this.cooldownTime = 0;
     this.firingTime = 0;
@@ -201,6 +206,19 @@ class Unit {
       }
     }
 
+    // mining
+    if (this.state === STATES.MINING) {
+      // go to mine
+      // collide with mine
+      // add resource
+      // find nearest base
+      // go to base
+      // collide with base
+      // deposit resource
+      console.log("mine");
+    }
+
+    // find targets while idle
     if (this.aggro && this.state === STATES.IDLE) {
       const [nearTarget] = targets.filter(
         (entity) => distance(this, entity) <= this.range

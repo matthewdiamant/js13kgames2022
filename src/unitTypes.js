@@ -20,6 +20,7 @@ export default {
     bodyless: true,
     bouncy: false,
     attackSound: "minigun",
+    canMine: true,
 
     range: 50,
     cooldownTotalTime: 0,
@@ -37,6 +38,7 @@ export default {
     bodyless: false,
     bouncy: true,
     attackSound: "gun",
+    canMine: false,
 
     range: 300,
     cooldownTotalTime: 90,
@@ -53,6 +55,7 @@ export default {
     speed: 3,
     bouncy: true,
     attackSound: "gun",
+    canMine: false,
 
     range: 100,
     cooldownTotalTime: 90,

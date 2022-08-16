@@ -7,18 +7,18 @@ class CPUPlayer extends Player {
   constructor() {
     super();
     this.color = "#00A";
-    this.addUnit({ type: "shade", x: 900, y: 580 });
-    this.addBuilding({ type: "base", x: 80 * 12, y: 80 * 4 });
+    this.addUnit({ type: "shade", x: 80 * 18, y: 80 * 6 });
+    this.addBuilding({ type: "base", x: 80 * 22, y: 80 * 6 });
   }
 
   cpuActions({ map }) {
-    const MOVE_RATE = 0.05;
+    const MOVE_RATE = 0.01;
     const WORKER_BUILD_RATE = 0.001;
     if (Math.random() < MOVE_RATE) {
       const unit = sample(this.units);
       if (unit) {
         const path = [
-          Math.floor(80 * 8 + 80 * Math.random() * 5),
+          Math.floor(80 * 18 + 80 * Math.random() * 5),
           Math.floor(80 + 80 * Math.random() * 7),
         ];
         const success = unit.setPath(path, map);

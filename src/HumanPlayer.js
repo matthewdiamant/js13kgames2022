@@ -18,10 +18,10 @@ class HumanPlayer extends Player {
     super();
     this.selected = [];
     this.color = "#A00";
-    this.addUnit({ type: "shade", x: 400, y: 580 });
-    this.addUnit({ type: "goblin", x: 400, y: 640 });
-    this.addUnit({ type: "brute", x: 400, y: 760 });
-    this.addBuilding({ type: "base", x: 80 * 1, y: 80 * 4 });
+    this.addUnit({ type: "shade", x: 650, y: 580 });
+    this.addUnit({ type: "goblin", x: 650, y: 640 });
+    this.addUnit({ type: "brute", x: 650, y: 760 });
+    this.addBuilding({ type: "base", x: 80 * 4, y: 80 * 6 });
   }
 
   dragSelect(mouse, entities) {
@@ -64,27 +64,43 @@ class HumanPlayer extends Player {
   enemyEntities({ cpuPlayer, target }) {
     const { buildings, units } = cpuPlayer;
     const enemies = units.concat(buildings);
-    return enemies.filter((enemy) => {
-      return pointCollision(enemy, { x: target[0], y: target[1] });
-    });
+    return enemies.filter((enemy) =>
+      pointCollision(enemy, { x: target[0], y: target[1] })
+    );
   }
 
-  tick({ bloods, bloodChunks, cpuPlayer, map, mouse, sound, targets }) {
+  tick({ bloods, bloodChunks, cpuPlayer, map, mines, mouse, sound, targets }) {
     this.select(mouse);
 
     this.units.forEach((unit) => {
+      const { rightClickTarget } = mouse;
       if (unit.selected) {
         if (mouse.rightClickTarget[0] || mouse.rightClickTarget[1]) {
+          if (unit.canMine) {
+            const [mine] = mines.mines.filter((mine) =>
+              pointCollision(mine, {
+                x: rightClickTarget[0],
+                y: rightClickTarget[1],
+              })
+            );
+            if (mine) {
+              unit.state = STATES.MINING;
+              unit.miningTarget = mine;
+              return;
+            }
+          }
+
           const [enemy] = this.enemyEntities({
             cpuPlayer,
-            target: mouse.rightClickTarget,
+            target: rightClickTarget,
           });
           if (enemy) {
             unit.setTarget(enemy, map);
-          } else {
-            unit.setPath(mouse.rightClickTarget, map);
-            unit.state = STATES.MOVING;
+            return;
           }
+
+          unit.setPath(mouse.rightClickTarget, map);
+          unit.state = STATES.MOVING;
         }
       }
     });

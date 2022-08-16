@@ -64,6 +64,7 @@ window.onload = () => {
       bloodChunks,
       cpuPlayer,
       map,
+      mines,
       mouse,
       sound,
       targets: cpuPlayer.entities(),
