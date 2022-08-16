@@ -7,11 +7,11 @@ class BloodChunkCollection {
     this.bloodChunks.push(bloodChunk);
   }
 
-  tick() {
+  tick({ map }) {
     if (this.bloodChunks.length > 1000) {
       this.bloodChunks = this.bloodChunks.slice(this.bloodChunks.length - 1000);
     }
-    this.bloodChunks.forEach((bloodChunk) => bloodChunk.tick());
+    this.bloodChunks.forEach((bloodChunk) => bloodChunk.tick({ map }));
   }
 
   draw(drawer) {

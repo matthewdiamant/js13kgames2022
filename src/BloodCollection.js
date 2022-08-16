@@ -7,11 +7,11 @@ class BloodCollection {
     this.bloods.push(blood);
   }
 
-  tick() {
+  tick({ map }) {
     if (this.bloods.length > 1000) {
       this.bloods = this.bloods.slice(this.bloods.length - 1000);
     }
-    this.bloods.forEach((blood) => blood.tick());
+    this.bloods.forEach((blood) => blood.tick({ map }));
   }
 
   draw(drawer) {

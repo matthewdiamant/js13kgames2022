@@ -10,17 +10,20 @@ class Blood {
     this.grav = 0.6;
   }
 
-  stick() {
+  stick({ map }) {
+    const [x, y] = map.coordsToTile(this.x, this.y);
+    const tile = map.grid[y][x];
+    if (tile) this.color = "#0000";
     this.stuck = true;
   }
 
-  tick() {
+  tick({ map }) {
     if (this.stuck) return;
     this.x += this.dx;
     this.dy += this.grav;
     this.y += this.dy;
 
-    if (this.y - Math.random() * 10 > this.startingY) this.stick();
+    if (this.y - Math.random() * 10 > this.startingY) this.stick({ map });
   }
 
   draw(drawer) {

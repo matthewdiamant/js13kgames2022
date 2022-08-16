@@ -70,8 +70,8 @@ window.onload = () => {
     });
     mines.tick();
     hud.tick({ drawer, mouse, player: humanPlayer });
-    bloods.tick();
-    bloodChunks.tick();
+    bloods.tick({ map });
+    bloodChunks.tick({ map });
   };
 
   let drawObjects = () => [
