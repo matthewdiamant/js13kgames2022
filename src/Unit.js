@@ -323,7 +323,8 @@ class Unit {
       });
     };
     if (this.selected) drawRing("#4AC");
-    if (this.attackSelected > 0) drawRing("#A00");
+    if (this.attackSelected > 0 && this.attackSelected % 10 > 5)
+      drawRing("#A00");
 
     humanoid(x, y, this.facing, this.colors, {
       blink: this.blink > 0,
