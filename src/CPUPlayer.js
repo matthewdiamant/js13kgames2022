@@ -30,13 +30,13 @@ class CPUPlayer extends Player {
     }
     if (Math.random() < WORKER_BUILD_RATE) {
       const base = this.buildings[0];
-      const [buildWorker] = base
+      const [action] = base
         .actions({ player: this })
         .filter(({ name }) => name === "build worker");
 
-      const success = buildWorker.execute({ player: this });
+      const success = action.execute({ player: this });
       console.log(
-        `cpu executing ${buildWorker.name} on ${base.name}${
+        `cpu executing ${action.name} on ${base.name}${
           success ? "" : ", but failed"
         }, and has ${this.resources} left`
       );

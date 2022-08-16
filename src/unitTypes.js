@@ -9,10 +9,10 @@ export const bruteColors = (color) => makeColors(["#c80", "#c80", color, color])
 
 export default {
   shade: {
-    type: "shade",
+    name: "shade",
     health: 50,
     damage: 1,
-    size: 5,
+    size: 8 * 5,
     bloodColor: "#A00",
     aggro: false,
     colors: shadeColors,
@@ -27,10 +27,10 @@ export default {
     firingTotalTime: 0,
   },
   goblin: {
-    type: "goblin",
+    name: "goblin",
     health: 50,
     damage: 10,
-    size: 5,
+    size: 8 * 5,
     bloodColor: "#A00",
     aggro: true,
     colors: goblinColors,
@@ -45,10 +45,10 @@ export default {
     firingTotalTime: 60,
   },
   brute: {
-    type: "brute",
+    name: "brute",
     health: 100,
     damage: 15,
-    size: 10,
+    size: 8 * 10,
     bloodColor: "#A00",
     aggro: true,
     colors: bruteColors,

@@ -18,24 +18,9 @@ const distance = (source, dest) => {
 
 class Unit {
   constructor(x, y, unitType) {
-    // prettier-ignore
-    const { aggro, attackSound, bloodColor, bodyless, bouncy, canMine, cooldownTotalTime, colors, damage, firingTotalTime, health, range, size, speed, type } = unitType;
-    this.aggro = aggro;
-    this.attackSound = attackSound;
-    this.bloodColor = bloodColor;
-    this.bodyless = bodyless;
-    this.bouncy = bouncy;
-    this.canMine = canMine;
-    this.colors = colors;
-    this.health = health;
-    this.name = type;
-    this.size = 8 * size;
-    this.speed = speed;
-    this.damage = damage;
-
-    this.range = range;
-    this.cooldownTotalTime = cooldownTotalTime;
-    this.firingTotalTime = firingTotalTime;
+    Object.entries(unitType).forEach(([key, value]) => {
+      this[key] = value;
+    });
 
     this.x = x;
     this.y = y;
