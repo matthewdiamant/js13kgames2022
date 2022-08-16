@@ -1,8 +1,16 @@
+import Map, { TILE_TYPE, TILES } from "./Map";
 import Mine from "./Mine";
 
 class MineCollection {
-  constructor() {
-    this.mines = [new Mine(80 * 6, 80)];
+  constructor({ map }) {
+    this.mines = [];
+    map.grid.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell === TILES.indexOf(TILE_TYPE.MINE)) {
+          this.mines.push(new Mine(x * Map.tileSize, y * Map.tileSize));
+        }
+      });
+    });
   }
 
   tick() {

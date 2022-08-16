@@ -5,7 +5,7 @@ export const shadeColors = (color) => makeColors(["#999", "#999", color, color])
 // prettier-ignore
 export const goblinColors = (color) => makeColors(["#50c878", "#50c878", color, color]);
 // prettier-ignore
-export const bruteColors = (color) => makeColors(["#600", "#600", color, color]);
+export const bruteColors = (color) => makeColors(["#c80", "#c80", color, color]);
 
 export default {
   shade: {

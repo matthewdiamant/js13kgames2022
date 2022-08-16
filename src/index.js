@@ -32,7 +32,7 @@ window.onload = () => {
   let bloodChunks = new BloodChunkCollection();
   let hud = new HUD();
   let map = new Map();
-  let mines = new MineCollection();
+  let mines = new MineCollection({ map });
   let miniMap = new MiniMap();
   let humanPlayer = new HumanPlayer();
   let cpuPlayer = new CPUPlayer();
