@@ -18,7 +18,9 @@ class HumanPlayer extends Player {
     super();
     this.selected = [];
     this.color = "#A00";
-    this.addUnit({ type: "worker", x: 400, y: 580, aggro: true });
+    this.addUnit({ type: "shade", x: 400, y: 580 });
+    this.addUnit({ type: "goblin", x: 400, y: 640 });
+    this.addUnit({ type: "brute", x: 400, y: 760 });
     this.addBuilding({ type: "base", x: 80 * 1, y: 80 * 4 });
   }
 

@@ -16,23 +16,27 @@ const distance = (source, dest) => {
 };
 
 class Unit {
-  constructor(x, y, colors) {
+  constructor(x, y, unitType) {
+    // prettier-ignore
+    const { aggro, attackSound, bloodColor, bodyless, bouncy, cooldownTotalTime, colors, damage, firingTotalTime, health, range, size, speed, type } = unitType;
+    this.aggro = aggro;
+    this.attackSound = attackSound;
+    this.bloodColor = bloodColor;
+    this.bodyless = bodyless;
+    this.bouncy = bouncy;
+    this.colors = colors;
+    this.health = health;
+    this.name = type;
+    this.size = 8 * size;
+    this.speed = speed;
+    this.damage = damage;
+
+    this.range = range;
+    this.cooldownTotalTime = cooldownTotalTime;
+    this.firingTotalTime = firingTotalTime;
+
     this.x = x;
     this.y = y;
-    this.size = 8 * 5;
-    this.speed = 5;
-    this.colors = colors;
-    this.name = "WORKER";
-    this.health = 50;
-    this.damage = 10;
-    // this.bloodColor = "#32CD32";
-    this.bloodColor = "#A00";
-    this.aggro = false;
-
-    this.range = 200;
-    this.cooldownTotalTime = 90;
-    this.firingTotalTime = 60;
-
     this.pathY = y;
     this.dx = 0;
     this.dy = 0;
@@ -177,21 +181,24 @@ class Unit {
     }
 
     // bounce
-    const BOUNCE_HEIGHT = 12;
-    const BOUNCE_DURATION = 12;
-    const shouldMoveBounce =
-      this.state === STATES.MOVING && this.bounceTime === 0;
-    const shouldIdleBounce = this.state === STATES.IDLE && Math.random() < 0.01;
-    if (shouldMoveBounce || shouldIdleBounce) {
-      this.bounceTime = BOUNCE_DURATION;
-    }
-    if (this.bounceTime > 0) {
-      this.bounceTime -= 1;
-      const a =
-        BOUNCE_DURATION * (Math.sqrt(BOUNCE_HEIGHT) / (BOUNCE_HEIGHT * 2));
-      this.bounce =
-        -Math.pow(this.bounceTime / a - Math.sqrt(BOUNCE_HEIGHT), 2) +
-        BOUNCE_HEIGHT;
+    if (this.bouncy) {
+      const BOUNCE_HEIGHT = 12;
+      const BOUNCE_DURATION = 12;
+      const shouldMoveBounce =
+        this.state === STATES.MOVING && this.bounceTime === 0;
+      const shouldIdleBounce =
+        this.state === STATES.IDLE && Math.random() < 0.01;
+      if (shouldMoveBounce || shouldIdleBounce) {
+        this.bounceTime = BOUNCE_DURATION;
+      }
+      if (this.bounceTime > 0) {
+        this.bounceTime -= 1;
+        const a =
+          BOUNCE_DURATION * (Math.sqrt(BOUNCE_HEIGHT) / (BOUNCE_HEIGHT * 2));
+        this.bounce =
+          -Math.pow(this.bounceTime / a - Math.sqrt(BOUNCE_HEIGHT), 2) +
+          BOUNCE_HEIGHT;
+      }
     }
 
     if (this.aggro && this.state === STATES.IDLE) {
@@ -217,7 +224,7 @@ class Unit {
       }
 
       if (targetInRange && this.cooldownTime === 0) {
-        sound.play("gun");
+        sound.play(this.attackSound);
         this.cooldownTime = this.cooldownTotalTime;
         this.firingTime = this.firingTotalTime;
         this.path = [];
@@ -259,7 +266,7 @@ class Unit {
   }
 
   hudDrawIcon(drawer, x, y) {
-    Unit.hudDrawIcon(drawer, x, y);
+    Unit.hudDrawIcon(drawer, x, y, { bodyless: this.bodyless });
   }
 
   hudDraw(drawer, x, y) {
@@ -302,6 +309,8 @@ class Unit {
 
     humanoid(x, y, this.facing, this.colors, {
       blink: this.blink > 0,
+      bodyless: this.bodyless,
+      size: this.size / 5,
     }).forEach(({ c, r }) =>
       drawer.rect({
         fillColor: c,
@@ -313,7 +322,7 @@ class Unit {
     const hitbox = false;
     if (hitbox) {
       drawer.rect({
-        fillColor: "#c66",
+        fillColor: "#c668",
         rect: [x, y, this.size, this.size],
       });
     }
@@ -327,19 +336,20 @@ class Unit {
   }
 }
 
-Unit.hudDrawIcon = (drawer, x, y) => {
+Unit.hudDrawIcon = (drawer, x, y, options) => {
   const colors = {
     skin: "#0f0",
     horns: "#0f0",
     eyes: "#666",
     body: "#666",
   };
-  humanoid(x + 14, y + 18, 1, colors, { size: 6 }).forEach(({ c, r }) =>
-    drawer.rect({
-      adjusted: false,
-      fillColor: c,
-      rect: r,
-    })
+  humanoid(x + 14, y + 18, 1, colors, { ...options, size: 6 }).forEach(
+    ({ c, r }) =>
+      drawer.rect({
+        adjusted: false,
+        fillColor: c,
+        rect: r,
+      })
   );
 };
 

@@ -64,7 +64,7 @@ class Building {
         },
         complete: ({ player }) => {
           player.addUnit({
-            type: "worker",
+            type: "shade",
             x: building.x + building.sizeX + 10,
             y: building.y + building.sizeY + 10,
           });
