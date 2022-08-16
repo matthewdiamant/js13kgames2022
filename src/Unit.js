@@ -95,30 +95,26 @@ class Unit {
 
   calculateSpeed() {
     let [targetX, targetY] = this.path[0];
-
-    // normalize vector
-    let u = Math.sqrt(
-      Math.pow(this.x - targetX, 2) + Math.pow(this.pathY - targetY, 2)
-    );
+    let d = distance({ x: this.x, y: this.pathY }, { x: targetX, y: targetY });
 
     // if close enough to destination, remove waypoint
-    if (u > this.speed) {
-      this.dx = this.speed * ((targetX - this.x) / Math.abs(u));
-      this.dy = this.speed * ((targetY - this.pathY) / Math.abs(u));
+    if (d > this.speed) {
+      this.dx = this.speed * ((targetX - this.x) / Math.abs(d));
+      this.dy = this.speed * ((targetY - this.pathY) / Math.abs(d));
     } else {
       this.path.shift();
     }
   }
 
-  takeDamage(amount, { bloods }) {
+  takeDamage(amount, { bloods, d }) {
     this.health -= amount;
     for (let i = 0; i < amount; i++) {
       bloods.add(
         new Blood(
           this.x,
           this.y + this.size / 2,
-          Math.random() * 6 - 3,
-          Math.random() * -6 - 6,
+          Math.random() * 6 - 3 + d.dx * 4,
+          Math.random() * -10 - 5 + d.dy * 4,
           this.bloodColor
         )
       );
@@ -133,8 +129,8 @@ class Unit {
         new Blood(
           this.x,
           this.y,
-          Math.random() * 6 - 3,
-          Math.random() * -8 - 6,
+          Math.random() * 10 - 5,
+          Math.random() * -12 - 6,
           this.bloodColor
         )
       );
@@ -225,7 +221,14 @@ class Unit {
         this.cooldownTime = this.cooldownTotalTime;
         this.firingTime = this.firingTotalTime;
         this.path = [];
-        const killed = this.target.takeDamage(this.damage, { bloods });
+
+        const d = distance(this, this.target);
+        const dx = (this.target.x - this.x) / d;
+        const dy = (this.target.y - this.pathY) / d;
+        const killed = this.target.takeDamage(this.damage, {
+          bloods,
+          d: { dx, dy },
+        });
         if (killed) {
           this.target = null;
           this.state = STATES.IDLE;
