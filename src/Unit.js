@@ -149,12 +149,17 @@ class Unit {
     }
   }
 
-  returnResource(player, map) {
+  returnResource(player, map, baseTarget = null) {
     this.path = [];
-    const bases = player.buildings.filter((b) => b.name === "base");
-    if (bases.length) {
-      bases.sort((a, b) => distance(this, a) - distance(this, b));
-      const [base] = bases;
+    let base = baseTarget;
+    if (!base) {
+      const bases = player.buildings.filter((b) => b.name === "base");
+      if (bases.length) {
+        bases.sort((a, b) => distance(this, a) - distance(this, b));
+        base = bases[0];
+      }
+    }
+    if (base) {
       this.baseTarget = base;
       this.setPath([base.x + base.sizeX / 2, base.y + base.sizeY / 2], map);
       this.state = STATES.RETURNING_RESOURCE;
@@ -213,7 +218,13 @@ class Unit {
     // mining
     if (this.state === STATES.MINING) {
       if (!this.carryingResource && this.path.length === 0) {
-        this.setPath([this.miningTarget.x, this.miningTarget.y], map);
+        this.setPath(
+          [
+            this.miningTarget.x + this.miningTarget.size / 2,
+            this.miningTarget.y + this.miningTarget.size / 2,
+          ],
+          map
+        );
       } else if (this.carryingResource) {
         this.returnResource(player, map);
       }
@@ -226,7 +237,13 @@ class Unit {
       if (boxCollision(this, this.baseTarget) && this.carryingResource) {
         player.resources += 10;
         this.carryingResource = false;
-        this.setPath([this.miningTarget.x, this.miningTarget.y], map);
+        this.setPath(
+          [
+            this.miningTarget.x + this.miningTarget.size / 2,
+            this.miningTarget.y + this.miningTarget.size / 2,
+          ],
+          map
+        );
         this.state = STATES.MINING;
       }
     }

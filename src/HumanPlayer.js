@@ -76,9 +76,24 @@ class HumanPlayer extends Player {
               })
             );
             if (mine) {
-              unit.state = STATES.MINING;
+              unit.path = [];
               unit.miningTarget = mine;
+              unit.state = STATES.MINING;
               return;
+            }
+            if (unit.carryingResource) {
+              const [base] = this.buildings.filter(
+                (building) =>
+                  building.name === "base" &&
+                  pointCollision(building, {
+                    x: rightClickTarget[0],
+                    y: rightClickTarget[1],
+                  })
+              );
+              if (base) {
+                unit.returnResource(this, map, base);
+                return;
+              }
             }
           }
 
