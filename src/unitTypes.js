@@ -21,6 +21,7 @@ export default {
     bouncy: false,
     attackSound: "minigun",
     canMine: true,
+    flying: true,
 
     range: 50,
     cooldownTotalTime: 0,
@@ -39,6 +40,7 @@ export default {
     bouncy: true,
     attackSound: "gun",
     canMine: false,
+    flying: false,
 
     range: 300,
     cooldownTotalTime: 90,
@@ -56,6 +58,7 @@ export default {
     bouncy: true,
     attackSound: "gun",
     canMine: false,
+    flying: false,
 
     range: 100,
     cooldownTotalTime: 90,

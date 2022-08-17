@@ -17,12 +17,13 @@ class HumanPlayer extends Player {
 
   dragSelect(mouse, entities) {
     const collisions = entities.filter((entity) => {
-      let { x, y, size, sizeX, sizeY } = entity;
       let [mx, my, endx, endy] = mouse.releaseDrag;
-      return boxCollision(
-        { x, y, w: sizeX || size, h: sizeY || size },
-        { x: mx, y: my, w: endx - mx, h: endy - my }
-      );
+      return boxCollision(entity, {
+        x: mx,
+        y: my,
+        sizeX: endx - mx,
+        sizeY: endy - my,
+      });
     });
     if (collisions.length === 0) return;
     entities.forEach((entity) => (entity.selected = false));

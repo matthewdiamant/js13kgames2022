@@ -1,8 +1,8 @@
 export const boxCollision = (rect1, rect2) =>
-  rect1.x < rect2.x + rect2.w &&
-  rect1.x + rect1.w > rect2.x &&
-  rect1.y < rect2.y + rect2.h &&
-  rect1.h + rect1.y > rect2.y;
+  rect1.x < rect2.x + (rect2.size || rect2.sizeX) &&
+  rect1.x + (rect1.size || rect1.sizeX) > rect2.x &&
+  rect1.y < rect2.y + (rect2.size || rect2.sizeY) &&
+  (rect1.size || rect1.sizeY) + rect1.y > rect2.y;
 
 export const pointCollision = (rect, point) =>
   point.x >= rect.x &&

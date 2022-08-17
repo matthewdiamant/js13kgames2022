@@ -8,8 +8,9 @@ const IDLE = "idle";
 const MOVING = "moving";
 const ATTACKING = "attacking";
 const MINING = "mining";
+const RETURNING_RESOURCE = "returning_resource";
 
-export const STATES = { IDLE, MOVING, ATTACKING, MINING };
+export const STATES = { IDLE, MOVING, ATTACKING, MINING, RETURNING_RESOURCE };
 
 const distance = (source, dest) => {
   const dx = Math.abs(source.x - dest.x);
@@ -54,6 +55,10 @@ class Unit {
 
   setPath(target, map) {
     const [targetX, targetY] = target;
+    if (this.flying) {
+      this.path = [target];
+      return true;
+    }
 
     const [startX, startY] = map.coordsToTile(this.x, this.pathY);
     const [endX, endY] = map.coordsToTile(targetX, targetY);
@@ -195,14 +200,22 @@ class Unit {
     // mining
     if (this.state === STATES.MINING) {
       // go to mine
+      if (!this.carryingResource && this.path.length === 0) {
+        this.setPath([this.miningTarget.x, this.miningTarget.y], map);
+      }
       // collide with mine
-      // add resource
-      // find nearest base
-      // go to base
-      // collide with base
-      // deposit resource
-      console.log("mine");
+      if (boxCollision(this, this.miningTarget)) {
+        // add resource
+        this.carryingResource = true;
+        this.path = [];
+        this.state = STATES.RETURNING_RESOURCE;
+        // find nearest base
+        // set path to found base
+      }
     }
+    // collide with base
+    // deposit resource
+    // return to target mine
 
     // find targets while idle
     if (this.aggro && this.state === STATES.IDLE) {
@@ -322,6 +335,17 @@ class Unit {
         rect: r,
       })
     );
+
+    if (this.carryingResource) {
+      drawer.draw(() => {
+        drawer.rect({
+          fillColor: "#39ca",
+          rect: [x + (this.facing ? 5 : -35) + this.size / 2, y + 10, 30, 30],
+          rotation: Math.PI * -0.05,
+          size: 30,
+        });
+      });
+    }
 
     // hitbox?
     const hitbox = false;
