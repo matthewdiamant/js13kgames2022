@@ -160,6 +160,7 @@ class Building {
     const PROGRESS_BAR_X = x + 200 + ICON_BOX_SIZE + ICON_BOX_MARGIN;
     const PROGRESS_BAR_Y = y + ICON_BOX_SIZE - PROGRESS_BAR_HEIGHT;
     drawer.rect({
+      adjusted: false,
       strokeColor: "#0f0",
       rect: [
         PROGRESS_BAR_X,
@@ -169,6 +170,7 @@ class Building {
       ],
     });
     drawer.rect({
+      adjusted: false,
       fillColor: "#0f0",
       rect: [
         PROGRESS_BAR_X,
@@ -178,6 +180,7 @@ class Building {
       ],
     });
     drawer.rect({
+      adjusted: false,
       strokeColor: "#0f0",
       rect: [x + 200, y, ICON_BOX_SIZE, ICON_BOX_SIZE],
     });
@@ -189,6 +192,7 @@ class Building {
       this.hudDrawCurrentTask(drawer, x, y);
       this.tasks.slice(1).forEach(({ drawIcon }, i) => {
         drawer.rect({
+          adjusted: false,
           strokeColor: "#0f0",
           rect: [
             x + 200 + (ICON_BOX_MARGIN + ICON_BOX_SIZE) * i,

@@ -28,7 +28,9 @@ class Player {
   }
 
   static tick({ bloods, bloodChunks, map, sound, targets }) {
-    this.units.forEach((u) => u.tick({ bloods, map, sound, targets }));
+    this.units.forEach((u) =>
+      u.tick({ bloods, map, player: this, sound, targets })
+    );
     this.units = this.units.reduce((units, unit) => {
       if (unit.health <= 0) {
         unit.explode({ bloods, bloodChunks, sound });

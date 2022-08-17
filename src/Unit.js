@@ -44,6 +44,7 @@ class Unit {
 
     this.carryingResource = false;
     this.miningTarget = null;
+    this.baseTarget = null;
 
     this.cooldownTime = 0;
     this.firingTime = 0;
@@ -148,6 +149,18 @@ class Unit {
     }
   }
 
+  returnResource(player, map) {
+    this.path = [];
+    const bases = player.buildings.filter((b) => b.name === "base");
+    if (bases.length) {
+      bases.sort((a, b) => distance(this, a) - distance(this, b));
+      const [base] = bases;
+      this.baseTarget = base;
+      this.setPath([base.x + base.sizeX / 2, base.y + base.sizeY / 2], map);
+      this.state = STATES.RETURNING_RESOURCE;
+    }
+  }
+
   move() {
     if (this.path.length) {
       this.calculateSpeed();
@@ -161,7 +174,7 @@ class Unit {
     this.pathY += this.dy;
   }
 
-  tick({ bloods, map, sound, targets }) {
+  tick({ bloods, map, player, sound, targets }) {
     this.lifespan += 1;
 
     // blink
@@ -199,23 +212,24 @@ class Unit {
 
     // mining
     if (this.state === STATES.MINING) {
-      // go to mine
       if (!this.carryingResource && this.path.length === 0) {
         this.setPath([this.miningTarget.x, this.miningTarget.y], map);
+      } else if (this.carryingResource) {
+        this.returnResource(player, map);
       }
-      // collide with mine
       if (boxCollision(this, this.miningTarget)) {
-        // add resource
         this.carryingResource = true;
-        this.path = [];
-        this.state = STATES.RETURNING_RESOURCE;
-        // find nearest base
-        // set path to found base
+        this.returnResource(player, map);
       }
     }
-    // collide with base
-    // deposit resource
-    // return to target mine
+    if (this.state === STATES.RETURNING_RESOURCE) {
+      if (boxCollision(this, this.baseTarget) && this.carryingResource) {
+        player.resources += 10;
+        this.carryingResource = false;
+        this.setPath([this.miningTarget.x, this.miningTarget.y], map);
+        this.state = STATES.MINING;
+      }
+    }
 
     // find targets while idle
     if (this.aggro && this.state === STATES.IDLE) {
