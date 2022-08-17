@@ -16,7 +16,7 @@ class HumanPlayer extends Player {
   }
 
   dragSelect(mouse, entities) {
-    const collisions = entities.filter((entity) => {
+    let collisions = entities.filter((entity) => {
       let [mx, my, endx, endy] = mouse.releaseDrag;
       return boxCollision(entity, {
         x: mx,
@@ -25,6 +25,9 @@ class HumanPlayer extends Player {
         sizeY: endy - my,
       });
     });
+    if (collisions.map((c) => c.type).includes("unit")) {
+      collisions = collisions.filter((c) => c.type === "unit");
+    }
     if (collisions.length === 0) return;
     entities.forEach((entity) => (entity.selected = false));
     collisions.forEach((entity) => (entity.selected = true));
