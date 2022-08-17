@@ -214,6 +214,14 @@
           humanBases: Object.keys(humanBases),
           cpuBases: Object.keys(cpuBases),
         }, null, 2);
+
+        const map_data = {
+          levelData: encode(map),
+          mines,
+          humanBases,
+          cpuBases,
+        }
+        window.localStorage.setItem('map', JSON.stringify(map_data));
       }
       render_data();
 
@@ -246,19 +254,11 @@
 
             cell.dataset.type = type;
             render_data();
-            const map_data = {
-              levelData: encode(map),
-              mines,
-              humanBases,
-              cpuBases,
-            }
-            window.localStorage.setItem('map', JSON.stringify(map_data));
           }
           cell.onmouseover = () => { if (selecting) paint() };
           cell.onclick = paint;
         });
       });
-
 
       Array.from(controls).forEach((control) => {
         control.onclick = function () {

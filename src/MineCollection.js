@@ -1,15 +1,11 @@
-import Map, { TILE_TYPE, TILES } from "./Map";
+import Map from "./Map";
 import Mine from "./Mine";
 
 class MineCollection {
   constructor({ map }) {
     this.mines = [];
-    map.grid.forEach((row, y) => {
-      row.forEach((cell, x) => {
-        if (cell === TILES.indexOf(TILE_TYPE.MINE)) {
-          this.mines.push(new Mine(x * Map.tileSize, y * Map.tileSize));
-        }
-      });
+    map.mines.forEach(([x, y]) => {
+      this.mines.push(new Mine(x * Map.tileSize, y * Map.tileSize));
     });
   }
 

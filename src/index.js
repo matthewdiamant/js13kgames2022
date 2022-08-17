@@ -34,8 +34,8 @@ window.onload = () => {
   let map = new Map();
   let mines = new MineCollection({ map });
   let miniMap = new MiniMap();
-  let humanPlayer = new HumanPlayer();
-  let cpuPlayer = new CPUPlayer();
+  let humanPlayer = new HumanPlayer({ map });
+  let cpuPlayer = new CPUPlayer({ map });
 
   let gameLoop = (currentTime) => {
     window.requestAnimationFrame(gameLoop);

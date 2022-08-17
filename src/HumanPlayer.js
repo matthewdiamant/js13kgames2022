@@ -1,27 +1,18 @@
 import Player from "./Player";
 import { STATES } from "./Unit";
-
-const boxCollision = (rect1, rect2) =>
-  rect1.x < rect2.x + rect2.w &&
-  rect1.x + rect1.w > rect2.x &&
-  rect1.y < rect2.y + rect2.h &&
-  rect1.h + rect1.y > rect2.y;
-
-const pointCollision = (rect, point) =>
-  point.x >= rect.x &&
-  point.x < rect.x + (rect.size || rect.sizeX) &&
-  point.y >= rect.y &&
-  point.y < rect.y + (rect.size || rect.sizeY);
+import { boxCollision, pointCollision } from "./collision";
 
 class HumanPlayer extends Player {
-  constructor() {
+  constructor({ map }) {
     super();
     this.selected = [];
     this.color = "#A00";
     this.addUnit({ type: "shade", x: 650, y: 580 });
     this.addUnit({ type: "goblin", x: 650, y: 640 });
     this.addUnit({ type: "brute", x: 650, y: 760 });
-    this.addBuilding({ type: "base", x: 80 * 4, y: 80 * 6 });
+    map.humanBases.forEach(([x, y]) => {
+      this.addBuilding({ type: "base", x: 80 * x, y: 80 * y });
+    });
   }
 
   dragSelect(mouse, entities) {

@@ -2,6 +2,7 @@ import AStarFinder, { Grid, smoothenPath } from "./AStar";
 import Blood from "./Blood";
 import BloodChunk from "./BloodChunk";
 import { humanoid } from "./Sprites";
+import { boxCollision } from "./collision";
 
 const IDLE = "idle";
 const MOVING = "moving";

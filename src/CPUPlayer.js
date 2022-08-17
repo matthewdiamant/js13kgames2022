@@ -4,11 +4,13 @@ import { STATES } from "./Unit";
 const sample = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 class CPUPlayer extends Player {
-  constructor() {
+  constructor({ map }) {
     super();
     this.color = "#00A";
     this.addUnit({ type: "shade", x: 80 * 18, y: 80 * 6 });
-    this.addBuilding({ type: "base", x: 80 * 22, y: 80 * 6 });
+    map.cpuBases.forEach(([x, y]) => {
+      this.addBuilding({ type: "base", x: 80 * x, y: 80 * y });
+    });
   }
 
   cpuActions({ map }) {
