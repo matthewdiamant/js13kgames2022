@@ -70,7 +70,7 @@ window.onload = () => {
       targets: cpuPlayer.entities(),
     });
     mines.tick();
-    hud.tick({ drawer, mouse, player: humanPlayer });
+    hud.tick({ camera, drawer, mouse, player: humanPlayer });
     bloods.tick({ map });
     bloodChunks.tick({ map });
   };

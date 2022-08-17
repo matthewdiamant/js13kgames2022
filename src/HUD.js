@@ -12,7 +12,7 @@ class HUD {
     this.selected = [];
   }
 
-  tick({ drawer, mouse, player }) {
+  tick({ camera, drawer, mouse, player }) {
     this.selected = player.selected;
     this.resources = player.resources;
     this.drawerWidth = drawer.width;
@@ -26,22 +26,22 @@ class HUD {
 
     if (this.selected.length) {
       if (mouse.clickTarget[0] || mouse.clickTarget[1]) {
-        this.clickAction({ mouse, player });
+        this.clickAction({ camera, mouse, player });
       }
       if (mouse.mouseLocation[0] || mouse.mouseLocation[1]) {
-        this.hoverActions({ mouse });
+        this.hoverActions({ camera, mouse });
       }
     }
   }
 
-  clickAction({ mouse, player }) {
+  clickAction({ camera, mouse, player }) {
     let [mouseX, mouseY] = mouse.clickTarget;
     this.actionBoxes.forEach(({ x, y, width, height, action }) => {
       if (
-        mouseX >= x &&
-        mouseX < x + width &&
-        mouseY >= y &&
-        mouseY < y + height
+        mouseX - camera.x >= x &&
+        mouseX - camera.x < x + width &&
+        mouseY - camera.y >= y &&
+        mouseY - camera.y < y + height
       ) {
         if (action.actionable()) {
           action.execute({ player });
@@ -50,14 +50,14 @@ class HUD {
     });
   }
 
-  hoverActions({ mouse }) {
+  hoverActions({ camera, mouse }) {
     let [mouseX, mouseY] = mouse.mouseLocation;
     this.actionBoxes.forEach(({ x, y, width, height, action }) => {
       if (
-        mouseX >= x &&
-        mouseX < x + width &&
-        mouseY >= y &&
-        mouseY < y + height
+        mouseX - camera.x >= x &&
+        mouseX - camera.x < x + width &&
+        mouseY - camera.y >= y &&
+        mouseY - camera.y < y + height
       ) {
         this.actionBoxText = action.name;
       }
