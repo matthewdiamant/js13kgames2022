@@ -3,19 +3,20 @@ import Blood from "./Blood";
 import BloodChunk from "./BloodChunk";
 import { humanoid } from "./Sprites";
 import { boxCollision } from "./collision";
+import { distance } from "./distance";
 
-const IDLE = "idle";
-const MOVING = "moving";
-const ATTACKING = "attacking";
-const MINING = "mining";
-const RETURNING_RESOURCE = "returning_resource";
+export const STATES = {
+  IDLE: 0,
+  MOVING: 1,
+  ATTACKING: 2,
+  MINING: 3,
+  RETURNING_RESOURCE: 4,
+};
 
-export const STATES = { IDLE, MOVING, ATTACKING, MINING, RETURNING_RESOURCE };
-
-const distance = (source, dest) => {
-  const dx = Math.abs(source.x - dest.x);
-  const dy = Math.abs(source.y - dest.y);
-  return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+const MENU_STATES = {
+  INITIAL: 0,
+  BUILDING: 1,
+  PLACE_BUILDING: 2,
 };
 
 class Unit {
@@ -41,12 +42,12 @@ class Unit {
     this.attackSelected = 0;
     this.recalculateTarget = 0;
     this.state = STATES.IDLE;
+    this.menuState = MENU_STATES.INITIAL;
 
     // worker things
     this.carryingResource = false;
     this.miningTarget = null;
     this.baseTarget = null;
-    this.builderMenu = false;
 
     this.cooldownTime = 0;
     this.firingTime = 0;
@@ -94,6 +95,12 @@ class Unit {
     if (!targetInRange) {
       this.setPath([this.target.x, this.target.y], map);
     }
+  }
+
+  setMining(mine) {
+    this.path = [];
+    this.miningTarget = mine;
+    this.state = STATES.MINING;
   }
 
   calculateSpeed() {
@@ -305,7 +312,18 @@ class Unit {
   actions({ player }) {
     const output = Array(9).fill({});
 
-    if (this.builderMenu) {
+    const cancel = {
+      name: "cancel",
+      cost: 0,
+      actionable: () => true,
+      drawIcon: (drawer, x, y) => {},
+      execute: () => {
+        this.menuState = MENU_STATES.INITIAL;
+        player.cancelPlaceBuilding();
+      },
+    };
+
+    if (this.menuState === MENU_STATES.BUILDING) {
       output[0] = {
         name: "build base",
         cost: 400,
@@ -314,18 +332,13 @@ class Unit {
         },
         drawIcon: (drawer, x, y) => {},
         execute: () => {
-          console.log("build base");
+          player.placeBuilding({ unit: this, building: "base" });
+          this.menuState = MENU_STATES.PLACE_BUILDING;
         },
       };
-      output[8] = {
-        name: "cancel",
-        cost: 0,
-        actionable: () => true,
-        drawIcon: (drawer, x, y) => {},
-        execute: () => {
-          this.builderMenu = false;
-        },
-      };
+      output[8] = cancel;
+    } else if (this.menuState === MENU_STATES.PLACE_BUILDING) {
+      output[8] = cancel;
     } else {
       output[0] = {
         name: "move",
@@ -343,7 +356,7 @@ class Unit {
           actionable: () => true,
           drawIcon: (drawer, x, y) => {},
           execute: () => {
-            this.builderMenu = true;
+            this.menuState = MENU_STATES.BUILDING;
             console.log("build");
           },
         };

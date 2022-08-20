@@ -1,17 +1,24 @@
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
+print () {
+  echo "${YELLOW}$1${NC}"
+}
+
 NODE_ENV=production npx webpack
 
-echo "${YELLOW}move index.html to dist${NC}"
+print "move index.html to dist"
 mkdir -p dist
 cp docs/index.html dist/
 cd dist
 
-echo "${YELLOW}extracting javascript${NC}"
-sed -E 's/.*\<script\>(.*)\<\/script\>/\1/' index.html > js.js
+print "removing new lines"
+tr -d '\n' < index.html > newlineless_index.html
 
-echo "${YELLOW}road roller${NC}"
+print "extracting javascript"
+sed -E 's/.*\<script\>(.*)\<\/script\>(.*)/\1/' newlineless_index.html > js.js
+
+print "road roller"
 npx roadroller js.js -o output.js
 
 sed -E 's/(.*)\<script\>.*/\1/' index.html > template.html
@@ -22,15 +29,15 @@ echo "<script>" >> template.html
 cat template.html output.js > index.html
 echo "</script>" >> index.html
 
-echo "${YELLOW}zip final build${NC}"
+print "zip final build"
 rm index.html.zip
 ect -zip -9 index.html
 
-echo "${YELLOW}src directory total size${NC}"
+print "src directory total size"
 du -sh ../src | awk '{print $1}'
 
-echo "${YELLOW}final size${NC}"
+print "final size"
 ls -hl index.html.zip | awk -F ' ' '{ print $5 }'
 
-echo "${YELLOW}remaining bytes${NC}"
+print "remaining bytes"
 expr 13312 - $(ls -l index.html.zip | awk -F ' ' '{ print $5 }')

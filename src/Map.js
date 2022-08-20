@@ -1,10 +1,19 @@
 // prettier-ignore
 const level = {
-  levelData: "////////+CKAAAAf4CqAAAAHwCqAAAADwCqAAAADgCqAAAABgCqAAAABgCqAAAABgCqAAAABgCqAAAABgAiAAAABgD+AAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABwAAAAAADwAAAAAAD4AAAAAAH+AAAAAAf////////",
-  mines: [[4, 4], [42, 4], [42, 42], [4, 42]],
-  humanBases: [[4, 9]],
-  cpuBases: [[41, 37]],
-};
+  "levelData": "////////4RAAAAAfwVAAAAAHgVAAAAADgVAAAAADgVAAAAABgVAAAAABgVAAAAABgVAAAAABgVAAAAABgVAAAAABgVAAAAABwEAAAAAB//+AAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABwAAAAAADwAAAAAAD4AAAAAAH+AAAAAAf////////",
+  "mines": [
+    [42,4],
+    [4,42],
+    [3,3],
+    [13,3]
+  ],
+  "humanBases": [
+    [3,8]
+  ],
+  "cpuBases": [
+    [13,8]
+  ]
+}
 
 const decode = (encoded) => {
   const decoded = atob(encoded);
@@ -36,10 +45,10 @@ class Map {
     return [Math.floor(x / Map.tileSize), Math.floor(y / Map.tileSize)];
   }
 
-  tileToCoords(x, y) {
+  tileToCoords(x, y, middle = true) {
     return [
-      x * Map.tileSize + Map.tileSize / 2,
-      y * Map.tileSize + Map.tileSize / 2,
+      x * Map.tileSize + (middle ? Map.tileSize / 2 : 0),
+      y * Map.tileSize + (middle ? Map.tileSize / 2 : 0),
     ];
   }
 

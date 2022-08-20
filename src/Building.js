@@ -16,6 +16,7 @@ class Building {
     this.tasks = [];
     this.color = color;
     this.attackSelected = 0;
+    this.built = false;
   }
 
   attacked() {
@@ -214,24 +215,62 @@ class Building {
     Building.hudDrawIcon(drawer, x, y);
   }
 
+  static drawBuilding(drawer, x, y, width, height, color, opacity = "F") {
+    drawer.rect({
+      fillColor: "#A33" + opacity,
+      rect: [x, y + Map.tileSize, width, height],
+    });
+
+    drawer.ellipse({
+      ellipse: [
+        x + width / 2,
+        y + height + Map.tileSize,
+        width / 2,
+        height / 4,
+        0,
+        0,
+        2 * Math.PI,
+      ],
+      fillColor: "#A33" + opacity,
+    });
+
+    drawer.ellipse({
+      ellipse: [
+        x + width / 2,
+        y + Map.tileSize,
+        width / 2,
+        height / 4,
+        0,
+        0,
+        2 * Math.PI,
+      ],
+      fillColor: "#A55" + opacity,
+    });
+
+    const FLAGPOLE_WIDTH = 10;
+    const FLAGPOLE_HEIGHT = 100;
+    drawer.rect({
+      fillColor: "#666" + opacity,
+      rect: [
+        x + width / 2 - FLAGPOLE_WIDTH / 2,
+        y - FLAGPOLE_HEIGHT + Map.tileSize,
+        FLAGPOLE_WIDTH,
+        FLAGPOLE_HEIGHT,
+      ],
+    });
+    drawer.rect({
+      fillColor: color + opacity,
+      rect: [
+        x + width / 2 + FLAGPOLE_WIDTH / 2,
+        y - FLAGPOLE_HEIGHT + Map.tileSize,
+        60,
+        40,
+      ],
+    });
+  }
+
   draw(drawer) {
     const height = this.sizeY - Map.tileSize;
-    if (this.selected) {
-      drawer.ellipse({
-        ellipse: [
-          this.x + this.sizeX / 2,
-          this.y + height + Map.tileSize,
-          (this.sizeX + 40) / 2,
-          height / 3,
-          0,
-          0,
-          2 * Math.PI,
-        ],
-        strokeColor: "#4AC",
-        strokeWidth: 5,
-      });
-    }
-
     const drawRing = (color) => {
       drawer.ellipse({
         ellipse: [
@@ -250,57 +289,14 @@ class Building {
     if (this.selected) drawRing("#4AC");
     if (this.attackSelected > 0) drawRing("#A00");
 
-    drawer.rect({
-      fillColor: "#A33",
-      rect: [this.x, this.y + Map.tileSize, this.sizeX, height],
-    });
-
-    drawer.ellipse({
-      ellipse: [
-        this.x + this.sizeX / 2,
-        this.y + height + Map.tileSize,
-        this.sizeX / 2,
-        height / 4,
-        0,
-        0,
-        2 * Math.PI,
-      ],
-      fillColor: "#A33",
-    });
-
-    drawer.ellipse({
-      ellipse: [
-        this.x + this.sizeX / 2,
-        this.y + Map.tileSize,
-        this.sizeX / 2,
-        height / 4,
-        0,
-        0,
-        2 * Math.PI,
-      ],
-      fillColor: "#A55",
-    });
-
-    const FLAGPOLE_WIDTH = 10;
-    const FLAGPOLE_HEIGHT = 100;
-    drawer.rect({
-      fillColor: "#666",
-      rect: [
-        this.x + this.sizeX / 2 - FLAGPOLE_WIDTH / 2,
-        this.y - FLAGPOLE_HEIGHT + Map.tileSize,
-        FLAGPOLE_WIDTH,
-        FLAGPOLE_HEIGHT,
-      ],
-    });
-    drawer.rect({
-      fillColor: this.color,
-      rect: [
-        this.x + this.sizeX / 2 + FLAGPOLE_WIDTH / 2,
-        this.y - FLAGPOLE_HEIGHT + Map.tileSize,
-        60,
-        40,
-      ],
-    });
+    Building.drawBuilding(
+      drawer,
+      this.x,
+      this.y,
+      this.sizeX,
+      height,
+      this.color
+    );
 
     const hitbox = false;
     if (hitbox) {

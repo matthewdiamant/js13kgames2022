@@ -56,6 +56,7 @@ window.onload = () => {
       bloods,
       bloodChunks,
       map,
+      mines,
       sound,
       targets: humanPlayer.entities(),
     });

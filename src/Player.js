@@ -20,6 +20,7 @@ class Player {
 
   addBuilding({ type, x, y }) {
     const newBuilding = new Building(x, y, this.color);
+    newBuilding.built = true;
     this.buildings.push(newBuilding);
   }
 
@@ -42,7 +43,7 @@ class Player {
     this.buildings.forEach((b) => b.tick({ player: this }));
   }
 
-  draw(drawer) {
+  static draw(drawer) {
     this.buildings.forEach((b) => b.draw(drawer));
     this.units.forEach((u) => u.draw(drawer));
   }
