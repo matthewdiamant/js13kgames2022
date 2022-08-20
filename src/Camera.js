@@ -42,12 +42,21 @@ class Camera {
     this.y += shakeY;
   }
 
-  tick({ keyboard }) {
-    const speed = 10;
-    if (keyboard.isDown(keyboard.UP)) this.position_y -= speed;
-    if (keyboard.isDown(keyboard.DOWN)) this.position_y += speed;
-    if (keyboard.isDown(keyboard.LEFT)) this.position_x -= speed;
-    if (keyboard.isDown(keyboard.RIGHT)) this.position_x += speed;
+  tick({ keyboard, mouse }) {
+    const SPEED = 15;
+    const THRESHOLD = 50;
+    const [mlx, mly] = mouse.mouseLocation;
+    const [mx, my] = [mlx - this.x, mly - this.y];
+
+    if (keyboard.isDown(keyboard.UP) || my < THRESHOLD)
+      this.position_y -= SPEED;
+    if (keyboard.isDown(keyboard.DOWN) || my > this.height - THRESHOLD)
+      this.position_y += SPEED;
+    if (keyboard.isDown(keyboard.LEFT) || mx < THRESHOLD)
+      this.position_x -= SPEED;
+    if (keyboard.isDown(keyboard.RIGHT) || mx > this.width - THRESHOLD)
+      this.position_x += SPEED;
+
     this.clampX(Map.size - this.width);
     this.clampY(Map.size * (Map.tileSizeY / Map.tileSize) - this.height);
 

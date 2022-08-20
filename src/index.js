@@ -50,7 +50,7 @@ window.onload = () => {
 
   let tick = () => {
     const { camera } = drawer;
-    camera.tick({ keyboard });
+    camera.tick({ keyboard, mouse });
     mouse.tick({ camera });
     cpuPlayer.tick({
       bloods,
