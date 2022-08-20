@@ -37,6 +37,7 @@ class HUD {
   clickAction({ camera, mouse, player }) {
     let [mouseX, mouseY] = mouse.clickTarget;
     this.actionBoxes.forEach(({ x, y, width, height, action }) => {
+      if (!action.name) return;
       if (
         mouseX - camera.x >= x &&
         mouseX - camera.x < x + width &&

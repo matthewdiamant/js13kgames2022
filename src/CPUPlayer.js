@@ -86,7 +86,7 @@ class CPUPlayer extends Player {
         }, and has ${this.resources} left`
       );
     } catch (e) {
-      console.log('cpu errored on action', building, actionName);
+      console.log("cpu errored on action", building, actionName);
     }
   }
 
