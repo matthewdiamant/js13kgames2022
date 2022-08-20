@@ -152,6 +152,7 @@ class HumanPlayer extends Player {
       if (clickTarget[0] || clickTarget[1]) {
         const newBuilding = new Building(x, y, this.color, false);
         this.addBuilding(newBuilding);
+        this.cancelPlaceBuilding();
       }
     }
   }

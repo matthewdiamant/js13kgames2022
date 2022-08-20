@@ -295,7 +295,8 @@ class Building {
       this.y,
       this.sizeX,
       height,
-      this.color
+      this.color,
+      this.built ? "F" : "4"
     );
 
     const hitbox = false;
