@@ -3,6 +3,7 @@ import BloodCollection from "./BloodCollection";
 import BloodChunkCollection from "./BloodChunkCollection";
 import CPUPlayer from "./CPUPlayer";
 import Drawer from "./Drawer";
+import FogOfWar from "./FogOfWar";
 import Keyboard from "./Keyboard";
 import HUD from "./HUD";
 import HumanPlayer from "./HumanPlayer";
@@ -30,6 +31,7 @@ window.onload = () => {
 
   let bloods = new BloodCollection();
   let bloodChunks = new BloodChunkCollection();
+  let fogOfWar = new FogOfWar();
   let hud = new HUD();
   let map = new Map();
   let mines = new MineCollection({ map });
@@ -74,6 +76,7 @@ window.onload = () => {
     hud.tick({ camera, drawer, mouse, player: humanPlayer });
     bloods.tick({ map });
     bloodChunks.tick({ map });
+    fogOfWar.tick({ humanPlayer, map });
   };
 
   let drawObjects = () => [
@@ -85,6 +88,7 @@ window.onload = () => {
     cpuPlayer,
     humanPlayer,
     mouse,
+    fogOfWar,
     hud,
     miniMap,
   ];

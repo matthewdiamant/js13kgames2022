@@ -37,6 +37,8 @@ class Map {
     this.mines = level.mines;
     this.humanBases = level.humanBases;
     this.cpuBases = level.cpuBases;
+    this.height = this.grid.length;
+    this.width = this.grid[0].length;
   }
 
   tick() {}
