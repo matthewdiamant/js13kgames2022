@@ -1,5 +1,5 @@
 import Building from "./Building";
-import Unit from "./Unit";
+import Unit, { STATES } from "./Unit";
 import unitTypes from "./unitTypes";
 
 class Player {
@@ -24,6 +24,8 @@ class Player {
   }
 
   cancelBuilding(building) {
+    building.builder.buildingTarget = null;
+    building.builder.state = STATES.IDLE;
     this.buildings = this.buildings.filter(
       (b) => b.x !== building.x && b.y !== building.y
     );
@@ -33,7 +35,7 @@ class Player {
 
   placeBuildingForConstruction({ building, x, y, map, unit }) {
     this.resources -= 400;
-    const newBuilding = new Building(x, y, this.color, false);
+    const newBuilding = new Building(x, y, this.color, false, unit);
     this.addBuilding(newBuilding);
     unit.buildBuilding({ building: newBuilding });
   }

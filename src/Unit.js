@@ -109,7 +109,6 @@ class Unit {
   buildBuilding({ building }) {
     this.buildingTarget = building;
     this.state = STATES.BUILD_BUILDING;
-    this.path = [[building.x, building.y]];
   }
 
   calculateSpeed() {
@@ -231,6 +230,24 @@ class Unit {
         this.bounce =
           -Math.pow(this.bounceTime / a - Math.sqrt(BOUNCE_HEIGHT), 2) +
           BOUNCE_HEIGHT;
+      }
+    }
+
+    // building
+    if (this.state === STATES.BUILD_BUILDING) {
+      if (this.path.length === 0) {
+        this.setPath([this.buildingTarget.x, this.buildingTarget.y], map);
+      }
+      if (boxCollision(this, this.buildingTarget)) {
+        this.buildingTarget.buildingProgress -= 1;
+        if (this.buildingTarget.buildingProgress <= 0) {
+          const finishedBuilding = player.buildings.find(
+            (b) =>
+              b.x === this.buildingTarget.x && b.y === this.buildingTarget.y
+          );
+          finishedBuilding.built = true;
+          this.state = STATES.IDLE;
+        }
       }
     }
 
