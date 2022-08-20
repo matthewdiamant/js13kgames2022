@@ -59,6 +59,17 @@ class Player {
       return units;
     }, []);
     this.buildings.forEach((b) => b.tick({ player: this }));
+    this.buildings = this.buildings.reduce((buildings, building) => {
+      if (building.health <= 0) {
+        // building.explode({ bloods, bloodChunks, sound });
+        if (this.selected && this.selected.includes(building)) {
+          this.selected = this.selected.filter((u) => u !== building);
+        }
+      } else {
+        buildings.push(building);
+      }
+      return buildings;
+    }, []);
   }
 
   static draw(drawer) {

@@ -62,18 +62,19 @@ class CPUPlayer extends Player {
 
     // randomly build goblins
     const [barracks] = this.buildings.filter((b) => b.name === "barracks");
-    if (barracks && barracks.built && Math.random() < GOBLIN_BUILD_RATE) {
+    if (Math.random() < GOBLIN_BUILD_RATE) {
       this.tryAction(barracks, "build goblin");
     }
 
     // randomly build workers
+    const [base] = this.buildings.filter((b) => b.name === "base");
     if (Math.random() < WORKER_BUILD_RATE) {
-      const [base] = this.buildings.filter((b) => b.name === "base");
       this.tryAction(base, "build shade");
     }
   }
 
   tryAction(building, actionName) {
+    if (!building || !building.built) return false;
     const [action] = building
       .actions({ player: this })
       .filter(({ name }) => name === actionName);

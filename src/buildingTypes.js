@@ -35,7 +35,7 @@ const buildUnit = (type, building, player) => {
 export default {
   base: {
     name: "base",
-    health: 1000,
+    health: 50,
     buildTime: 600,
     cost: 400,
     sizeX: Map.tileSize * 3,
@@ -46,7 +46,7 @@ export default {
   },
   barracks: {
     name: "barracks",
-    health: 500,
+    health: 50,
     buildTime: 300,
     cost: 150,
     sizeX: Map.tileSize * 3,
