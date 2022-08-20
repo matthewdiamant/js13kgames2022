@@ -45,8 +45,7 @@ class Camera {
   tick({ keyboard, mouse }) {
     const SPEED = 15;
     const THRESHOLD = 50;
-    const [mlx, mly] = mouse.mouseLocation;
-    const [mx, my] = [mlx - this.x, mly - this.y];
+    const [mx, my] = mouse.mouseScreenLocation;
 
     if (keyboard.isDown(keyboard.UP) || my < THRESHOLD)
       this.position_y -= SPEED;

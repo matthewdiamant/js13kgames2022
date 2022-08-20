@@ -15,6 +15,7 @@ class Mouse {
     this.clickCoords = [null, null];
     this.rightClickCoords = [null, null];
     this.mouseLocation = [null, null];
+    this.mouseScreenLocation = [null, null];
 
     // dragging
     this.dragging = false;
@@ -64,8 +65,10 @@ class Mouse {
   }
 
   mousemove({ clientX, clientY }) {
-    if (this.camera)
+    if (this.camera) {
       this.mouseLocation = [clientX + this.camera.x, clientY + this.camera.y];
+      this.mouseScreenLocation = [clientX, clientY];
+    }
   }
 
   rightClick({ clientX, clientY }) {
