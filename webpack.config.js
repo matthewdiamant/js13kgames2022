@@ -21,11 +21,15 @@ const prod = {
             unsafe_methods: true,
             unsafe_symbols: true,
           },
+          /*
+           * BROKEN!?
+           *
           mangle: {
             properties: {
               keep_quoted: true,
             },
           },
+          */
         },
       }),
     ],
