@@ -62,6 +62,7 @@ class Building {
         actionable: () => true,
         execute: ({ player }) => {
           player.cancelBuilding(this);
+          player.selected = [];
         },
         drawIcon: HUD.cancelIcon,
       };

@@ -241,11 +241,7 @@ class Unit {
       if (boxCollision(this.hitbox(), this.buildingTarget)) {
         this.buildingTarget.buildingProgress -= 1;
         if (this.buildingTarget.buildingProgress <= 0) {
-          const finishedBuilding = player.buildings.find(
-            (b) =>
-              b.x === this.buildingTarget.x && b.y === this.buildingTarget.y
-          );
-          finishedBuilding.built = true;
+          this.buildingTarget.built = true;
           this.state = STATES.IDLE;
         }
       }

@@ -29,10 +29,7 @@ class Player {
   cancelBuilding(building) {
     building.builder.buildingTarget = null;
     building.builder.state = STATES.IDLE;
-    this.buildings = this.buildings.filter(
-      (b) => b.x !== building.x && b.y !== building.y
-    );
-    this.selected = [];
+    this.buildings = this.buildings.filter((b) => b !== building);
     this.resources += 400;
   }
 
