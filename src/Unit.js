@@ -303,6 +303,11 @@ class Unit {
     }
 
     // attacking
+    if (this.target && this.target.health <= 0) {
+      this.target = null;
+      this.state = STATES.IDLE;
+      this.path = [];
+    }
     if (this.firingTime > 0) this.firingTime -= 1;
     if (this.cooldownTime > 0) this.cooldownTime -= 1;
     if (this.state === STATES.ATTACKING) {
@@ -324,14 +329,10 @@ class Unit {
         const d = distance(this, this.target);
         const dx = (this.target.x - this.x) / d;
         const dy = (this.target.y - this.pathY) / d;
-        const killed = this.target.takeDamage(this.damage, {
+        this.target.takeDamage(this.damage, {
           bloods,
           d: { dx, dy },
         });
-        if (killed) {
-          this.target = null;
-          this.state = STATES.IDLE;
-        }
       }
     }
 
