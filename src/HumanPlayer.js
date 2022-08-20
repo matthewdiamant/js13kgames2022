@@ -21,6 +21,7 @@ class HumanPlayer extends Player {
     this.placeBuildingUnit = null;
     this.placeBuildingBuilding = null;
     this.drawPlaceBuilding = null;
+    this.moveFeedback = null;
   }
 
   dragSelect(mouse, entities) {
@@ -116,7 +117,12 @@ class HumanPlayer extends Player {
         return;
       }
 
-      unit.setPath(mouse.rightClickTarget, map);
+      unit.setPath(rightClickTarget, map);
+      this.moveFeedback = {
+        x: rightClickTarget[0],
+        y: rightClickTarget[1],
+        time: 30,
+      };
       unit.state = STATES.MOVING;
       sound.play("click");
     }
@@ -179,12 +185,35 @@ class HumanPlayer extends Player {
       }
     });
 
+    if (this.moveFeedback) {
+      this.moveFeedback.time -= 1;
+      if (this.moveFeedback.time <= 0) {
+        this.moveFeedback = null;
+      }
+    }
+
     Player.tick.call(this, { bloods, bloodChunks, map, sound, targets });
   }
 
   draw(drawer) {
     if (this.mode === MODES.PLACE_BUILDING && this.drawPlaceBuilding) {
       this.drawPlaceBuilding(drawer);
+    }
+
+    if (this.moveFeedback && this.moveFeedback.time % 10 < 5) {
+      drawer.ellipse({
+        ellipse: [
+          this.moveFeedback.x + 20,
+          this.moveFeedback.y + 40,
+          (40 + 15) / 2,
+          40 / 3,
+          0,
+          0,
+          2 * Math.PI,
+        ],
+        strokeColor: "#4AC",
+        strokeWidth: 5,
+      });
     }
     Player.draw.call(this, drawer);
   }
