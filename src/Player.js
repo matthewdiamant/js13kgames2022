@@ -23,6 +23,11 @@ class Player {
     this.buildings.push(newBuilding);
   }
 
+  cancelBuilding(building) {
+    this.buildings = this.buildings.filter((b) => b !== building);
+    this.selected = [];
+  }
+
   entities() {
     return this.units.concat(this.buildings);
   }

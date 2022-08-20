@@ -46,9 +46,21 @@ class Building {
   }
 
   actions({ player }) {
+    const output = Array(9).fill({});
+
     const building = this;
-    return [
-      {
+    if (!this.built) {
+      output[8] = {
+        name: "cancel",
+        cost: 0,
+        actionable: () => true,
+        execute: ({ player }) => {
+          player.cancelBuilding(this);
+        },
+        drawIcon: (drawer, x, y) => {},
+      };
+    } else {
+      output[0] = {
         name: "build worker",
         cost: 100,
         time: 5 * 30,
@@ -73,8 +85,8 @@ class Building {
         drawIcon: (drawer, x, y) => {
           Unit.hudDrawIcon(drawer, x, y);
         },
-      },
-      {
+      };
+      output[1] = {
         name: "build big worker",
         cost: 10000,
         actionable: function () {
@@ -86,64 +98,9 @@ class Building {
         drawIcon: (drawer, x, y) => {
           Unit.hudDrawIcon(drawer, x, y);
         },
-      },
-      {
-        name: "build big worker",
-        actionable: () => {},
-        execute: () => {},
-        drawIcon: (drawer, x, y) => {
-          Unit.hudDrawIcon(drawer, x, y);
-        },
-      },
-      {
-        name: "build big worker",
-        actionable: () => {},
-        execute: () => {},
-        drawIcon: (drawer, x, y) => {
-          Unit.hudDrawIcon(drawer, x, y);
-        },
-      },
-      {
-        name: "build big worker",
-        actionable: () => {},
-        execute: () => {},
-        drawIcon: (drawer, x, y) => {
-          Unit.hudDrawIcon(drawer, x, y);
-        },
-      },
-      {
-        name: "build big worker",
-        actionable: () => {},
-        execute: () => {},
-        drawIcon: (drawer, x, y) => {
-          Unit.hudDrawIcon(drawer, x, y);
-        },
-      },
-      {
-        name: "build big worker",
-        actionable: () => {},
-        execute: () => {},
-        drawIcon: (drawer, x, y) => {
-          Unit.hudDrawIcon(drawer, x, y);
-        },
-      },
-      {
-        name: "build big worker",
-        actionable: () => {},
-        execute: () => {},
-        drawIcon: (drawer, x, y) => {
-          Unit.hudDrawIcon(drawer, x, y);
-        },
-      },
-      {
-        name: "build big worker",
-        actionable: () => {},
-        execute: () => {},
-        drawIcon: (drawer, x, y) => {
-          Unit.hudDrawIcon(drawer, x, y);
-        },
-      },
-    ];
+      };
+    }
+    return output;
   }
 
   hudDrawCurrentTask(drawer, x, y) {
