@@ -69,7 +69,7 @@ class CPUPlayer extends Player {
     // randomly build workers
     if (Math.random() < WORKER_BUILD_RATE) {
       const [base] = this.buildings.filter((b) => b.name === "base");
-      this.tryAction(base, "build worker");
+      this.tryAction(base, "build shade");
     }
   }
 
@@ -78,12 +78,16 @@ class CPUPlayer extends Player {
       .actions({ player: this })
       .filter(({ name }) => name === actionName);
 
-    const success = action.execute({ player: this });
-    console.log(
-      `cpu executing ${action.name} on ${building.name}${
-        success ? "" : ", but failed"
-      }, and has ${this.resources} left`
-    );
+    try {
+      const success = action.execute({ player: this });
+      console.log(
+        `cpu executing ${action.name} on ${building.name}${
+          success ? "" : ", but failed"
+        }, and has ${this.resources} left`
+      );
+    } catch (e) {
+      console.log('cpu errored on action', building, actionName);
+    }
   }
 
   tick({ bloods, bloodChunks, map, mines, sound, targets }) {
