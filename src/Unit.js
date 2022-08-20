@@ -3,6 +3,7 @@ import Blood from "./Blood";
 import BloodChunk from "./BloodChunk";
 import HUD from "./HUD";
 import { humanoid } from "./Sprites";
+import buildingTypes from "./buildingTypes";
 import { boxCollision } from "./collision";
 import { distance } from "./distance";
 
@@ -359,33 +360,24 @@ class Unit {
       },
     };
 
+    const buildBuilding = (building) => ({
+      name: `build ${building["name"]}`,
+      cost: building["cost"],
+      actionable: function () {
+        return this.cost <= player.resources;
+      },
+      drawIcon: (drawer, x, y) => {},
+      execute: () => {
+        player.placeBuildingMode({ unit: this, building: building["name"] });
+        this.menuState = MENU_STATES.PLACE_BUILDING;
+      },
+    });
+
     if (this.state === MENU_STATES.BUILD_BUILDING) {
       output[8] = cancel;
     } else if (this.menuState === MENU_STATES.BUILDING) {
-      output[0] = {
-        name: "build base",
-        cost: 400,
-        actionable: function () {
-          return this.cost <= player.resources;
-        },
-        drawIcon: (drawer, x, y) => {},
-        execute: () => {
-          player.placeBuildingMode({ unit: this, building: "base" });
-          this.menuState = MENU_STATES.PLACE_BUILDING;
-        },
-      };
-      output[1] = {
-        name: "build barrack",
-        cost: 150,
-        actionable: function () {
-          return this.cost <= player.resources;
-        },
-        drawIcon: (drawer, x, y) => {},
-        execute: () => {
-          player.placeBuildingMode({ unit: this, building: "barracks" });
-          this.menuState = MENU_STATES.PLACE_BUILDING;
-        },
-      };
+      output[0] = buildBuilding(buildingTypes["base"]);
+      output[1] = buildBuilding(buildingTypes["barracks"]);
       output[8] = cancel;
     } else if (this.menuState === MENU_STATES.PLACE_BUILDING) {
       output[8] = cancel;

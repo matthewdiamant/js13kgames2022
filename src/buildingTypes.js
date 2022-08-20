@@ -6,6 +6,7 @@ export default {
     name: "base",
     health: 1000,
     buildTime: 600,
+    cost: 400,
     sizeX: Map.tileSize * 3,
     sizeY: Map.tileSize * 3,
     actions: ({ building, output, player }) => {
@@ -41,6 +42,7 @@ export default {
     name: "barracks",
     health: 500,
     buildTime: 300,
+    cost: 150,
     sizeX: Map.tileSize * 3,
     sizeY: Map.tileSize * 3,
     actions: ({ building, output, player }) => {
