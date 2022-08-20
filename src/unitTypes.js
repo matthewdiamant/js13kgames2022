@@ -12,6 +12,8 @@ const defaultUnit = {
   health: 50,
   damage: 10,
   size: 8 * 5,
+  cost: 100,
+  buildTime: 5 * 30,
   bloodColor: "#A00",
   aggro: true,
   colors: goblinColors,
@@ -56,6 +58,8 @@ export default {
     health: 100,
     damage: 15,
     size: 8 * 10,
+    cost: 200,
+    buildTime: 10 * 30,
     colors: bruteColors,
     speed: 3,
 
