@@ -236,7 +236,13 @@ class Unit {
     // building
     if (this.state === STATES.BUILD_BUILDING) {
       if (this.path.length === 0) {
-        this.setPath([this.buildingTarget.x, this.buildingTarget.y], map);
+        this.setPath(
+          [
+            this.buildingTarget.x + this.buildingTarget.sizeX / 2,
+            this.buildingTarget.y + this.buildingTarget.sizeY / 2,
+          ],
+          map
+        );
       }
       if (boxCollision(this.hitbox(), this.buildingTarget)) {
         this.buildingTarget.buildingProgress -= 1;
