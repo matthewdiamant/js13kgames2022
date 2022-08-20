@@ -1,4 +1,4 @@
-const DRAG_THRESHOLD = 20;
+const DRAG_THRESHOLD = 2;
 
 class Mouse {
   constructor() {
