@@ -12,6 +12,7 @@ export const STATES = {
   ATTACKING: 2,
   MINING: 3,
   RETURNING_RESOURCE: 4,
+  BUILD_BUILDING: 5,
 };
 
 const MENU_STATES = {
@@ -49,6 +50,7 @@ class Unit {
     this.carryingResource = false;
     this.miningTarget = null;
     this.baseTarget = null;
+    this.buildingTarget = null;
 
     this.cooldownTime = 0;
     this.firingTime = 0;
@@ -102,6 +104,12 @@ class Unit {
     this.path = [];
     this.miningTarget = mine;
     this.state = STATES.MINING;
+  }
+
+  buildBuilding({ building }) {
+    this.buildingTarget = building;
+    this.state = STATES.BUILD_BUILDING;
+    this.path = [[building.x, building.y]];
   }
 
   calculateSpeed() {
@@ -321,10 +329,16 @@ class Unit {
       execute: () => {
         this.menuState = MENU_STATES.INITIAL;
         player.cancelPlaceBuilding();
+        if (this.buildingTarget) {
+          player.cancelBuilding(this.buildingTarget);
+        }
+        this.state = STATES.IDLE;
       },
     };
 
-    if (this.menuState === MENU_STATES.BUILDING) {
+    if (this.state === MENU_STATES.BUILD_BUILDING) {
+      output[8] = cancel;
+    } else if (this.menuState === MENU_STATES.BUILDING) {
       output[0] = {
         name: "build base",
         cost: 400,
@@ -333,7 +347,7 @@ class Unit {
         },
         drawIcon: (drawer, x, y) => {},
         execute: () => {
-          player.placeBuilding({ unit: this, building: "base" });
+          player.placeBuildingMode({ unit: this, building: "base" });
           this.menuState = MENU_STATES.PLACE_BUILDING;
         },
       };
@@ -358,7 +372,6 @@ class Unit {
           drawIcon: (drawer, x, y) => {},
           execute: () => {
             this.menuState = MENU_STATES.BUILDING;
-            console.log("build");
           },
         };
       }

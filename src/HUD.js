@@ -230,6 +230,7 @@ HUD.cancelIcon = (drawer, x, y) => {
   });
   drawer.draw(() => {
     drawer.rect({
+      adjusted: false,
       rect: [x + ICON_BOX_SIZE / 4, y + ICON_BOX_SIZE / 4, 40, 6],
       fillColor: "#0F0",
       rotation: Math.PI / 4,

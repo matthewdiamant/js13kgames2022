@@ -4,7 +4,7 @@ import unitTypes from "./unitTypes";
 
 class Player {
   constructor() {
-    this.resources = 1000;
+    this.resources = 500;
 
     this.units = [];
 
@@ -24,8 +24,18 @@ class Player {
   }
 
   cancelBuilding(building) {
-    this.buildings = this.buildings.filter((b) => b !== building);
+    this.buildings = this.buildings.filter(
+      (b) => b.x !== building.x && b.y !== building.y
+    );
     this.selected = [];
+    this.resources += 400;
+  }
+
+  placeBuildingForConstruction({ building, x, y, map, unit }) {
+    this.resources -= 400;
+    const newBuilding = new Building(x, y, this.color, false);
+    this.addBuilding(newBuilding);
+    unit.buildBuilding({ building: newBuilding });
   }
 
   entities() {

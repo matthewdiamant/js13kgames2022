@@ -74,6 +74,8 @@ class HumanPlayer extends Player {
 
   selectedUnitActions({ cpuPlayer, map, mines, mouse, unit }) {
     const { rightClickTarget } = mouse;
+
+    if (unit.state === STATES.BUILD_BUILDING) return;
     if (mouse.rightClickTarget[0] || mouse.rightClickTarget[1]) {
       if (unit.canMine) {
         const [mine] = mines.mines.filter((mine) =>
@@ -116,7 +118,7 @@ class HumanPlayer extends Player {
     }
   }
 
-  placeBuilding({ unit, building }) {
+  placeBuildingMode({ unit, building }) {
     this.mode = MODES.PLACE_BUILDING;
     this.placeBuildingUnit = unit;
     this.placeBuildingBuilding = building;
@@ -150,8 +152,13 @@ class HumanPlayer extends Player {
       }
 
       if (clickTarget[0] || clickTarget[1]) {
-        const newBuilding = new Building(x, y, this.color, false);
-        this.addBuilding(newBuilding);
+        this.placeBuildingForConstruction({
+          building: this.placeBuildingBuilding,
+          x,
+          y,
+          map,
+          unit: this.placeBuildingUnit,
+        });
         this.cancelPlaceBuilding();
       }
     }
