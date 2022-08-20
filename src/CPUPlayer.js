@@ -62,7 +62,7 @@ class CPUPlayer extends Player {
 
     // randomly build goblins
     const [barracks] = this.buildings.filter((b) => b.name === "barracks");
-    if (barracks && Math.random() < GOBLIN_BUILD_RATE) {
+    if (barracks && barracks.built && Math.random() < GOBLIN_BUILD_RATE) {
       this.tryAction(barracks, "build goblin");
     }
 
