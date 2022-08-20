@@ -201,7 +201,8 @@ class Unit {
       const BOUNCE_HEIGHT = 12;
       const BOUNCE_DURATION = 12;
       const shouldMoveBounce =
-        this.state === STATES.MOVING && this.bounceTime === 0;
+        (this.state === STATES.MOVING || this.state === STATES.ATTACKING) &&
+        this.bounceTime === 0;
       const shouldIdleBounce =
         this.state === STATES.IDLE && Math.random() < 0.01;
       if (shouldMoveBounce || shouldIdleBounce) {
