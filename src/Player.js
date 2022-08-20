@@ -34,6 +34,9 @@ class Player {
     this.units = this.units.reduce((units, unit) => {
       if (unit.health <= 0) {
         unit.explode({ bloods, bloodChunks, sound });
+        if (this.selected.includes(unit)) {
+          this.selected = this.selected.filter((u) => u !== unit);
+        }
       } else {
         units.push(unit);
       }

@@ -26,7 +26,9 @@ class CPUPlayer extends Player {
         unit.setMining(mine);
       });
     if (Math.random() < MOVE_RATE) {
-      const unit = sample(this.units.filter((u) => u.name !== "shade"));
+      const unit = sample(
+        this.units.filter((u) => u.name !== "shade" && u.state === STATES.IDLE)
+      );
       if (unit) {
         const path = [
           Math.floor(80 * 18 + 80 * Math.random() * 5),
