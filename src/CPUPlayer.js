@@ -18,6 +18,8 @@ class CPUPlayer extends Player {
   cpuActions({ map, mines }) {
     const MOVE_RATE = 0.05;
     const WORKER_BUILD_RATE = 0.001;
+
+    // idle workers mine
     this.units
       .filter((unit) => unit.name === "shade" && unit.state === STATES.IDLE)
       .forEach((unit) => {
@@ -25,10 +27,10 @@ class CPUPlayer extends Player {
         const [mine] = mines.mines;
         unit.setMining(mine);
       });
+
+    // idle units randomly wander
     if (Math.random() < MOVE_RATE) {
-      const unit = sample(
-        this.units.filter((u) => u.name !== "shade" && u.state === STATES.IDLE)
-      );
+      const unit = sample(this.units.filter((u) => u.state === STATES.IDLE));
       if (unit) {
         const path = [
           Math.floor(80 * 18 + 80 * Math.random() * 5),
@@ -41,6 +43,23 @@ class CPUPlayer extends Player {
         );
       }
     }
+
+    // build one barracks
+    if (
+      this.buildings.filter((b) => b.name === "barracks").length === 0 &&
+      this.resources >= 250
+    ) {
+      const builder = sample(this.units.filter((u) => u.builder));
+      this.placeBuildingForConstruction({
+        building: "barracks",
+        x: 80 * 20,
+        y: 80 * 8,
+        map,
+        unit: builder,
+      });
+    }
+
+    // randomly build workers
     if (Math.random() < WORKER_BUILD_RATE) {
       const base = this.buildings[0];
       const [action] = base
