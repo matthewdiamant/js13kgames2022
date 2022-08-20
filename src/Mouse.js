@@ -15,7 +15,7 @@ class Mouse {
     this.clickCoords = [null, null];
     this.rightClickCoords = [null, null];
     this.mouseLocation = [null, null];
-    this.mouseScreenLocation = [null, null];
+    this.mouseScreenLocation = [500, 500];
 
     // dragging
     this.dragging = false;

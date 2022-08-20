@@ -58,12 +58,10 @@ class Map {
       row.forEach((cell, x) => {
         normalColor = !normalColor;
         const tileType = TILES[cell];
-        const color =
-          tileType === TILE_TYPE.HOLE
-            ? "#333"
-            : normalColor
-            ? "#ddd"
-            : "#e6e6e6";
+
+        const debug = false;
+        const debugColor = normalColor ? "#ddd" : "#e6e6e6";
+        const color = debug ? debugColor : "#223";
         if (tileType !== TILE_TYPE.HOLE) {
           drawer.rect({
             fillColor: color,
