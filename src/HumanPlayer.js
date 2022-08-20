@@ -171,14 +171,17 @@ class HumanPlayer extends Player {
   }
 
   moveGroup(units, map, mouse, sound) {
+    const X_OFFSET = 70;
+    const Y_OFFSET = 70;
+    const MAX_ROW = 8;
     const { rightClickTarget } = mouse;
-    units.forEach((unit) => {
-      unit.setPath(rightClickTarget, map);
-      this.moveFeedback.push({
-        x: rightClickTarget[0],
-        y: rightClickTarget[1],
-        time: 30,
-      });
+    units.forEach((unit, i) => {
+      const [x, y] = [
+        rightClickTarget[0] + (i % MAX_ROW) * X_OFFSET,
+        rightClickTarget[1] + Math.floor(i / MAX_ROW) * Y_OFFSET,
+      ];
+      unit.setPath([x, y], map);
+      this.moveFeedback.push({ x, y, time: 30 });
       unit.state = STATES.MOVING;
     });
     sound.play("click");
