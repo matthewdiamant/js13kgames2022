@@ -3,7 +3,7 @@ import Map from "./Map";
 import Unit from "./Unit";
 
 class Building {
-  constructor(x, y, color) {
+  constructor(x, y, color, built) {
     this.x = x;
     this.y = y;
     this.health = 1000;
@@ -16,7 +16,7 @@ class Building {
     this.tasks = [];
     this.color = color;
     this.attackSelected = 0;
-    this.built = false;
+    this.built = built;
   }
 
   attacked() {

@@ -18,9 +18,8 @@ class Player {
     this.units.push(newUnit);
   }
 
-  addBuilding({ type, x, y }) {
-    const newBuilding = new Building(x, y, this.color);
-    newBuilding.built = true;
+  addBuilding({ type, x, y, built = true }) {
+    const newBuilding = new Building(x, y, this.color, built);
     this.buildings.push(newBuilding);
   }
 

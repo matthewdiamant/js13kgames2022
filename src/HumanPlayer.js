@@ -131,10 +131,11 @@ class HumanPlayer extends Player {
   placeBuildingActions(map, mouse) {
     const { clickTarget, mouseLocation } = mouse;
     if (this.mode === MODES.PLACE_BUILDING) {
+      const [mx, my] = mouseLocation;
+      const [tx, ty] = map.coordsToTile(mx, my);
+      const [x, y] = map.tileToCoords(tx, ty, false);
+
       if (mouseLocation) {
-        const [mx, my] = mouseLocation;
-        const [tx, ty] = map.coordsToTile(mx, my);
-        const [x, y] = map.tileToCoords(tx, ty, false);
         this.drawPlaceBuilding = (drawer) => {
           Building.drawBuilding(
             drawer,
@@ -146,10 +147,11 @@ class HumanPlayer extends Player {
             "4"
           );
         };
+      }
 
-        if (clickTarget[0] || clickTarget[1]) {
-          console.log("a");
-        }
+      if (clickTarget[0] || clickTarget[1]) {
+        const newBuilding = new Building(x, y, this.color, false);
+        this.addBuilding(newBuilding);
       }
     }
   }
