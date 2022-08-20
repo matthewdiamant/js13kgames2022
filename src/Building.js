@@ -3,22 +3,23 @@ import Map from "./Map";
 
 class Building {
   constructor(x, y, template, color, built, builder = null) {
+    this.health = template.health;
+    this.sizeX = template.sizeX;
+    this.sizeY = template.sizeY;
+    this.name = template.name;
+    this.actionsTemplate = template.actions;
+    this.buildingProgress = built ? 0 : template.buildTime;
+
     this.x = x;
     this.y = y;
-    this.health = 1000;
-    this.sizeX = Map.tileSize * 3;
-    this.sizeY = Map.tileSize * 3;
     this.lifespan = 0;
     this.selected = false;
-    this.name = "base";
     this.type = "building";
     this.tasks = [];
     this.color = color;
     this.attackSelected = 0;
     this.built = built;
-    this.buildingProgress = built ? 0 : 300;
     this.builder = builder;
-    this.actionsTemplate = template.actions;
   }
 
   attacked() {

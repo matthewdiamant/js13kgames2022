@@ -243,6 +243,7 @@ class Unit {
         if (this.buildingTarget.buildingProgress <= 0) {
           this.buildingTarget.built = true;
           this.state = STATES.IDLE;
+          this.menuState = MENU_STATES.INITIAL;
         }
       }
     }
@@ -364,6 +365,18 @@ class Unit {
         drawIcon: (drawer, x, y) => {},
         execute: () => {
           player.placeBuildingMode({ unit: this, building: "base" });
+          this.menuState = MENU_STATES.PLACE_BUILDING;
+        },
+      };
+      output[1] = {
+        name: "build barrack",
+        cost: 150,
+        actionable: function () {
+          return this.cost <= player.resources;
+        },
+        drawIcon: (drawer, x, y) => {},
+        execute: () => {
+          player.placeBuildingMode({ unit: this, building: "barracks" });
           this.menuState = MENU_STATES.PLACE_BUILDING;
         },
       };
