@@ -21,7 +21,7 @@ class HumanPlayer extends Player {
     this.placeBuildingUnit = null;
     this.placeBuildingBuilding = null;
     this.drawPlaceBuilding = null;
-    this.moveFeedback = null;
+    this.moveFeedback = [];
   }
 
   dragSelect(mouse, entities, sound) {
@@ -174,11 +174,11 @@ class HumanPlayer extends Player {
     const { rightClickTarget } = mouse;
     units.forEach((unit) => {
       unit.setPath(rightClickTarget, map);
-      this.moveFeedback = {
+      this.moveFeedback.push({
         x: rightClickTarget[0],
         y: rightClickTarget[1],
         time: 30,
-      };
+      });
       unit.state = STATES.MOVING;
     });
     sound.play("click");
@@ -202,12 +202,9 @@ class HumanPlayer extends Player {
       this.moveGroup(movingUnits, map, mouse, sound);
     }
 
-    if (this.moveFeedback) {
-      this.moveFeedback.time -= 1;
-      if (this.moveFeedback.time <= 0) {
-        this.moveFeedback = null;
-      }
-    }
+    this.moveFeedback = this.moveFeedback
+      .map((mf) => ({ ...mf, time: mf.time - 1 }))
+      .filter((mf) => mf.time > 0);
 
     Player.tick.call(this, { bloods, bloodChunks, map, sound, targets });
   }
@@ -217,21 +214,15 @@ class HumanPlayer extends Player {
       this.drawPlaceBuilding(drawer);
     }
 
-    if (this.moveFeedback && this.moveFeedback.time % 10 < 5) {
+    this.moveFeedback.forEach((mf) => {
+      if (mf.time % 10 >= 5) return;
       drawer.ellipse({
-        ellipse: [
-          this.moveFeedback.x,
-          this.moveFeedback.y,
-          23,
-          13,
-          0,
-          0,
-          2 * Math.PI,
-        ],
+        ellipse: [mf.x, mf.y, 23, 13, 0, 0, 2 * Math.PI],
         strokeColor: "#4AC",
         strokeWidth: 5,
       });
-    }
+    });
+
     Player.draw.call(this, drawer);
   }
 }
