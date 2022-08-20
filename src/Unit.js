@@ -238,7 +238,7 @@ class Unit {
       if (this.path.length === 0) {
         this.setPath([this.buildingTarget.x, this.buildingTarget.y], map);
       }
-      if (boxCollision(this, this.buildingTarget)) {
+      if (boxCollision(this.hitbox(), this.buildingTarget)) {
         this.buildingTarget.buildingProgress -= 1;
         if (this.buildingTarget.buildingProgress <= 0) {
           const finishedBuilding = player.buildings.find(
@@ -264,13 +264,16 @@ class Unit {
       } else if (this.carryingResource) {
         this.returnResource(player, map);
       }
-      if (boxCollision(this, this.miningTarget)) {
+      if (boxCollision(this.hitbox(), this.miningTarget)) {
         this.carryingResource = true;
         this.returnResource(player, map);
       }
     }
     if (this.state === STATES.RETURNING_RESOURCE) {
-      if (boxCollision(this, this.baseTarget) && this.carryingResource) {
+      if (
+        boxCollision(this.hitbox(), this.baseTarget) &&
+        this.carryingResource
+      ) {
         player.resources += 10;
         this.carryingResource = false;
         this.setPath(
@@ -416,6 +419,12 @@ class Unit {
     );
   }
 
+  hitbox() {
+    const x = this.x - this.size / 2;
+    const y = this.y - this.size / 2;
+    return { x, y, size: this.size };
+  }
+
   draw(drawer) {
     const x = this.x - this.size / 2;
     const y = this.y - this.size / 2;
@@ -461,12 +470,12 @@ class Unit {
       });
     }
 
-    // hitbox?
     const hitbox = false;
     if (hitbox) {
+      const hb = this.hitbox();
       drawer.rect({
         fillColor: "#c668",
-        rect: [x, y, this.size, this.size],
+        rect: [hb.x, hb.y, hb.size, hb.size],
       });
     }
 

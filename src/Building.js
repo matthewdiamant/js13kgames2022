@@ -29,6 +29,10 @@ class Building {
     this.health -= amount;
   }
 
+  hitbox() {
+    return this;
+  }
+
   tick({ player }) {
     this.lifespan += 1;
     const [currentTask] = this.tasks;

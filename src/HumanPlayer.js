@@ -27,7 +27,7 @@ class HumanPlayer extends Player {
   dragSelect(mouse, entities) {
     let collisions = entities.filter((entity) => {
       let [mx, my, endx, endy] = mouse.releaseDrag;
-      return boxCollision(entity, {
+      return boxCollision(entity.hitbox(), {
         x: mx,
         y: my,
         sizeX: endx - mx,
@@ -47,7 +47,7 @@ class HumanPlayer extends Player {
     let [mouseX, mouseY] = mouse.clickTarget;
     if (mouseX || mouseY) {
       entities.forEach((entity) => {
-        if (pointCollision(entity, { x: mouseX, y: mouseY })) {
+        if (pointCollision(entity.hitbox(), { x: mouseX, y: mouseY })) {
           entities.forEach((entity) => (entity.selected = false));
           this.selected = [entity];
           entity.selected = true;
@@ -69,7 +69,7 @@ class HumanPlayer extends Player {
     const { buildings, units } = cpuPlayer;
     const enemies = units.concat(buildings);
     return enemies.filter((enemy) =>
-      pointCollision(enemy, { x: target[0], y: target[1] })
+      pointCollision(enemy.hitbox(), { x: target[0], y: target[1] })
     );
   }
 
@@ -94,7 +94,7 @@ class HumanPlayer extends Player {
           const [base] = this.buildings.filter(
             (building) =>
               building.name === "base" &&
-              pointCollision(building, {
+              pointCollision(building.hitbox(), {
                 x: rightClickTarget[0],
                 y: rightClickTarget[1],
               })
@@ -203,10 +203,10 @@ class HumanPlayer extends Player {
     if (this.moveFeedback && this.moveFeedback.time % 10 < 5) {
       drawer.ellipse({
         ellipse: [
-          this.moveFeedback.x + 20,
-          this.moveFeedback.y + 40,
-          (40 + 15) / 2,
-          40 / 3,
+          this.moveFeedback.x,
+          this.moveFeedback.y,
+          23,
+          13,
           0,
           0,
           2 * Math.PI,
