@@ -213,6 +213,31 @@ class HUD {
   }
 }
 
+HUD.cancelIcon = (drawer, x, y) => {
+  drawer.ellipse({
+    adjusted: false,
+    ellipse: [
+      x + ICON_BOX_SIZE / 2,
+      y + ICON_BOX_SIZE / 2,
+      20,
+      20,
+      0,
+      0,
+      2 * Math.PI,
+    ],
+    strokeColor: "#0F0",
+    strokeWidth: 6,
+  });
+  drawer.draw(() => {
+    drawer.rect({
+      rect: [x + ICON_BOX_SIZE / 4, y + ICON_BOX_SIZE / 4, 40, 6],
+      fillColor: "#0F0",
+      rotation: Math.PI / 4,
+      size: 6,
+    });
+  });
+};
+
 HUD.HUD_HEIGHT = 250;
 HUD.HUD_PADDING = 10;
 

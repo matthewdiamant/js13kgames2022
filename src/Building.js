@@ -1,4 +1,4 @@
-import { ICON_BOX_SIZE, ICON_BOX_MARGIN } from "./HUD";
+import HUD, { ICON_BOX_SIZE, ICON_BOX_MARGIN } from "./HUD";
 import Map from "./Map";
 import Unit from "./Unit";
 
@@ -57,7 +57,7 @@ class Building {
         execute: ({ player }) => {
           player.cancelBuilding(this);
         },
-        drawIcon: (drawer, x, y) => {},
+        drawIcon: HUD.cancelIcon,
       };
     } else {
       output[0] = {
