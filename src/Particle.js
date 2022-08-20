@@ -13,6 +13,7 @@ class Particle {
     this.stuck = false;
     this.invisible = false;
     this.grav = 0.6;
+    this.particleDraw = template.draw;
   }
 
   stick({ map }) {
@@ -33,10 +34,7 @@ class Particle {
 
   draw(drawer) {
     if (this.invisible) return;
-    drawer.rect({
-      fillColor: this.color,
-      rect: [this.x, this.y, 5, 5],
-    });
+    this.particleDraw.call(this, drawer);
   }
 }
 

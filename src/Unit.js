@@ -1,6 +1,4 @@
 import AStarFinder, { Grid, smoothenPath } from "./AStar";
-import Blood from "./Blood";
-import BloodChunk from "./BloodChunk";
 import HUD from "./HUD";
 import { humanoid } from "./Sprites";
 import Particle from "./Particle";
@@ -160,7 +158,8 @@ class Unit {
     }
     for (let i = 0; i < 5; i++) {
       bloodChunks.add(
-        new BloodChunk(
+        new Particle(
+          "chunk",
           this.x,
           this.y,
           Math.random() * 6 - 3,
