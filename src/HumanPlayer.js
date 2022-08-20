@@ -24,7 +24,7 @@ class HumanPlayer extends Player {
     this.moveFeedback = null;
   }
 
-  dragSelect(mouse, entities) {
+  dragSelect(mouse, entities, sound) {
     let collisions = entities.filter((entity) => {
       let [mx, my, endx, endy] = mouse.releaseDrag;
       return boxCollision(entity.hitbox(), {
@@ -38,12 +38,13 @@ class HumanPlayer extends Player {
       collisions = collisions.filter((c) => c.type === "unit");
     }
     if (collisions.length === 0) return;
+    sound.play("click");
     entities.forEach((entity) => (entity.selected = false));
     collisions.forEach((entity) => (entity.selected = true));
     this.selected = collisions;
   }
 
-  clickSelect(mouse, entities) {
+  clickSelect(mouse, entities, sound) {
     let [mouseX, mouseY] = mouse.clickTarget;
     if (mouseX || mouseY) {
       entities.forEach((entity) => {
@@ -51,17 +52,18 @@ class HumanPlayer extends Player {
           entities.forEach((entity) => (entity.selected = false));
           this.selected = [entity];
           entity.selected = true;
+          sound.play("click");
         }
       });
     }
   }
 
-  select(mouse) {
+  select(mouse, sound) {
     const entities = [this.units, this.buildings].flat();
     if (mouse.releaseDrag) {
-      this.dragSelect(mouse, entities);
+      this.dragSelect(mouse, entities, sound);
     } else {
-      this.clickSelect(mouse, entities);
+      this.clickSelect(mouse, entities, sound);
     }
   }
 
@@ -140,7 +142,7 @@ class HumanPlayer extends Player {
     this.placeBuildingBuilding = null;
   }
 
-  placeBuildingActions(map, mouse) {
+  placeBuildingActions(map, mouse, sound) {
     const { clickTarget, mouseLocation } = mouse;
     if (this.mode === MODES.PLACE_BUILDING) {
       const [mx, my] = mouseLocation;
@@ -162,6 +164,7 @@ class HumanPlayer extends Player {
       }
 
       if (clickTarget[0] || clickTarget[1]) {
+        sound.play("click");
         this.placeBuildingForConstruction({
           building: this.placeBuildingBuilding,
           x,
@@ -175,9 +178,9 @@ class HumanPlayer extends Player {
   }
 
   tick({ bloods, bloodChunks, cpuPlayer, map, mines, mouse, sound, targets }) {
-    this.select(mouse);
+    this.select(mouse, sound);
 
-    this.placeBuildingActions(map, mouse);
+    this.placeBuildingActions(map, mouse, sound);
 
     this.units.forEach((unit) => {
       if (unit.selected) {
