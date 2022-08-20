@@ -18,6 +18,7 @@ class CPUPlayer extends Player {
   cpuActions({ map, mines }) {
     const MOVE_RATE = 0.05;
     const WORKER_BUILD_RATE = 0.001;
+    const GOBLIN_BUILD_RATE = 0.001;
 
     // idle workers mine
     this.units
@@ -59,9 +60,24 @@ class CPUPlayer extends Player {
       });
     }
 
+    // randomly build goblins
+    const [barracks] = this.buildings.filter((b) => b.name === "barracks");
+    if (barracks && Math.random() < GOBLIN_BUILD_RATE) {
+      const [action] = barracks
+        .actions({ player: this })
+        .filter(({ name }) => name === "build goblin");
+
+      const success = action.execute({ player: this });
+      console.log(
+        `cpu executing ${action.name} on ${barracks.name}${
+          success ? "" : ", but failed"
+        }, and has ${this.resources} left`
+      );
+    }
+
     // randomly build workers
     if (Math.random() < WORKER_BUILD_RATE) {
-      const base = this.buildings[0];
+      const [base] = this.buildings.filter((b) => b.name === "base");
       const [action] = base
         .actions({ player: this })
         .filter(({ name }) => name === "build worker");
