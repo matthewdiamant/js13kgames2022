@@ -119,14 +119,7 @@ class HumanPlayer extends Player {
         return;
       }
 
-      unit.setPath(rightClickTarget, map);
-      this.moveFeedback = {
-        x: rightClickTarget[0],
-        y: rightClickTarget[1],
-        time: 30,
-      };
-      unit.state = STATES.MOVING;
-      sound.play("click");
+      return true;
     }
   }
 
@@ -177,16 +170,37 @@ class HumanPlayer extends Player {
     }
   }
 
+  moveGroup(units, map, mouse, sound) {
+    const { rightClickTarget } = mouse;
+    units.forEach((unit) => {
+      unit.setPath(rightClickTarget, map);
+      this.moveFeedback = {
+        x: rightClickTarget[0],
+        y: rightClickTarget[1],
+        time: 30,
+      };
+      unit.state = STATES.MOVING;
+    });
+    sound.play("click");
+  }
+
   tick({ bloods, bloodChunks, cpuPlayer, map, mines, mouse, sound, targets }) {
     this.select(mouse, sound);
 
     this.placeBuildingActions(map, mouse, sound);
 
+    const movingUnits = [];
     this.units.forEach((unit) => {
-      if (unit.selected) {
-        this.selectedUnitActions({ cpuPlayer, map, mines, mouse, sound, unit });
+      if (!unit.selected) return;
+      if (
+        this.selectedUnitActions({ cpuPlayer, map, mines, mouse, sound, unit })
+      ) {
+        movingUnits.push(unit);
       }
     });
+    if (movingUnits.length) {
+      this.moveGroup(movingUnits, map, mouse, sound);
+    }
 
     if (this.moveFeedback) {
       this.moveFeedback.time -= 1;
