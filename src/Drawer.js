@@ -36,9 +36,20 @@ export default class Drawer {
     cx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
-  drawBackground() {
+  drawBackground(start, end) {
     this.draw(() => {
-      cx.fillStyle = "#242";
+      const gradient = cx.createLinearGradient(
+        0,
+        0,
+        this.height - HUD.HUD_HEIGHT,
+        this.width
+      );
+
+      gradient.addColorStop(0, start);
+      gradient.addColorStop(1, end);
+
+      cx.fillStyle = gradient;
+
       cx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     });
   }

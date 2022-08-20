@@ -1,7 +1,7 @@
 export default class Background {
   draw(drawer) {
     drawer.draw(() => {
-      drawer.drawBackground();
+      drawer.drawBackground("#611", "#166");
     });
   }
 }
