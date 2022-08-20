@@ -180,6 +180,7 @@ class HUD {
     });
     if (this.selected.length === 1) {
       this.actionBoxes.forEach(({ x, y, width, height, icon, action }) => {
+        if (!action.name) return;
         drawer.rect({
           adjusted: false,
           strokeColor: action.actionable()

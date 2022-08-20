@@ -42,9 +42,11 @@ class Unit {
     this.recalculateTarget = 0;
     this.state = STATES.IDLE;
 
+    // worker things
     this.carryingResource = false;
     this.miningTarget = null;
     this.baseTarget = null;
+    this.builderMenu = false;
 
     this.cooldownTime = 0;
     this.firingTime = 0;
@@ -299,9 +301,32 @@ class Unit {
     if (this.attackSelected > 0) this.attackSelected -= 1;
   }
 
-  actions() {
-    return [
-      {
+  actions({ player }) {
+    const output = Array(9).fill({});
+
+    if (this.builderMenu) {
+      output[0] = {
+        name: "build base",
+        cost: 400,
+        actionable: function () {
+          return this.cost <= player.resources;
+        },
+        drawIcon: (drawer, x, y) => {},
+        execute: () => {
+          console.log("build base");
+        },
+      };
+      output[8] = {
+        name: "cancel",
+        cost: 0,
+        actionable: () => true,
+        drawIcon: (drawer, x, y) => {},
+        execute: () => {
+          this.builderMenu = false;
+        },
+      };
+    } else {
+      output[0] = {
         name: "move",
         cost: 0,
         actionable: () => true,
@@ -309,8 +334,21 @@ class Unit {
         execute: () => {
           console.log("move");
         },
-      },
-    ];
+      };
+      if (this.builder) {
+        output[6] = {
+          name: "build",
+          cost: 0,
+          actionable: () => true,
+          drawIcon: (drawer, x, y) => {},
+          execute: () => {
+            this.builderMenu = true;
+            console.log("build");
+          },
+        };
+      }
+    }
+    return output;
   }
 
   hudDrawIcon(drawer, x, y) {
