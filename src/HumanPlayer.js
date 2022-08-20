@@ -72,7 +72,7 @@ class HumanPlayer extends Player {
     );
   }
 
-  selectedUnitActions({ cpuPlayer, map, mines, mouse, unit }) {
+  selectedUnitActions({ cpuPlayer, map, mines, mouse, sound, unit }) {
     const { rightClickTarget } = mouse;
 
     if (unit.state === STATES.BUILD_BUILDING) return;
@@ -86,6 +86,7 @@ class HumanPlayer extends Player {
         );
         if (mine) {
           unit.setMining(mine);
+          sound.play("click");
           return;
         }
         if (unit.carryingResource) {
@@ -99,6 +100,7 @@ class HumanPlayer extends Player {
           );
           if (base) {
             unit.returnResource(this, map, base);
+            sound.play("click");
             return;
           }
         }
@@ -110,11 +112,13 @@ class HumanPlayer extends Player {
       });
       if (enemy) {
         unit.setTarget(enemy, map);
+        sound.play("click");
         return;
       }
 
       unit.setPath(mouse.rightClickTarget, map);
       unit.state = STATES.MOVING;
+      sound.play("click");
     }
   }
 
@@ -171,7 +175,7 @@ class HumanPlayer extends Player {
 
     this.units.forEach((unit) => {
       if (unit.selected) {
-        this.selectedUnitActions({ cpuPlayer, map, mines, mouse, unit });
+        this.selectedUnitActions({ cpuPlayer, map, mines, mouse, sound, unit });
       }
     });
 
