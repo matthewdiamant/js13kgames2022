@@ -63,32 +63,27 @@ class CPUPlayer extends Player {
     // randomly build goblins
     const [barracks] = this.buildings.filter((b) => b.name === "barracks");
     if (barracks && Math.random() < GOBLIN_BUILD_RATE) {
-      const [action] = barracks
-        .actions({ player: this })
-        .filter(({ name }) => name === "build goblin");
-
-      const success = action.execute({ player: this });
-      console.log(
-        `cpu executing ${action.name} on ${barracks.name}${
-          success ? "" : ", but failed"
-        }, and has ${this.resources} left`
-      );
+      this.tryAction(barracks, "build goblin");
     }
 
     // randomly build workers
     if (Math.random() < WORKER_BUILD_RATE) {
       const [base] = this.buildings.filter((b) => b.name === "base");
-      const [action] = base
-        .actions({ player: this })
-        .filter(({ name }) => name === "build worker");
-
-      const success = action.execute({ player: this });
-      console.log(
-        `cpu executing ${action.name} on ${base.name}${
-          success ? "" : ", but failed"
-        }, and has ${this.resources} left`
-      );
+      this.tryAction(base, "build worker");
     }
+  }
+
+  tryAction(building, actionName) {
+    const [action] = building
+      .actions({ player: this })
+      .filter(({ name }) => name === actionName);
+
+    const success = action.execute({ player: this });
+    console.log(
+      `cpu executing ${action.name} on ${building.name}${
+        success ? "" : ", but failed"
+      }, and has ${this.resources} left`
+    );
   }
 
   tick({ bloods, bloodChunks, map, mines, sound, targets }) {
