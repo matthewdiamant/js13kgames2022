@@ -3,6 +3,7 @@ import Blood from "./Blood";
 import BloodChunk from "./BloodChunk";
 import HUD from "./HUD";
 import { humanoid } from "./Sprites";
+import Particle from "./Particle";
 import buildingTypes from "./buildingTypes";
 import { boxCollision } from "./collision";
 import { distance } from "./distance";
@@ -130,7 +131,8 @@ class Unit {
     this.health -= amount;
     for (let i = 0; i < amount; i++) {
       bloods.add(
-        new Blood(
+        new Particle(
+          "blood",
           this.x,
           this.y + this.size / 2,
           Math.random() * 6 - 3 + d.dx * 4,
@@ -146,7 +148,8 @@ class Unit {
     sound.play("death");
     for (let i = 0; i < 100; i++) {
       bloods.add(
-        new Blood(
+        new Particle(
+          "blood",
           this.x,
           this.y,
           Math.random() * 10 - 5,
