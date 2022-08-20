@@ -1,6 +1,7 @@
 import AStarFinder, { Grid, smoothenPath } from "./AStar";
 import Blood from "./Blood";
 import BloodChunk from "./BloodChunk";
+import HUD from "./HUD";
 import { humanoid } from "./Sprites";
 import { boxCollision } from "./collision";
 import { distance } from "./distance";
@@ -316,7 +317,7 @@ class Unit {
       name: "cancel",
       cost: 0,
       actionable: () => true,
-      drawIcon: (drawer, x, y) => {},
+      drawIcon: HUD.cancelIcon,
       execute: () => {
         this.menuState = MENU_STATES.INITIAL;
         player.cancelPlaceBuilding();
