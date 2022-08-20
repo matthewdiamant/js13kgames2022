@@ -33,6 +33,7 @@ class Unit {
     this.pathY = y;
     this.dx = 0;
     this.dy = 0;
+    this.maxHealth = this.health;
     this.lifespan = 0;
     this.selected = false;
     this.path = [];

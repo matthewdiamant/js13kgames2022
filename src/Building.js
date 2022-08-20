@@ -13,6 +13,7 @@ class Building {
     this.x = x;
     this.y = y;
     this.lifespan = 0;
+    this.maxHealth = this.health;
     this.selected = false;
     this.type = "building";
     this.tasks = [];

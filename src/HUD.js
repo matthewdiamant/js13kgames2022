@@ -144,6 +144,13 @@ class HUD {
         this.infoboxX + INFOBOX_PADDING,
         this.infoboxY + INFOBOX_PADDING + 60
       );
+
+      drawer.text({
+        text: `${entity.health} / ${entity.maxHealth}`,
+        x: this.infoboxX + INFOBOX_PADDING,
+        y: this.infoboxY + INFOBOX_PADDING + 140,
+        size: 3,
+      });
     } else if (this.selected.length > 1) {
       // multiple selected
       const units = this.selected.slice(0, INFOBOX_ICON_ROW_MAX * 3);
