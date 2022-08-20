@@ -14,27 +14,42 @@ class FogOfWar {
       }
       tiles.push(row);
     }
+
+    const clampX = (x) => Math.min(Math.max(0, x), map.width - 1);
+    const clampY = (y) => Math.min(Math.max(0, y), map.height - 1);
+
     humanPlayer.entities().forEach((e) => {
-      const [tileX, tileY] = map.coordsToTile(e.x, e.y);
-      tiles[tileY][tileX] = 0;
+      const SIGHT = 10;
+
+      const [x, y] = map.coordsToTile(e.x, e.y);
+
+      for (let dy = clampY(y - SIGHT); dy <= clampY(y + SIGHT); dy++) {
+        const d = Math.floor(
+          Math.sqrt(Math.abs(SIGHT ** 2 - Math.abs(dy - y) ** 2))
+        );
+        for (let dx = clampX(x - d); dx <= clampX(x + d); dx++) {
+          tiles[dy][dx] = 0;
+        }
+      }
     });
+
     this.tiles = tiles;
   }
 
   draw(drawer) {
+    // return;
     this.tiles.forEach((row, y) => {
       row.forEach((tile, x) => {
-        if (tile) {
-          drawer.rect({
-            fillColor: "#0008",
-            rect: [
-              x * Map.tileSizeX,
-              y * Map.tileSizeY,
-              Map.tileSizeX,
-              Map.tileSizeY,
-            ],
-          });
-        }
+        if (!tile) return;
+        drawer.rect({
+          fillColor: "#222",
+          rect: [
+            x * Map.tileSizeX,
+            y * Map.tileSizeY,
+            Map.tileSizeX,
+            Map.tileSizeY,
+          ],
+        });
       });
     });
   }
