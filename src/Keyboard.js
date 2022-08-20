@@ -6,10 +6,10 @@ class Keyboard {
     this._pressed = {};
 
     this.SPACE = { keyboard: [32], controller: [0, 1, 5, 7] };
-    this.LEFT = { keyboard: [37, 65], controller: [14], dir: "l" };
-    this.UP = { keyboard: [38, 87, 16, 17], controller: [12, 2, 3] };
-    this.RIGHT = { keyboard: [39, 68], controller: [15], dir: "r" };
-    this.DOWN = { keyboard: [40, 83], controller: [13] };
+    this.LEFT = { keyboard: [37], controller: [14], dir: "l" };
+    this.UP = { keyboard: [38], controller: [12, 2, 3] };
+    this.RIGHT = { keyboard: [39], controller: [15], dir: "r" };
+    this.DOWN = { keyboard: [40], controller: [13] };
   }
 
   isDownControllerStick(dir) {
