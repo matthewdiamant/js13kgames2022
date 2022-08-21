@@ -1,3 +1,4 @@
+import HUD from "./HUD";
 import Map from "./Map";
 
 class Camera {
@@ -10,6 +11,14 @@ class Camera {
     this.shakeForce = 0;
   }
 
+  setX(x) {
+    this.position_x = this.clampX(x);
+  }
+
+  setY(y) {
+    this.position_y = this.clampY(y);
+  }
+
   adjustX(x) {
     return x - this.x;
   }
@@ -18,12 +27,15 @@ class Camera {
     return y - this.y;
   }
 
-  clampX(maxX) {
-    this.position_x = Math.min(Math.max(0, this.position_x), maxX);
+  clampX(x) {
+    return Math.min(Math.max(0, x), Map.size - this.width);
   }
 
-  clampY(maxY) {
-    this.position_y = Math.min(Math.max(0, this.position_y), maxY);
+  clampY(y) {
+    return Math.min(
+      Math.max(0, y),
+      Map.size * (Map.tileSizeY / Map.tileSize) - this.height
+    );
   }
 
   shake(force, duration) {
@@ -44,7 +56,7 @@ class Camera {
 
   tick({ keyboard, mouse }) {
     const SPEED = 15;
-    const THRESHOLD = 50;
+    const THRESHOLD = HUD.HUD_PADDING;
     const [mx, my] = mouse.mouseScreenLocation;
 
     if (keyboard.isDown(keyboard.UP) || my < THRESHOLD)
@@ -56,11 +68,12 @@ class Camera {
     if (keyboard.isDown(keyboard.RIGHT) || mx > this.width - THRESHOLD)
       this.position_x += SPEED;
 
-    this.clampX(Map.size - this.width);
-    this.clampY(Map.size * (Map.tileSizeY / Map.tileSize) - this.height);
+    this.setX(this.position_x);
+    this.setY(this.position_y);
 
     this.x = this.position_x;
     this.y = this.position_y;
+
     this.applyShake();
   }
 }

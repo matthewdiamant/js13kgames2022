@@ -1,11 +1,12 @@
 import HUD from "./HUD";
 import Map from "./Map";
 
+const minimapSize = 250;
+
 class MiniMap {
   constructor() {}
 
   draw(drawer) {
-    const minimapSize = 250;
     drawer.rect({
       adjusted: false,
       fillColor: "#666",

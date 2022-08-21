@@ -60,6 +60,7 @@ window.onload = () => {
       targets: humanPlayer.entities(),
     });
     humanPlayer.tick({
+      camera,
       cpuPlayer,
       drawer,
       map,

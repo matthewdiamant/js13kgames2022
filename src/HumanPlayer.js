@@ -188,36 +188,72 @@ class HumanPlayer extends Player {
     sound.play("click");
   }
 
-  mouseActions({ drawer, cpuPlayer, map, mines, mouse, sound }) {
-    if (
-      (mouse.clicked &&
-        mouse.clickTarget[1] >=
-          drawer.height - HUD.HUD_HEIGHT - HUD.HUD_PADDING * 2) ||
-      (mouse.rightClicked &&
-        mouse.rightClickTarget[1] >=
-          drawer.height - HUD.HUD_HEIGHT - HUD.HUD_PADDING * 2)
-    ) {
+  inMiniMap(click, clicked, drawer, camera) {
+    const miniMapX = clicked && click[0] - HUD.HUD_PADDING - camera.x;
+    const miniMapY =
+      clicked && click[1] - (drawer.height - 250 - HUD.HUD_PADDING) - camera.y;
+    miniMapX !== null &&
+      miniMapY !== null &&
+      miniMapX >= 0 &&
+      miniMapX < 250 &&
+      miniMapY >= 0 &&
+      miniMapY < 250;
+  }
+
+  inHud(click, clicked, drawer, camera) {
+    return (
+      clicked &&
+      click[1] - camera.y >=
+        drawer.height - HUD.HUD_HEIGHT - HUD.HUD_PADDING * 2
+    );
+  }
+
+  mouseActions({ camera, drawer, cpuPlayer, map, mines, mouse, sound }) {
+    const { clicked, rightClicked, clickTarget, rightClickTarget } = mouse;
+    if (this.inMiniMap(clickTarget, clicked, drawer, camera)) {
+      console.log("minimap click");
+      return;
+    }
+    if (this.inMiniMap(rightClickTarget, rightClicked, drawer, camera)) {
+      console.log("minimap right click");
+      return;
+    }
+    if (this.inHud(clickTarget, clicked, drawer, camera)) {
       console.log("hud click");
-    } else {
-      this.select(mouse, sound);
+      return;
+    }
+    if (this.inHud(rightClickTarget, rightClicked, drawer, camera)) {
+      console.log("hud right click");
+      return;
+    }
+    this.select(mouse, sound);
 
-      this.placeBuildingActions(map, mouse, sound);
+    this.placeBuildingActions(map, mouse, sound);
 
-      const movingUnits = [];
-      this.units.forEach((unit) => {
-        if (!unit.selected) return;
-        if (this.unitActions({ cpuPlayer, map, mines, mouse, sound, unit })) {
-          movingUnits.push(unit);
-        }
-      });
-      if (movingUnits.length) {
-        this.moveGroup(movingUnits, map, mouse, sound);
+    const movingUnits = [];
+    this.units.forEach((unit) => {
+      if (!unit.selected) return;
+      if (this.unitActions({ cpuPlayer, map, mines, mouse, sound, unit })) {
+        movingUnits.push(unit);
       }
+    });
+    if (movingUnits.length) {
+      this.moveGroup(movingUnits, map, mouse, sound);
     }
   }
 
-  tick({ cpuPlayer, drawer, map, mines, mouse, particles, sound, targets }) {
-    this.mouseActions({ cpuPlayer, drawer, map, mines, mouse, sound });
+  tick({
+    camera,
+    cpuPlayer,
+    drawer,
+    map,
+    mines,
+    mouse,
+    particles,
+    sound,
+    targets,
+  }) {
+    this.mouseActions({ camera, cpuPlayer, drawer, map, mines, mouse, sound });
 
     this.moveFeedback = this.moveFeedback
       .map((mf) => ({ ...mf, time: mf.time - 1 }))

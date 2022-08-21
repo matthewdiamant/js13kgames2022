@@ -1,3 +1,5 @@
+import Map from "./Map";
+
 export const ICON_BOX_SIZE = 60;
 export const ICON_BOX_MARGIN = 10;
 
@@ -33,6 +35,36 @@ class HUD {
       if (mouse.mouseLocation[0] || mouse.mouseLocation[1]) {
         this.hoverActions({ camera, mouse });
       }
+    }
+
+    this.miniMapClick({ camera, drawer, mouse });
+  }
+
+  miniMapClick({ camera, drawer, mouse }) {
+    const miniMapSize = 250;
+    if (!mouse.clicked) return;
+    const miniMapX =
+      mouse.clicked && mouse.clickTarget[0] - HUD.HUD_PADDING - camera.x;
+    const miniMapY =
+      mouse.clicked &&
+      mouse.clickTarget[1] - (drawer.height - 250 - HUD.HUD_PADDING) - camera.y;
+    const width = (drawer.width / Map.size) * miniMapSize;
+    const height =
+      (drawer.height / ((Map.tileSizeY / Map.tileSize) * Map.size)) *
+      miniMapSize;
+    if (
+      miniMapX !== null &&
+      miniMapY !== null &&
+      miniMapX >= 0 &&
+      miniMapX < miniMapSize &&
+      miniMapY >= 0 &&
+      miniMapY < miniMapSize
+    ) {
+      const x = ((miniMapX - width / 2) / miniMapSize) * 80 * 48;
+      const y = ((miniMapY - height / 2) / miniMapSize) * 80 * 48;
+      camera.setX(x);
+      camera.setY(y);
+      console.log("mini map click", miniMapX, miniMapY, x, y);
     }
   }
 
