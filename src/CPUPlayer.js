@@ -8,10 +8,9 @@ class CPUPlayer extends Player {
   constructor({ map }) {
     super();
     this.color = "#00A";
-    this.addUnit({ type: "shade", x: 80 * 18, y: 80 * 6 });
-    this.addUnit({ type: "goblin", x: 80 * 18, y: 80 * 6 });
     map.cpuBases.forEach(([x, y]) => {
       this.addBuilding({ type: "base", x: 80 * x, y: 80 * y });
+      this.addUnit({ type: "shade", x: 80 * x - 20, y: 80 * y });
     });
   }
 
@@ -45,6 +44,12 @@ class CPUPlayer extends Player {
       }
     }
 
+    // randomly build workers
+    const [base] = this.buildings.filter((b) => b.name === "base");
+    if (Math.random() < WORKER_BUILD_RATE) {
+      this.tryAction(base, "build shade");
+    }
+
     // build one barracks
     if (
       this.buildings.filter((b) => b.name === "barracks").length === 0 &&
@@ -53,8 +58,8 @@ class CPUPlayer extends Player {
       const builder = sample(this.units.filter((u) => u.builder));
       this.placeBuildingForConstruction({
         building: "barracks",
-        x: 80 * 20,
-        y: 80 * 8,
+        x: base.x - 300,
+        y: base.y,
         map,
         unit: builder,
       });
@@ -64,12 +69,6 @@ class CPUPlayer extends Player {
     const [barracks] = this.buildings.filter((b) => b.name === "barracks");
     if (Math.random() < GOBLIN_BUILD_RATE) {
       this.tryAction(barracks, "build goblin");
-    }
-
-    // randomly build workers
-    const [base] = this.buildings.filter((b) => b.name === "base");
-    if (Math.random() < WORKER_BUILD_RATE) {
-      this.tryAction(base, "build shade");
     }
   }
 

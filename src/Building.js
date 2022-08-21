@@ -10,6 +10,7 @@ class Building {
     this.name = template.name;
     this.actionsTemplate = template.actions;
     this.buildingProgress = built ? 0 : template.buildTime;
+    this.cost = template.cost;
 
     this.x = x;
     this.y = y;

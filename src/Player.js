@@ -30,12 +30,12 @@ class Player {
     building.builder.buildingTarget = null;
     building.builder.state = STATES.IDLE;
     this.buildings = this.buildings.filter((b) => b !== building);
-    this.resources += 400;
+    this.resources += building.cost;
   }
 
   placeBuildingForConstruction({ building, x, y, map, unit }) {
-    this.resources -= 400;
     const b = this.addBuilding({ type: building, x, y, built: false, unit });
+    this.resources -= b.cost;
     unit.buildBuilding({ building: b });
   }
 
