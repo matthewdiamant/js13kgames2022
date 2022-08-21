@@ -125,10 +125,10 @@ class Unit {
     }
   }
 
-  takeDamage(amount, { bloods, d }) {
+  takeDamage(amount, { particles, d }) {
     this.health -= amount;
     for (let i = 0; i < amount; i++) {
-      bloods.add(
+      particles.add(
         new Particle(
           "blood",
           this.x,
@@ -142,10 +142,10 @@ class Unit {
     return this.health <= 0;
   }
 
-  explode({ bloods, bloodChunks, sound }) {
+  explode({ particles, sound }) {
     sound.play("death");
     for (let i = 0; i < 100; i++) {
-      bloods.add(
+      particles.add(
         new Particle(
           "blood",
           this.x,
@@ -157,7 +157,7 @@ class Unit {
       );
     }
     for (let i = 0; i < 5; i++) {
-      bloodChunks.add(
+      particles.add(
         new Particle(
           "chunk",
           this.x,
@@ -200,7 +200,7 @@ class Unit {
     this.pathY += this.dy;
   }
 
-  tick({ bloods, map, player, sound, targets }) {
+  tick({ map, particles, player, sound, targets }) {
     this.lifespan += 1;
 
     // blink
@@ -332,7 +332,7 @@ class Unit {
         const dx = (this.target.x - this.x) / d;
         const dy = (this.target.y - this.pathY) / d;
         this.target.takeDamage(this.damage, {
-          bloods,
+          particles,
           d: { dx, dy },
         });
       }

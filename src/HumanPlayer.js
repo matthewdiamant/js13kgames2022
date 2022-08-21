@@ -187,7 +187,7 @@ class HumanPlayer extends Player {
     sound.play("click");
   }
 
-  tick({ bloods, bloodChunks, cpuPlayer, map, mines, mouse, sound, targets }) {
+  tick({ cpuPlayer, map, mines, mouse, particles, sound, targets }) {
     this.select(mouse, sound);
 
     this.placeBuildingActions(map, mouse, sound);
@@ -209,7 +209,7 @@ class HumanPlayer extends Player {
       .map((mf) => ({ ...mf, time: mf.time - 1 }))
       .filter((mf) => mf.time > 0);
 
-    Player.tick.call(this, { bloods, bloodChunks, map, sound, targets });
+    Player.tick.call(this, { map, particles, sound, targets });
   }
 
   draw(drawer) {

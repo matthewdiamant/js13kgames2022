@@ -43,13 +43,13 @@ class Player {
     return this.units.concat(this.buildings);
   }
 
-  static tick({ bloods, bloodChunks, map, sound, targets }) {
+  static tick({ map, particles, sound, targets }) {
     this.units.forEach((u) =>
-      u.tick({ bloods, map, player: this, sound, targets })
+      u.tick({ particles, map, player: this, sound, targets })
     );
     this.units = this.units.reduce((units, unit) => {
       if (unit.health <= 0) {
-        unit.explode({ bloods, bloodChunks, sound });
+        unit.explode({ particles, sound });
         if (this.selected && this.selected.includes(unit)) {
           this.selected = this.selected.filter((u) => u !== unit);
         }
@@ -61,7 +61,7 @@ class Player {
     this.buildings.forEach((b) => b.tick({ player: this }));
     this.buildings = this.buildings.reduce((buildings, building) => {
       if (building.health <= 0) {
-        // building.explode({ bloods, bloodChunks, sound });
+        // building.explode({ particles, sound });
         if (this.selected && this.selected.includes(building)) {
           this.selected = this.selected.filter((u) => u !== building);
         }

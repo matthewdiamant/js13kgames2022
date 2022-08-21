@@ -1,6 +1,4 @@
 import Background from "./Background";
-import BloodCollection from "./BloodCollection";
-import BloodChunkCollection from "./BloodChunkCollection";
 import CPUPlayer from "./CPUPlayer";
 import Drawer from "./Drawer";
 import FogOfWar from "./FogOfWar";
@@ -11,6 +9,7 @@ import Map from "./Map";
 import MineCollection from "./MineCollection";
 import MiniMap from "./MiniMap";
 import Mouse from "./Mouse";
+import ParticleCollection from "./ParticleCollection";
 import Sound from "./Sound";
 
 let fps = 60,
@@ -29,8 +28,6 @@ window.onload = () => {
   let mouse = new Mouse();
   let sound = new Sound();
 
-  let bloods = new BloodCollection();
-  let bloodChunks = new BloodChunkCollection();
   let fogOfWar = new FogOfWar();
   let hud = new HUD();
   let map = new Map();
@@ -38,6 +35,7 @@ window.onload = () => {
   let miniMap = new MiniMap();
   let humanPlayer = new HumanPlayer({ map });
   let cpuPlayer = new CPUPlayer({ map });
+  let particles = new ParticleCollection();
 
   let gameLoop = (currentTime) => {
     window.requestAnimationFrame(gameLoop);
@@ -55,35 +53,31 @@ window.onload = () => {
     camera.tick({ keyboard, mouse });
     mouse.tick({ camera });
     cpuPlayer.tick({
-      bloods,
-      bloodChunks,
       map,
       mines,
+      particles,
       sound,
       targets: humanPlayer.entities(),
     });
     humanPlayer.tick({
-      bloods,
-      bloodChunks,
       cpuPlayer,
       map,
       mines,
       mouse,
+      particles,
       sound,
       targets: cpuPlayer.entities(),
     });
     mines.tick();
     hud.tick({ camera, drawer, mouse, player: humanPlayer });
-    bloods.tick({ map });
-    bloodChunks.tick({ map });
+    particles.tick({ map });
     fogOfWar.tick({ humanPlayer, map });
   };
 
   let drawObjects = () => [
     background,
     map,
-    bloods,
-    bloodChunks,
+    particles,
     mines,
     cpuPlayer,
     humanPlayer,
