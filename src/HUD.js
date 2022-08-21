@@ -37,11 +37,11 @@ class HUD {
       }
     }
 
-    this.miniMapClick({ camera, drawer, mouse, player });
+    this.miniMapClick({ camera, drawer, map, mouse, player });
     this.miniMapRightClick({ camera, drawer, map, mouse, player, sound });
   }
 
-  miniMapClick({ camera, drawer, mouse, player }) {
+  miniMapClick({ camera, drawer, map, mouse, player }) {
     const miniMapSize = 250;
     const { clicked, x, y } = player.inMiniMap(
       mouse.clickTarget,
@@ -54,8 +54,8 @@ class HUD {
       const height =
         (drawer.height / ((Map.tileSizeY / Map.tileSize) * Map.size)) *
         miniMapSize;
-      const cameraX = ((x - width / 2) / miniMapSize) * 80 * 48;
-      const cameraY = ((y - height / 2) / miniMapSize) * 80 * 48;
+      const cameraX = ((x - width / 2) / miniMapSize) * 80 * map.width;
+      const cameraY = ((y - height / 2) / miniMapSize) * 80 * map.height;
       camera.setX(cameraX);
       camera.setY(cameraY);
     }
@@ -70,9 +70,11 @@ class HUD {
       camera
     );
     if (clicked) {
-      const mapX = (x / miniMapSize) * 80 * 48;
-      const mapY = (y / miniMapSize) * 80 * 48;
-      player.moveGroup(player.selected, map, [mapX, mapY], sound);
+      const mapX = (x / miniMapSize) * 80 * map.width;
+      const mapY = (y / miniMapSize) * 80 * map.height;
+      if (player.selected.length > 0) {
+        player.moveGroup(player.selected, map, [mapX, mapY], sound);
+      }
     }
   }
 

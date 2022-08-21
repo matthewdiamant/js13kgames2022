@@ -12,19 +12,48 @@ const level = {
   ],
   "cpuBases": [
     [41,36]
-  ]
+  ],
+  rows: 48,
 }
 
-const decode = (encoded) => {
+const tutorial = {
+  levelData:
+    "////////g+AAAAAPgAAAAAADgAAAAAABgAAAAAABgAAB/wAB//////8B//////+B//////+B//////+B//////+B//////+B//////8B/AAAAAAB4AAAAAADwAAAAAADwAAAAAAHgAAAAAAfgAAAAAA/gD+AAB//gH//////gH//////gH//////gD//////gA//////gAH/////gAA/////gAAAAAP/gAAAAAA/gAAAAAAHgAAAAAADgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABwAAAAAADwAAAAAAH+AP4AAAf////////",
+  mines: [
+    [41, 43],
+    [20, 15],
+  ],
+  humanBases: [[26, 15]],
+  cpuBases: [[43, 37]],
+  cpuShades: [
+    [41, 41],
+    [43, 41],
+    [45, 41],
+  ],
+  cpuGoblins: [
+    [41, 39],
+    [41, 37],
+    [41, 35],
+    [43, 35],
+    [45, 35],
+  ],
+  humanShades: [[31, 14]],
+  humanGoblins: [
+    [2, 3],
+    [18, 2],
+    [18, 4],
+  ],
+};
+
+const decode = (encoded, numRows = 48) => {
   const decoded = atob(encoded);
   const pad = (n) => "00000000".substr(n.length) + n;
   const chars = decoded
     .split("")
     .map((c) => pad(c.charCodeAt(0).toString(2)))
     .join("");
-  const rows = chars
-    .match(/.{1,48}/g)
-    .map((r) => Array.from(r).map((c) => Number(c)));
+  const re = new RegExp(`.{1,${numRows}}`, "g");
+  const rows = chars.match(re).map((r) => Array.from(r).map((c) => Number(c)));
   return rows;
 };
 
@@ -33,7 +62,11 @@ export const TILES = [TILE_TYPE.NORMAL, TILE_TYPE.HOLE, TILE_TYPE.MINE];
 
 class Map {
   constructor() {
-    this.grid = decode(level.levelData);
+    this.loadLevel(tutorial);
+  }
+
+  loadLevel(level) {
+    this.grid = decode(level.levelData, level.rows);
     this.mines = level.mines;
     this.humanBases = level.humanBases;
     this.cpuBases = level.cpuBases;

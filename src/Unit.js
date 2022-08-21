@@ -392,6 +392,7 @@ class Unit {
         actionable: () => true,
         drawIcon: (drawer, x, y) => {
           drawer.ellipse({
+            adjusted: false,
             ellipse: [x + 30, y + 30, 23, 23, 0, 0, 2 * Math.PI],
             strokeColor: "#0F0",
             strokeWidth: 5,

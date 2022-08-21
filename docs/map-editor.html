@@ -7,6 +7,10 @@
         <div class="control"><div class="control-cell cell mine"></div>mine</div>
         <div class="control"><div class="control-cell cell human-base"></div>human base</div>
         <div class="control"><div class="control-cell cell cpu-base"></div>cpu base</div>
+        <div class="control"><div class="control-cell cell cpu-shade"></div>cpu shade</div>
+        <div class="control"><div class="control-cell cell cpu-goblin"></div>cpu goblin</div>
+        <div class="control"><div class="control-cell cell human-shade"></div>human shade</div>
+        <div class="control"><div class="control-cell cell human-goblin"></div>human goblin</div>
       </div>
 
       <section class="map"></section>
@@ -65,14 +69,6 @@
         width: 20px;
       }
 
-      .cell.thickX {
-        border-top: 3px solid #8888;
-      }
-
-      .cell.thickY {
-        border-left: 3px solid #8888;
-      }
-
       .hole, [data-type="hole"] {
         background: #333;
       }
@@ -110,6 +106,22 @@
         width: 60px;
       }
 
+      .cpu-shade, [data-type="cpu-shade"] {
+        background: #CCF;
+      }
+
+      .cpu-goblin, [data-type="cpu-goblin"] {
+        background: #66F;
+      }
+
+      .human-shade, [data-type="human-shade"] {
+        background: #FCC;
+      }
+
+      .human-goblin, [data-type="human-goblin"] {
+        background: #F66;
+      }
+
       .controls {
         margin-right: 20px;
         width: 500px;
@@ -131,7 +143,7 @@
 
     <script>
       const SIZE = 48
-      const TILE_TYPES = ["normal", "hole", "mine", "human-base", "cpu-base"];
+      const TILE_TYPES = ["normal", "hole", "mine", "human-base", "cpu-base", "cpu-shade", "cpu-goblin", "human-shade", "human-goblin"];
       const map_div = document.querySelector(".map");
       const data_pre = document.querySelector(".data pre");
       const data_encode = document.querySelector(".data .encode");
@@ -144,7 +156,7 @@
       document.body.onmouseup = () => { selecting = false; }
 
       const encode = (m) => {
-        const binary = m.map(r => r.join("")).join("").replaceAll(/[2-4]/g, 0);
+        const binary = m.map(r => r.join("")).join("").replaceAll(/[2-9]/g, 0);
         const bytes = binary.match(/.{1,8}/g);
         const hex = bytes.map(b => parseInt(b, 2).toString(16));
         const byteString = hex.map(h => ("\\x" + (h.length === 1 ? "0" + h : h))).join("")
@@ -164,7 +176,7 @@
         const encoded_map = window.localStorage.getItem('map');
 
         if (encoded_map) {
-          let { levelData, mines, humanBases, cpuBases } = JSON.parse(encoded_map);
+          let { levelData, mines, humanBases, cpuBases, cpuShades, cpuGoblins, humanShades, humanGoblins } = JSON.parse(encoded_map);
           levelData = decode(levelData);
           Object.keys(mines).forEach((m) => {
             const [x, y] = JSON.parse(m);
@@ -178,15 +190,31 @@
             const [x, y] = JSON.parse(m);
             levelData[y][x] = 4
           });
-          return { levelData, mines, humanBases, cpuBases };
+          Object.keys(cpuShades).forEach((m) => {
+            const [x, y] = JSON.parse(m);
+            levelData[y][x] = 5
+          });
+          Object.keys(cpuGoblins).forEach((m) => {
+            const [x, y] = JSON.parse(m);
+            levelData[y][x] = 6
+          });
+          Object.keys(humanShades).forEach((m) => {
+            const [x, y] = JSON.parse(m);
+            levelData[y][x] = 7
+          });
+          Object.keys(humanGoblins).forEach((m) => {
+            const [x, y] = JSON.parse(m);
+            levelData[y][x] = 8
+          });
+          return { levelData, mines, humanBases, cpuBases, cpuShades, cpuGoblins, humanShades, humanGoblins };
         }
 
         const map_row = Array(SIZE).fill(0);
         const map = Array(SIZE).fill(0).map((row) => [...map_row]);
-        return { levelData: map, mines: {}, humanBases: {}, cpuBases: {} };
+        return { levelData: map, mines: {}, humanBases: {}, cpuBases: {}, cpuShades: {}, cpuGoblins: {}, humanShades: {}, humanGoblins: {} };
       }
 
-      const { levelData, mines, humanBases, cpuBases } = load_map();
+      const { levelData, mines, humanBases, cpuBases, cpuShades, cpuGoblins, humanShades, humanGoblins } = load_map();
       const map = levelData;
 
       const render_row = (row) => `<div class="row">${row}</div>`;
@@ -195,9 +223,7 @@
         map.map((row, y) => {
           const cells = row.map((cell, x) => {
             const type = TILE_TYPES[cell]
-            const thickX = y % 4 === 0 ? " thickX" : "";
-            const thickY = x % 4 === 0 ? " thickY" : "";
-            return `<span class="cell${thickX}${thickY}" data-type="${type}"></span>`;
+            return `<span class="cell" data-type="${type}"></span>`;
           }).join("");
 
           return render_row(cells);
@@ -213,6 +239,10 @@
           mines: Object.keys(mines),
           humanBases: Object.keys(humanBases),
           cpuBases: Object.keys(cpuBases),
+          cpuShades: Object.keys(cpuShades),
+          cpuGoblins: Object.keys(cpuGoblins),
+          humanShades: Object.keys(humanShades),
+          humanGoblins: Object.keys(humanGoblins),
         }, null, 2);
 
         const map_data = {
@@ -220,6 +250,10 @@
           mines,
           humanBases,
           cpuBases,
+          cpuShades,
+          cpuGoblins,
+          humanShades,
+          humanGoblins,
         }
         window.localStorage.setItem('map', JSON.stringify(map_data));
       }
@@ -252,6 +286,26 @@
               delete cpuBases[key];
             }
 
+            if (selected_control === "cpu-shade") {
+              cpuShades[key] = true;
+            } else {
+              delete cpuShades[key];
+            }
+            if (selected_control === "cpu-goblin") {
+              cpuGoblins[key] = true;
+            } else {
+              delete cpuGoblins[key];
+            }
+            if (selected_control === "human-shade") {
+              humanShades[key] = true;
+            } else {
+              delete humanShades[key];
+            }
+            if (selected_control === "human-goblin") {
+              humanGoblins[key] = true;
+            } else {
+              delete humanGoblins[key];
+            }
             cell.dataset.type = type;
             render_data();
           }
