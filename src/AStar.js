@@ -1,26 +1,7 @@
-var Heap,
-  defaultCmp,
-  floor,
-  heapify,
-  heappop,
-  heappush,
-  heappushpop,
-  heapreplace,
-  insort,
-  min,
-  nlargest,
-  nsmallest,
-  updateItem,
-  _siftdown,
-  _siftup;
+const floor = Math.floor;
 
-(floor = Math.floor), (min = Math.min);
-
-/*
-  Default comparison function to be used
-   */
-
-defaultCmp = function (x, y) {
+/* Default comparison function to be used */
+const defaultCmp = function (x, y) {
   if (x < y) {
     return -1;
   }
@@ -30,45 +11,8 @@ defaultCmp = function (x, y) {
   return 0;
 };
 
-/*
-  Insert item x in list a, and keep it sorted assuming a is sorted.
-
-  If x is already in a, insert it to the right of the rightmost x.
-
-  Optional args lo (default 0) and hi (default a.length) bound the slice
-  of a to be searched.
-   */
-
-insort = function (a, x, lo, hi, cmp) {
-  var mid;
-  if (lo == null) {
-    lo = 0;
-  }
-  if (cmp == null) {
-    cmp = defaultCmp;
-  }
-  if (lo < 0) {
-    throw new Error("lo must be non-negative");
-  }
-  if (hi == null) {
-    hi = a.length;
-  }
-  while (lo < hi) {
-    mid = floor((lo + hi) / 2);
-    if (cmp(x, a[mid]) < 0) {
-      hi = mid;
-    } else {
-      lo = mid + 1;
-    }
-  }
-  return [].splice.apply(a, [lo, lo - lo].concat(x)), x;
-};
-
-/*
-  Push item onto heap, maintaining the heap invariant.
-   */
-
-heappush = function (array, item, cmp) {
+/* Push item onto heap, maintaining the heap invariant. */
+const heappush = function (array, item, cmp) {
   if (cmp == null) {
     cmp = defaultCmp;
   }
@@ -76,11 +20,8 @@ heappush = function (array, item, cmp) {
   return _siftdown(array, 0, array.length - 1, cmp);
 };
 
-/*
-  Pop the smallest item off the heap, maintaining the heap invariant.
-   */
-
-heappop = function (array, cmp) {
+/* Pop the smallest item off the heap, maintaining the heap invariant. */
+const heappop = function (array, cmp) {
   var lastelt, returnitem;
   if (cmp == null) {
     cmp = defaultCmp;
@@ -96,33 +37,8 @@ heappop = function (array, cmp) {
   return returnitem;
 };
 
-/*
-  Pop and return the current smallest value, and add the new item.
-
-  This is more efficient than heappop() followed by heappush(), and can be
-  more appropriate when using a fixed size heap. Note that the value
-  returned may be larger than item! That constrains reasonable use of
-  this routine unless written as part of a conditional replacement:
-      if item > array[0]
-        item = heapreplace(array, item)
-   */
-
-heapreplace = function (array, item, cmp) {
-  var returnitem;
-  if (cmp == null) {
-    cmp = defaultCmp;
-  }
-  returnitem = array[0];
-  array[0] = item;
-  _siftup(array, 0, cmp);
-  return returnitem;
-};
-
-/*
-  Fast version of a heappush followed by a heappop.
-   */
-
-heappushpop = function (array, item, cmp) {
+/* Fast version of a heappush followed by a heappop. */
+const heappushpop = function (array, item, cmp) {
   var _ref;
   if (cmp == null) {
     cmp = defaultCmp;
@@ -134,11 +50,8 @@ heappushpop = function (array, item, cmp) {
   return item;
 };
 
-/*
-  Transform list into a heap, in-place, in O(array.length) time.
-   */
-
-heapify = function (array, cmp) {
+/* Transform list into a heap, in-place, in O(array.length) time. */
+const heapify = function (array, cmp) {
   var i, _i, _j, _len, _ref, _ref1, _results, _results1;
   if (cmp == null) {
     cmp = defaultCmp;
@@ -169,7 +82,7 @@ heapify = function (array, cmp) {
   This function should be called every time the item is being modified.
    */
 
-updateItem = function (array, item, cmp) {
+const updateItem = function (array, item, cmp) {
   var pos;
   if (cmp == null) {
     cmp = defaultCmp;
@@ -186,7 +99,7 @@ updateItem = function (array, item, cmp) {
   Find the n largest elements in a dataset.
    */
 
-nlargest = function (array, n, cmp) {
+const nlargest = function (array, n, cmp) {
   var elem, result, _i, _len, _ref;
   if (cmp == null) {
     cmp = defaultCmp;
@@ -208,41 +121,7 @@ nlargest = function (array, n, cmp) {
   Find the n smallest elements in a dataset.
    */
 
-nsmallest = function (array, n, cmp) {
-  var elem, i, los, result, _i, _j, _len, _ref, _ref1, _results;
-  if (cmp == null) {
-    cmp = defaultCmp;
-  }
-  if (n * 10 <= array.length) {
-    result = array.slice(0, n).sort(cmp);
-    if (!result.length) {
-      return result;
-    }
-    los = result[result.length - 1];
-    _ref = array.slice(n);
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      elem = _ref[_i];
-      if (cmp(elem, los) < 0) {
-        insort(result, elem, 0, null, cmp);
-        result.pop();
-        los = result[result.length - 1];
-      }
-    }
-    return result;
-  }
-  heapify(array, cmp);
-  _results = [];
-  for (
-    i = _j = 0, _ref1 = min(n, array.length);
-    0 <= _ref1 ? _j < _ref1 : _j > _ref1;
-    i = 0 <= _ref1 ? ++_j : --_j
-  ) {
-    _results.push(heappop(array, cmp));
-  }
-  return _results;
-};
-
-_siftdown = function (array, startpos, pos, cmp) {
+const _siftdown = function (array, startpos, pos, cmp) {
   var newitem, parent, parentpos;
   if (cmp == null) {
     cmp = defaultCmp;
@@ -261,7 +140,7 @@ _siftdown = function (array, startpos, pos, cmp) {
   return (array[pos] = newitem);
 };
 
-_siftup = function (array, pos, cmp) {
+const _siftup = function (array, pos, cmp) {
   var childpos, endpos, newitem, rightpos, startpos;
   if (cmp == null) {
     cmp = defaultCmp;
@@ -283,12 +162,10 @@ _siftup = function (array, pos, cmp) {
   return _siftdown(array, startpos, pos, cmp);
 };
 
-Heap = (function () {
+const Heap = (function () {
   Heap.push = heappush;
 
   Heap.pop = heappop;
-
-  Heap.replace = heapreplace;
 
   Heap.pushpop = heappushpop;
 
@@ -297,8 +174,6 @@ Heap = (function () {
   Heap.updateItem = updateItem;
 
   Heap.nlargest = nlargest;
-
-  Heap.nsmallest = nsmallest;
 
   function Heap(cmp) {
     this.cmp = cmp != null ? cmp : defaultCmp;
@@ -319,10 +194,6 @@ Heap = (function () {
 
   Heap.prototype.contains = function (x) {
     return this.nodes.indexOf(x) !== -1;
-  };
-
-  Heap.prototype.replace = function (x) {
-    return heapreplace(this.nodes, x, this.cmp);
   };
 
   Heap.prototype.pushpop = function (x) {
@@ -389,40 +260,6 @@ function backtrace(node) {
 }
 
 /**
- * Backtrace from start and end node, and return the path.
- * (including both start and end nodes)
- * @param {Node}
- * @param {Node}
- */
-function biBacktrace(nodeA, nodeB) {
-  var pathA = backtrace(nodeA),
-    pathB = backtrace(nodeB);
-  return pathA.concat(pathB.reverse());
-}
-
-/**
- * Compute the length of the path.
- * @param {Array<Array<number>>} path The path
- * @return {number} The length of the path
- */
-function pathLength(path) {
-  var i,
-    sum = 0,
-    a,
-    b,
-    dx,
-    dy;
-  for (i = 1; i < path.length; ++i) {
-    a = path[i - 1];
-    b = path[i];
-    dx = a[0] - b[0];
-    dy = a[1] - b[1];
-    sum += Math.sqrt(dx * dx + dy * dy);
-  }
-  return sum;
-}
-
-/**
  * Given the start and end coordinates, return all the coordinates lying
  * on the line formed by these coordinates, based on Bresenham's algorithm.
  * http://en.wikipedia.org/wiki/Bresenham's_line_algorithm#Simplification
@@ -469,41 +306,6 @@ function interpolate(x0, y0, x1, y1) {
   }
 
   return line;
-}
-
-/**
- * Given a compressed path, return a new path that has all the segments
- * in it interpolated.
- * @param {Array<Array<number>>} path The path
- * @return {Array<Array<number>>} expanded path
- */
-function expandPath(path) {
-  var expanded = [],
-    len = path.length,
-    coord0,
-    coord1,
-    interpolated,
-    interpolatedLen,
-    i,
-    j;
-
-  if (len < 2) {
-    return expanded;
-  }
-
-  for (i = 0; i < len - 1; ++i) {
-    coord0 = path[i];
-    coord1 = path[i + 1];
-
-    interpolated = interpolate(coord0[0], coord0[1], coord1[0], coord1[1]);
-    interpolatedLen = interpolated.length;
-    for (j = 0; j < interpolatedLen - 1; ++j) {
-      expanded.push(interpolated[j]);
-    }
-  }
-  expanded.push(path[len - 1]);
-
-  return expanded;
 }
 
 /**
@@ -560,74 +362,6 @@ export function smoothenPath(grid, path) {
   newPath.push([x1, y1]);
 
   return newPath;
-}
-
-/**
- * Compress a path, remove redundant nodes without altering the shape
- * The original path is not modified
- * @param {Array<Array<number>>} path The path
- * @return {Array<Array<number>>} The compressed path
- */
-function compressPath(path) {
-  // nothing to compress
-  if (path.length < 3) {
-    return path;
-  }
-
-  var compressed = [],
-    sx = path[0][0], // start x
-    sy = path[0][1], // start y
-    px = path[1][0], // second point x
-    py = path[1][1], // second point y
-    dx = px - sx, // direction between the two points
-    dy = py - sy, // direction between the two points
-    lx,
-    ly,
-    ldx,
-    ldy,
-    sq,
-    i;
-
-  // normalize the direction
-  sq = Math.sqrt(dx * dx + dy * dy);
-  dx /= sq;
-  dy /= sq;
-
-  // start the new path
-  compressed.push([sx, sy]);
-
-  for (i = 2; i < path.length; i++) {
-    // store the last point
-    lx = px;
-    ly = py;
-
-    // store the last direction
-    ldx = dx;
-    ldy = dy;
-
-    // next point
-    px = path[i][0];
-    py = path[i][1];
-
-    // next direction
-    dx = px - lx;
-    dy = py - ly;
-
-    // normalize
-    sq = Math.sqrt(dx * dx + dy * dy);
-    dx /= sq;
-    dy /= sq;
-
-    // if the direction has changed, store the point
-    if (dx !== ldx || dy !== ldy) {
-      compressed.push([lx, ly]);
-    }
-  }
-
-  // store the last point
-  compressed.push([px, py]);
-
-  return compressed;
 }
 
 /**
