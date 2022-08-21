@@ -51,6 +51,7 @@ const heappushpop = function (array, item, cmp) {
 };
 
 /* Transform list into a heap, in-place, in O(array.length) time. */
+
 const heapify = function (array, cmp) {
   var i, _i, _j, _len, _ref, _ref1, _results, _results1;
   if (cmp == null) {
@@ -95,32 +96,7 @@ const updateItem = function (array, item, cmp) {
   return _siftup(array, pos, cmp);
 };
 
-/*
-  Find the n largest elements in a dataset.
-   */
-
-const nlargest = function (array, n, cmp) {
-  var elem, result, _i, _len, _ref;
-  if (cmp == null) {
-    cmp = defaultCmp;
-  }
-  result = array.slice(0, n);
-  if (!result.length) {
-    return result;
-  }
-  heapify(result, cmp);
-  _ref = array.slice(n);
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    elem = _ref[_i];
-    heappushpop(result, elem, cmp);
-  }
-  return result.sort(cmp).reverse();
-};
-
-/*
-  Find the n smallest elements in a dataset.
-   */
-
+/* Find the n smallest elements in a dataset. */
 const _siftdown = function (array, startpos, pos, cmp) {
   var newitem, parent, parentpos;
   if (cmp == null) {
@@ -172,8 +148,6 @@ const Heap = (function () {
   Heap.heapify = heapify;
 
   Heap.updateItem = updateItem;
-
-  Heap.nlargest = nlargest;
 
   function Heap(cmp) {
     this.cmp = cmp != null ? cmp : defaultCmp;
@@ -230,8 +204,6 @@ const Heap = (function () {
   Heap.prototype.toArray = function () {
     return this.nodes.slice(0);
   };
-
-  Heap.prototype.insert = Heap.prototype.push;
 
   Heap.prototype.top = Heap.prototype.peek;
 
@@ -571,79 +543,27 @@ Grid.prototype.setWalkableAt = function (x, y, walkable) {
  * @param {Node} node
  * @param {DiagonalMovement} diagonalMovement
  */
-Grid.prototype.getNeighbors = function (node, diagonalMovement) {
+Grid.prototype.getNeighbors = function (node) {
   var x = node.x,
     y = node.y,
     neighbors = [],
-    s0 = false,
-    d0 = false,
-    s1 = false,
-    d1 = false,
-    s2 = false,
-    d2 = false,
-    s3 = false,
-    d3 = false,
     nodes = this.nodes;
 
   // ↑
   if (this.isWalkableAt(x, y - 1)) {
     neighbors.push(nodes[y - 1][x]);
-    s0 = true;
   }
   // →
   if (this.isWalkableAt(x + 1, y)) {
     neighbors.push(nodes[y][x + 1]);
-    s1 = true;
   }
   // ↓
   if (this.isWalkableAt(x, y + 1)) {
     neighbors.push(nodes[y + 1][x]);
-    s2 = true;
   }
   // ←
   if (this.isWalkableAt(x - 1, y)) {
     neighbors.push(nodes[y][x - 1]);
-    s3 = true;
-  }
-
-  if (diagonalMovement === DiagonalMovement.Never) {
-    return neighbors;
-  }
-
-  if (diagonalMovement === DiagonalMovement.OnlyWhenNoObstacles) {
-    d0 = s3 && s0;
-    d1 = s0 && s1;
-    d2 = s1 && s2;
-    d3 = s2 && s3;
-  } else if (diagonalMovement === DiagonalMovement.IfAtMostOneObstacle) {
-    d0 = s3 || s0;
-    d1 = s0 || s1;
-    d2 = s1 || s2;
-    d3 = s2 || s3;
-  } else if (diagonalMovement === DiagonalMovement.Always) {
-    d0 = true;
-    d1 = true;
-    d2 = true;
-    d3 = true;
-  } else {
-    throw new Error("Incorrect value of diagonalMovement");
-  }
-
-  // ↖
-  if (d0 && this.isWalkableAt(x - 1, y - 1)) {
-    neighbors.push(nodes[y - 1][x - 1]);
-  }
-  // ↗
-  if (d1 && this.isWalkableAt(x + 1, y - 1)) {
-    neighbors.push(nodes[y - 1][x + 1]);
-  }
-  // ↘
-  if (d2 && this.isWalkableAt(x + 1, y + 1)) {
-    neighbors.push(nodes[y + 1][x + 1]);
-  }
-  // ↙
-  if (d3 && this.isWalkableAt(x - 1, y + 1)) {
-    neighbors.push(nodes[y + 1][x - 1]);
   }
 
   return neighbors;
@@ -729,7 +649,6 @@ AStarFinder.prototype.findPath = function (startX, startY, endX, endY, grid) {
     startNode = grid.getNodeAt(startX, startY),
     endNode = grid.getNodeAt(endX, endY),
     heuristic = this.heuristic,
-    diagonalMovement = this.diagonalMovement,
     weight = this.weight,
     abs = Math.abs,
     SQRT2 = Math.SQRT2,
@@ -762,7 +681,7 @@ AStarFinder.prototype.findPath = function (startX, startY, endX, endY, grid) {
     }
 
     // get neigbours of the current node
-    neighbors = grid.getNeighbors(node, diagonalMovement);
+    neighbors = grid.getNeighbors(node);
     for (i = 0, l = neighbors.length; i < l; ++i) {
       neighbor = neighbors[i];
 
