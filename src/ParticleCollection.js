@@ -1,3 +1,5 @@
+const MAX_PARTICLES = 5000;
+
 class ParticleCollection {
   constructor() {
     this.particles = [];
@@ -8,8 +10,10 @@ class ParticleCollection {
   }
 
   tick({ map }) {
-    if (this.particles.length > 1000) {
-      this.particles = this.particles.slice(this.particles.length - 1000);
+    if (this.particles.length > MAX_PARTICLES) {
+      this.particles = this.particles.slice(
+        this.particles.length - MAX_PARTICLES
+      );
     }
     this.particles.forEach((particle) => particle.tick({ map }));
   }

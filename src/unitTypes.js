@@ -30,8 +30,9 @@ const defaultUnit = {
   firingTotalTime: 60,
 };
 
+// prettier-ignore
 export default {
-  shade: {
+  "shade": {
     ...defaultUnit,
     name: "shade",
     damage: 1,
@@ -49,10 +50,10 @@ export default {
     cooldownTotalTime: 5,
     firingTotalTime: 5,
   },
-  goblin: {
+  "goblin": {
     ...defaultUnit,
   },
-  brute: {
+  "brute": {
     ...defaultUnit,
     name: "brute",
     health: 100,
