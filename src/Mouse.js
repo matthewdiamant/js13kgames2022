@@ -42,7 +42,9 @@ class Mouse {
     this.prevDragging = this.dragging;
 
     this.clickTarget = this.clickCoords;
+    this.clicked = this.clickTarget[0] || this.clickTarget[1];
     this.rightClickTarget = this.rightClickCoords;
+    this.rightClicked = this.rightClickTarget[0] || this.rightClickTarget[1];
     this.clickCoords = this.rightClickCoords = [null, null];
   }
 

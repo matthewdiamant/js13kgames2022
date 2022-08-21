@@ -61,6 +61,7 @@ window.onload = () => {
     });
     humanPlayer.tick({
       cpuPlayer,
+      drawer,
       map,
       mines,
       mouse,

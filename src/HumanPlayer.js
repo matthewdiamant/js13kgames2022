@@ -1,4 +1,5 @@
 import Building from "./Building";
+import HUD from "./HUD";
 import Map from "./Map";
 import Player from "./Player";
 import { STATES } from "./Unit";
@@ -75,7 +76,7 @@ class HumanPlayer extends Player {
     );
   }
 
-  selectedUnitActions({ cpuPlayer, map, mines, mouse, sound, unit }) {
+  unitActions({ cpuPlayer, map, mines, mouse, sound, unit }) {
     const { rightClickTarget } = mouse;
 
     if (unit.state === STATES.BUILD_BUILDING) return;
@@ -187,23 +188,36 @@ class HumanPlayer extends Player {
     sound.play("click");
   }
 
-  tick({ cpuPlayer, map, mines, mouse, particles, sound, targets }) {
-    this.select(mouse, sound);
+  mouseActions({ drawer, cpuPlayer, map, mines, mouse, sound }) {
+    if (
+      (mouse.clicked &&
+        mouse.clickTarget[1] >=
+          drawer.height - HUD.HUD_HEIGHT - HUD.HUD_PADDING * 2) ||
+      (mouse.rightClicked &&
+        mouse.rightClickTarget[1] >=
+          drawer.height - HUD.HUD_HEIGHT - HUD.HUD_PADDING * 2)
+    ) {
+      console.log("hud click");
+    } else {
+      this.select(mouse, sound);
 
-    this.placeBuildingActions(map, mouse, sound);
+      this.placeBuildingActions(map, mouse, sound);
 
-    const movingUnits = [];
-    this.units.forEach((unit) => {
-      if (!unit.selected) return;
-      if (
-        this.selectedUnitActions({ cpuPlayer, map, mines, mouse, sound, unit })
-      ) {
-        movingUnits.push(unit);
+      const movingUnits = [];
+      this.units.forEach((unit) => {
+        if (!unit.selected) return;
+        if (this.unitActions({ cpuPlayer, map, mines, mouse, sound, unit })) {
+          movingUnits.push(unit);
+        }
+      });
+      if (movingUnits.length) {
+        this.moveGroup(movingUnits, map, mouse, sound);
       }
-    });
-    if (movingUnits.length) {
-      this.moveGroup(movingUnits, map, mouse, sound);
     }
+  }
+
+  tick({ cpuPlayer, drawer, map, mines, mouse, particles, sound, targets }) {
+    this.mouseActions({ cpuPlayer, drawer, map, mines, mouse, sound });
 
     this.moveFeedback = this.moveFeedback
       .map((mf) => ({ ...mf, time: mf.time - 1 }))
