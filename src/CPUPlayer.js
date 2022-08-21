@@ -10,7 +10,12 @@ class CPUPlayer extends Player {
     this.color = "#00A";
     map.cpuBases.forEach(([x, y]) => {
       this.addBuilding({ type: "base", x: 80 * x, y: 80 * y });
-      this.addUnit({ type: "shade", x: 80 * x - 20, y: 80 * y });
+    });
+    map.cpuShades.forEach(([x, y]) => {
+      this.addUnit({ type: "shade", x: 80 * x, y: 80 * y });
+    });
+    map.cpuGoblins.forEach(([x, y]) => {
+      this.addUnit({ type: "goblin", x: 80 * x, y: 80 * y });
     });
   }
 

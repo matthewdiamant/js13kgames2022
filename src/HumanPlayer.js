@@ -12,11 +12,14 @@ class HumanPlayer extends Player {
     super();
     this.selected = [];
     this.color = "#A00";
-    this.addUnit({ type: "shade", x: 500, y: 380 });
-    this.addUnit({ type: "goblin", x: 500, y: 440 });
-    this.addUnit({ type: "brute", x: 500, y: 560 });
     map.humanBases.forEach(([x, y]) => {
       this.addBuilding({ type: "base", x: 80 * x, y: 80 * y });
+    });
+    map.humanShades.forEach(([x, y]) => {
+      this.addUnit({ type: "shade", x: 80 * x, y: 80 * y });
+    });
+    map.humanGoblins.forEach(([x, y]) => {
+      this.addUnit({ type: "goblin", x: 80 * x, y: 80 * y });
     });
     this.mode = MODES.NORMAL;
     this.placeBuildingUnit = null;

@@ -1,16 +1,16 @@
 // prettier-ignore
 const level = {
-  "levelData": "////////+AAAAAAf4AAAAAAHwAAAAAADwAAAAAADgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABwAAAAAADwAAAAAAD4AAAAAAH+AAAAAAf////////",
-  "mines": [
+  levelData: "////////+AAAAAAf4AAAAAAHwAAAAAADwAAAAAADgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABwAAAAAADwAAAAAAD4AAAAAAH+AAAAAAf////////",
+  mines: [
     [42,4],
     [4,42],
     [4,4],
     [42,42]
   ],
-  "humanBases": [
+  humanBases: [
     [4,9]
   ],
-  "cpuBases": [
+  cpuBases: [
     [41,36]
   ],
   rows: 48,
@@ -69,7 +69,11 @@ class Map {
     this.grid = decode(level.levelData, level.rows);
     this.mines = level.mines;
     this.humanBases = level.humanBases;
+    this.humanShades = level.humanShades;
+    this.humanGoblins = level.humanGoblins;
     this.cpuBases = level.cpuBases;
+    this.cpuShades = level.cpuShades;
+    this.cpuGoblins = level.cpuGoblins;
     this.height = this.grid.length;
     this.width = this.grid[0].length;
   }
