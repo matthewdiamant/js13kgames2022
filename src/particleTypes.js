@@ -39,6 +39,11 @@ export default {
     },
   },
   bit: {
-    draw: function (drawer) {},
+    draw: function (drawer) {
+      drawer.rect({
+        fillColor: this.color,
+        rect: [this.x, this.y, 20, 20],
+      });
+    },
   },
 };

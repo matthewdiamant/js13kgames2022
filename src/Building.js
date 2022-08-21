@@ -22,6 +22,7 @@ class Building {
     this.attackSelected = 0;
     this.built = built;
     this.builder = builder;
+    this.bloodColor = "#666";
   }
 
   attacked() {
@@ -38,11 +39,40 @@ class Building {
           this.y + this.sizeY / 2,
           Math.random() * 8 - 4 + d.dx * 2,
           Math.random() * -16 - 8 + d.dy * 2,
-          "#666"
+          this.bloodColor
         )
       );
     }
     return this.health <= 0;
+  }
+
+  explode({ particles, sound }) {
+    sound.play("death");
+    for (let i = 0; i < 100; i++) {
+      particles.add(
+        new Particle(
+          "blood",
+          this.x + this.sizeX / 2,
+          this.y + this.sizeY / 2,
+          Math.random() * 8 - 4,
+          Math.random() * -16 - 8,
+          this.bloodColor
+        )
+      );
+    }
+    for (let i = 0; i < 20; i++) {
+      const c = Math.floor(Math.random() * 34 + 51);
+      particles.add(
+        new Particle(
+          "bit",
+          this.x + this.sizeX / 2,
+          this.y + this.sizeY / 2,
+          Math.random() * 8 - 4,
+          Math.random() * -16 - 8,
+          `#${c}${c}${c}`
+        )
+      );
+    }
   }
 
   hitbox() {

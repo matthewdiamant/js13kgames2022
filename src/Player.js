@@ -61,7 +61,7 @@ class Player {
     this.buildings.forEach((b) => b.tick({ player: this }));
     this.buildings = this.buildings.reduce((buildings, building) => {
       if (building.health <= 0) {
-        // building.explode({ particles, sound });
+        building.explode({ particles, sound });
         if (this.selected && this.selected.includes(building)) {
           this.selected = this.selected.filter((u) => u !== building);
         }
