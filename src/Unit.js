@@ -419,7 +419,26 @@ class Unit {
           name: "build",
           cost: 0,
           actionable: () => true,
-          drawIcon: (drawer, x, y) => {},
+          drawIcon: (drawer, x, y) => {
+            drawer.triangle({
+              adjusted: false,
+              x: x + 17,
+              y: y + 18,
+              fillColor: "#0F0",
+              rotation: Math.PI * 0.25,
+              size: 26,
+            });
+            drawer.rect({
+              adjusted: false,
+              rect: [x + 18, y + 25, 24, 20],
+              fillColor: "#0F0",
+            });
+            drawer.rect({
+              adjusted: false,
+              rect: [x + 26, y + 37, 7, 8],
+              fillColor: "#111",
+            });
+          },
           execute: () => {
             this.menuState = MENU_STATES.BUILDING;
           },
