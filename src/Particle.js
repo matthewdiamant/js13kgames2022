@@ -4,6 +4,7 @@ class Particle {
   constructor(type, x, y, dx, dy, color) {
     const template = particleTypes[type];
 
+    this.type = type;
     this.startingY = y;
     this.x = x;
     this.y = y;

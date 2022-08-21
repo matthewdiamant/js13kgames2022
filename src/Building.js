@@ -1,5 +1,6 @@
 import HUD, { ICON_BOX_SIZE, ICON_BOX_MARGIN } from "./HUD";
 import Map from "./Map";
+import Particle from "./Particle";
 
 class Building {
   constructor(x, y, template, color, built, builder = null) {
@@ -24,11 +25,24 @@ class Building {
   }
 
   attacked() {
-    this.attackSelected = 30;
+    this.attackSelected = 20;
   }
 
-  takeDamage(amount) {
+  takeDamage(amount, { particles, d }) {
     this.health -= amount;
+    for (let i = 0; i < amount; i++) {
+      particles.add(
+        new Particle(
+          "blood",
+          this.x + this.sizeX / 2,
+          this.y + this.sizeY / 2,
+          Math.random() * 8 - 4 + d.dx * 2,
+          Math.random() * -16 - 8 + d.dy * 2,
+          "#666"
+        )
+      );
+    }
+    return this.health <= 0;
   }
 
   hitbox() {

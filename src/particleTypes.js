@@ -38,5 +38,7 @@ export default {
       });
     },
   },
-  bit: {},
+  bit: {
+    draw: function (drawer) {},
+  },
 };

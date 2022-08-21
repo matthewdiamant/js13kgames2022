@@ -181,7 +181,7 @@ class HumanPlayer extends Player {
         rightClickTarget[1] + Math.floor(i / MAX_ROW) * Y_OFFSET,
       ];
       unit.setPath([x, y], map);
-      this.moveFeedback.push({ x, y, time: 30 });
+      this.moveFeedback.push({ x, y, time: 20 });
       unit.state = STATES.MOVING;
     });
     sound.play("click");
