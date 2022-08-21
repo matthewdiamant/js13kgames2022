@@ -341,53 +341,13 @@ export function smoothenPath(grid, path) {
  * @description A collection of heuristic functions.
  */
 var Heuristic = {
-  /**
-   * Manhattan distance.
-   * @param {number} dx - Difference in x.
-   * @param {number} dy - Difference in y.
-   * @return {number} dx + dy
-   */
   manhattan: function (dx, dy) {
     return dx + dy;
-  },
-
-  /**
-   * Euclidean distance.
-   * @param {number} dx - Difference in x.
-   * @param {number} dy - Difference in y.
-   * @return {number} sqrt(dx * dx + dy * dy)
-   */
-  euclidean: function (dx, dy) {
-    return Math.sqrt(dx * dx + dy * dy);
-  },
-
-  /**
-   * Octile distance.
-   * @param {number} dx - Difference in x.
-   * @param {number} dy - Difference in y.
-   * @return {number} sqrt(dx * dx + dy * dy) for grids
-   */
-  octile: function (dx, dy) {
-    var F = Math.SQRT2 - 1;
-    return dx < dy ? F * dx + dy : F * dy + dx;
-  },
-
-  /**
-   * Chebyshev distance.
-   * @param {number} dx - Difference in x.
-   * @param {number} dy - Difference in y.
-   * @return {number} max(dx, dy)
-   */
-  chebyshev: function (dx, dy) {
-    return Math.max(dx, dy);
   },
 };
 
 var DiagonalMovement = {
-  Always: 1,
   Never: 2,
-  IfAtMostOneObstacle: 3,
-  OnlyWhenNoObstacles: 4,
 };
 
 function Node(x, y, walkable) {
@@ -608,33 +568,10 @@ Grid.prototype.clone = function () {
  * @param {number} opt.weight Weight to apply to the heuristic to allow for
  *     suboptimal paths, in order to speed up the search.
  */
-function AStarFinder(opt) {
-  opt = opt || {};
-  this.allowDiagonal = opt.allowDiagonal;
-  this.dontCrossCorners = opt.dontCrossCorners;
-  this.heuristic = opt.heuristic || Heuristic.manhattan;
-  this.weight = opt.weight || 1;
-  this.diagonalMovement = opt.diagonalMovement;
-
-  if (!this.diagonalMovement) {
-    if (!this.allowDiagonal) {
-      this.diagonalMovement = DiagonalMovement.Never;
-    } else {
-      if (this.dontCrossCorners) {
-        this.diagonalMovement = DiagonalMovement.OnlyWhenNoObstacles;
-      } else {
-        this.diagonalMovement = DiagonalMovement.IfAtMostOneObstacle;
-      }
-    }
-  }
-
-  // When diagonal movement is allowed the manhattan heuristic is not
-  //admissible. It should be octile instead
-  if (this.diagonalMovement === DiagonalMovement.Never) {
-    this.heuristic = opt.heuristic || Heuristic.manhattan;
-  } else {
-    this.heuristic = opt.heuristic || Heuristic.octile;
-  }
+function AStarFinder() {
+  this.heuristic = Heuristic.manhattan;
+  this.weight = 1;
+  this.diagonalMovement = DiagonalMovement.Never;
 }
 
 /**
