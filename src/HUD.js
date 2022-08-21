@@ -7,6 +7,8 @@ const INFOBOX_PADDING = 20;
 
 const ACTIONBOX_ROW_MAX = 3;
 
+const miniMapSize = 250;
+
 class HUD {
   constructor() {
     this.selected = [];
@@ -19,7 +21,7 @@ class HUD {
     this.drawerHeight = drawer.height;
     this.actionboxX = this.drawerWidth - HUD.HUD_HEIGHT - HUD.HUD_PADDING;
     this.actionboxY = this.drawerHeight - HUD.HUD_HEIGHT - HUD.HUD_PADDING;
-    this.infoboxX = HUD.HUD_HEIGHT + HUD.HUD_PADDING * 2;
+    this.infoboxX = miniMapSize + HUD.HUD_PADDING * 2;
     this.infoboxY = drawer.height - HUD.HUD_HEIGHT - HUD.HUD_PADDING;
     this.actionBoxes = this.getActionBoxes({ player });
     this.actionBoxText = "";
@@ -125,7 +127,7 @@ class HUD {
       rect: [
         this.infoboxX,
         this.infoboxY,
-        drawer.width - HUD.HUD_HEIGHT * 2 - HUD.HUD_PADDING * 4,
+        drawer.width - HUD.HUD_HEIGHT - miniMapSize - HUD.HUD_PADDING * 4,
         HUD.HUD_HEIGHT,
       ],
     });
@@ -247,7 +249,7 @@ HUD.cancelIcon = (drawer, x, y) => {
   });
 };
 
-HUD.HUD_HEIGHT = 250;
+HUD.HUD_HEIGHT = 220;
 HUD.HUD_PADDING = 10;
 
 export default HUD;

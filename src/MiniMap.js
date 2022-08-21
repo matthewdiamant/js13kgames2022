@@ -5,7 +5,17 @@ class MiniMap {
   constructor() {}
 
   draw(drawer) {
-    const minimapSize = HUD.HUD_HEIGHT;
+    const minimapSize = 250;
+    drawer.rect({
+      adjusted: false,
+      fillColor: "#666",
+      rect: [
+        0,
+        drawer.height - minimapSize - HUD.HUD_PADDING * 2,
+        minimapSize + HUD.HUD_PADDING * 2,
+        minimapSize + HUD.HUD_PADDING * 2,
+      ],
+    });
     drawer.rect({
       adjusted: false,
       fillColor: "#111",
