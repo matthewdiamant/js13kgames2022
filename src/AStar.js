@@ -1,5 +1,3 @@
-const floor = Math.floor;
-
 /* Default comparison function to be used */
 const defaultCmp = function (x, y) {
   if (x < y) {
@@ -35,47 +33,6 @@ const heappop = function (array, cmp) {
     returnitem = lastelt;
   }
   return returnitem;
-};
-
-/* Fast version of a heappush followed by a heappop. */
-const heappushpop = function (array, item, cmp) {
-  var _ref;
-  if (cmp == null) {
-    cmp = defaultCmp;
-  }
-  if (array.length && cmp(array[0], item) < 0) {
-    (_ref = [array[0], item]), (item = _ref[0]), (array[0] = _ref[1]);
-    _siftup(array, 0, cmp);
-  }
-  return item;
-};
-
-/* Transform list into a heap, in-place, in O(array.length) time. */
-
-const heapify = function (array, cmp) {
-  var i, _i, _j, _len, _ref, _ref1, _results, _results1;
-  if (cmp == null) {
-    cmp = defaultCmp;
-  }
-  _ref1 = function () {
-    _results1 = [];
-    for (
-      var _j = 0, _ref = floor(array.length / 2);
-      0 <= _ref ? _j < _ref : _j > _ref;
-      0 <= _ref ? _j++ : _j--
-    ) {
-      _results1.push(_j);
-    }
-    return _results1;
-  }
-    .apply(this)
-    .reverse();
-  _results = [];
-  for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-    i = _ref1[_i];
-    _results.push(_siftup(array, i, cmp));
-  }
-  return _results;
 };
 
 /*
@@ -143,10 +100,6 @@ const Heap = (function () {
 
   Heap.pop = heappop;
 
-  Heap.pushpop = heappushpop;
-
-  Heap.heapify = heapify;
-
   Heap.updateItem = updateItem;
 
   function Heap(cmp) {
@@ -162,56 +115,13 @@ const Heap = (function () {
     return heappop(this.nodes, this.cmp);
   };
 
-  Heap.prototype.peek = function () {
-    return this.nodes[0];
-  };
-
-  Heap.prototype.contains = function (x) {
-    return this.nodes.indexOf(x) !== -1;
-  };
-
-  Heap.prototype.pushpop = function (x) {
-    return heappushpop(this.nodes, x, this.cmp);
-  };
-
-  Heap.prototype.heapify = function () {
-    return heapify(this.nodes, this.cmp);
-  };
-
   Heap.prototype.updateItem = function (x) {
     return updateItem(this.nodes, x, this.cmp);
-  };
-
-  Heap.prototype.clear = function () {
-    return (this.nodes = []);
   };
 
   Heap.prototype.empty = function () {
     return this.nodes.length === 0;
   };
-
-  Heap.prototype.size = function () {
-    return this.nodes.length;
-  };
-
-  Heap.prototype.clone = function () {
-    var heap;
-    heap = new Heap();
-    heap.nodes = this.nodes.slice(0);
-    return heap;
-  };
-
-  Heap.prototype.toArray = function () {
-    return this.nodes.slice(0);
-  };
-
-  Heap.prototype.top = Heap.prototype.peek;
-
-  Heap.prototype.front = Heap.prototype.peek;
-
-  Heap.prototype.has = Heap.prototype.contains;
-
-  Heap.prototype.copy = Heap.prototype.clone;
 
   return Heap;
 })();
@@ -475,17 +385,6 @@ Grid.prototype.isInside = function (x, y) {
 };
 
 /**
- * Set whether the node on the given position is walkable.
- * NOTE: throws exception if the coordinate is not inside the grid.
- * @param {number} x - The x coordinate of the node.
- * @param {number} y - The y coordinate of the node.
- * @param {boolean} walkable - Whether the position is walkable.
- */
-Grid.prototype.setWalkableAt = function (x, y, walkable) {
-  this.nodes[y][x].walkable = walkable;
-};
-
-/**
  * Get the neighbors of the given node.
  *
  *     offsets      diagonalOffsets:
@@ -527,31 +426,6 @@ Grid.prototype.getNeighbors = function (node) {
   }
 
   return neighbors;
-};
-
-/**
- * Get a clone of this grid.
- * @return {Grid} Cloned grid.
- */
-Grid.prototype.clone = function () {
-  var i,
-    j,
-    width = this.width,
-    height = this.height,
-    thisNodes = this.nodes,
-    newGrid = new Grid(width, height),
-    newNodes = new Array(height);
-
-  for (i = 0; i < height; ++i) {
-    newNodes[i] = new Array(width);
-    for (j = 0; j < width; ++j) {
-      newNodes[i][j] = new Node(j, i, thisNodes[i][j].walkable);
-    }
-  }
-
-  newGrid.nodes = newNodes;
-
-  return newGrid;
 };
 
 /**
