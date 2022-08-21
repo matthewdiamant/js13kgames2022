@@ -5,6 +5,7 @@ import FogOfWar from "./FogOfWar";
 import Keyboard from "./Keyboard";
 import HUD from "./HUD";
 import HumanPlayer from "./HumanPlayer";
+import Level from "./Level";
 import Map from "./Map";
 import MineCollection from "./MineCollection";
 import MiniMap from "./MiniMap";
@@ -30,6 +31,7 @@ window.onload = () => {
 
   let fogOfWar = new FogOfWar();
   let hud = new HUD();
+  let level = new Level();
   let map = new Map();
   let mines = new MineCollection({ map });
   let miniMap = new MiniMap();
@@ -50,6 +52,7 @@ window.onload = () => {
 
   let tick = () => {
     const { camera } = drawer;
+    level.tick({ cpuPlayer, humanPlayer });
     camera.tick({ keyboard, mouse });
     mouse.tick({ camera });
     cpuPlayer.tick({
