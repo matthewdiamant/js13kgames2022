@@ -171,15 +171,14 @@ class HumanPlayer extends Player {
     }
   }
 
-  moveGroup(units, map, mouse, sound) {
+  moveGroup(units, map, target, sound) {
     const X_OFFSET = 70;
     const Y_OFFSET = 70;
     const MAX_ROW = 8;
-    const { rightClickTarget } = mouse;
     units.forEach((unit, i) => {
       const [x, y] = [
-        rightClickTarget[0] + (i % MAX_ROW) * X_OFFSET,
-        rightClickTarget[1] + Math.floor(i / MAX_ROW) * Y_OFFSET,
+        target[0] + (i % MAX_ROW) * X_OFFSET,
+        target[1] + Math.floor(i / MAX_ROW) * Y_OFFSET,
       ];
       unit.setPath([x, y], map);
       this.moveFeedback.push({ x, y, time: 20 });
@@ -192,12 +191,17 @@ class HumanPlayer extends Player {
     const miniMapX = clicked && click[0] - HUD.HUD_PADDING - camera.x;
     const miniMapY =
       clicked && click[1] - (drawer.height - 250 - HUD.HUD_PADDING) - camera.y;
-    miniMapX !== null &&
-      miniMapY !== null &&
-      miniMapX >= 0 &&
-      miniMapX < 250 &&
-      miniMapY >= 0 &&
-      miniMapY < 250;
+    return {
+      clicked:
+        miniMapX !== null &&
+        miniMapY !== null &&
+        miniMapX >= 0 &&
+        miniMapX < 250 &&
+        miniMapY >= 0 &&
+        miniMapY < 250,
+      x: miniMapX,
+      y: miniMapY,
+    };
   }
 
   inHud(click, clicked, drawer, camera) {
@@ -210,11 +214,13 @@ class HumanPlayer extends Player {
 
   mouseActions({ camera, drawer, cpuPlayer, map, mines, mouse, sound }) {
     const { clicked, rightClicked, clickTarget, rightClickTarget } = mouse;
-    if (this.inMiniMap(clickTarget, clicked, drawer, camera)) {
+    if (this.inMiniMap(clickTarget, clicked, drawer, camera).clicked) {
       console.log("minimap click");
       return;
     }
-    if (this.inMiniMap(rightClickTarget, rightClicked, drawer, camera)) {
+    if (
+      this.inMiniMap(rightClickTarget, rightClicked, drawer, camera).clicked
+    ) {
       console.log("minimap right click");
       return;
     }
@@ -226,6 +232,7 @@ class HumanPlayer extends Player {
       console.log("hud right click");
       return;
     }
+
     this.select(mouse, sound);
 
     this.placeBuildingActions(map, mouse, sound);
@@ -238,7 +245,7 @@ class HumanPlayer extends Player {
       }
     });
     if (movingUnits.length) {
-      this.moveGroup(movingUnits, map, mouse, sound);
+      this.moveGroup(movingUnits, map, rightClickTarget, sound);
     }
   }
 

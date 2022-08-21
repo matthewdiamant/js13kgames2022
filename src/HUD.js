@@ -16,7 +16,7 @@ class HUD {
     this.selected = [];
   }
 
-  tick({ camera, drawer, mouse, player }) {
+  tick({ camera, drawer, map, mouse, player, sound }) {
     this.selected = player.selected;
     this.resources = player.resources;
     this.drawerWidth = drawer.width;
@@ -37,34 +37,42 @@ class HUD {
       }
     }
 
-    this.miniMapClick({ camera, drawer, mouse });
+    this.miniMapClick({ camera, drawer, mouse, player });
+    this.miniMapRightClick({ camera, drawer, map, mouse, player, sound });
   }
 
-  miniMapClick({ camera, drawer, mouse }) {
+  miniMapClick({ camera, drawer, mouse, player }) {
     const miniMapSize = 250;
-    if (!mouse.clicked) return;
-    const miniMapX =
-      mouse.clicked && mouse.clickTarget[0] - HUD.HUD_PADDING - camera.x;
-    const miniMapY =
-      mouse.clicked &&
-      mouse.clickTarget[1] - (drawer.height - 250 - HUD.HUD_PADDING) - camera.y;
-    const width = (drawer.width / Map.size) * miniMapSize;
-    const height =
-      (drawer.height / ((Map.tileSizeY / Map.tileSize) * Map.size)) *
-      miniMapSize;
-    if (
-      miniMapX !== null &&
-      miniMapY !== null &&
-      miniMapX >= 0 &&
-      miniMapX < miniMapSize &&
-      miniMapY >= 0 &&
-      miniMapY < miniMapSize
-    ) {
-      const x = ((miniMapX - width / 2) / miniMapSize) * 80 * 48;
-      const y = ((miniMapY - height / 2) / miniMapSize) * 80 * 48;
-      camera.setX(x);
-      camera.setY(y);
-      console.log("mini map click", miniMapX, miniMapY, x, y);
+    const { clicked, x, y } = player.inMiniMap(
+      mouse.clickTarget,
+      mouse.clicked,
+      drawer,
+      camera
+    );
+    if (clicked) {
+      const width = (drawer.width / Map.size) * miniMapSize;
+      const height =
+        (drawer.height / ((Map.tileSizeY / Map.tileSize) * Map.size)) *
+        miniMapSize;
+      const cameraX = ((x - width / 2) / miniMapSize) * 80 * 48;
+      const cameraY = ((y - height / 2) / miniMapSize) * 80 * 48;
+      camera.setX(cameraX);
+      camera.setY(cameraY);
+    }
+  }
+
+  miniMapRightClick({ camera, drawer, map, mouse, player, sound }) {
+    const miniMapSize = 250;
+    const { clicked, x, y } = player.inMiniMap(
+      mouse.rightClickTarget,
+      mouse.rightClicked,
+      drawer,
+      camera
+    );
+    if (clicked) {
+      const mapX = (x / miniMapSize) * 80 * 48;
+      const mapY = (y / miniMapSize) * 80 * 48;
+      player.moveGroup(player.selected, map, [mapX, mapY], sound);
     }
   }
 

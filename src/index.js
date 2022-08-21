@@ -71,7 +71,7 @@ window.onload = () => {
       targets: cpuPlayer.entities(),
     });
     mines.tick();
-    hud.tick({ camera, drawer, mouse, player: humanPlayer });
+    hud.tick({ camera, drawer, map, mouse, player: humanPlayer, sound });
     particles.tick({ map });
     fogOfWar.tick({ humanPlayer, map });
   };
