@@ -98,6 +98,30 @@ export default class Drawer {
     cx.globalAlpha = 1;
   }
 
+  triangle({ x, y, adjusted = true, fillColor, rotation, size }) {
+    this.draw(() => {
+      if (adjusted) {
+        x = this.camera.adjustX(x, this.canvas.width);
+        y = this.camera.adjustY(y, this.canvas.height);
+      }
+      if (rotation) {
+        cx.translate(x + size / 2, y + size / 2);
+        cx.rotate(rotation);
+        cx.translate(-1 * x - size / 2, -1 * y - size / 2);
+      }
+      if (fillColor) {
+        let region = new Path2D();
+        region.moveTo(x, y);
+        region.lineTo(x + size, y);
+        region.lineTo(x, y + size);
+        region.closePath();
+
+        cx.fillStyle = fillColor;
+        cx.fill(region);
+      }
+    });
+  }
+
   ellipse({
     ellipse,
     adjusted = true,

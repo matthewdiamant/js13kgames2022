@@ -390,7 +390,26 @@ class Unit {
         name: "move",
         cost: 0,
         actionable: () => true,
-        drawIcon: (drawer, x, y) => {},
+        drawIcon: (drawer, x, y) => {
+          drawer.ellipse({
+            ellipse: [x + 30, y + 30, 23, 23, 0, 0, 2 * Math.PI],
+            strokeColor: "#0F0",
+            strokeWidth: 5,
+          });
+          drawer.triangle({
+            adjusted: false,
+            x: x + 30,
+            y: y + 22,
+            fillColor: "#0F0",
+            rotation: Math.PI * 0.75,
+            size: 15,
+          });
+          drawer.rect({
+            adjusted: false,
+            rect: [x + 14, y + 26, 25, 7],
+            fillColor: "#0F0",
+          });
+        },
         execute: () => {
           console.log("move");
         },
