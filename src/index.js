@@ -90,6 +90,7 @@ window.onload = () => {
     fogOfWar,
     hud,
     miniMap,
+    level,
   ];
 
   gameLoop();
