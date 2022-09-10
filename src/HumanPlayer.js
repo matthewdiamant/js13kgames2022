@@ -3,6 +3,7 @@ import HUD from "./HUD";
 import Map from "./Map";
 import Player from "./Player";
 import { STATES } from "./Unit";
+import buildingTypes from "./buildingTypes";
 import { boxCollision, pointCollision } from "./collision";
 
 const MODES = { NORMAL: 0, PLACE_BUILDING: 1 };
@@ -149,7 +150,7 @@ class HumanPlayer extends Player {
 
       if (mouseLocation) {
         this.drawPlaceBuilding = (drawer) => {
-          Building.drawBuilding(
+          buildingTypes[this.placeBuildingBuilding].drawBuilding(
             drawer,
             x,
             y,

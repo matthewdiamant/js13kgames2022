@@ -32,6 +32,59 @@ const buildUnit = (type, building, player) => {
   };
 };
 
+function drawBuilding(drawer, x, y, width, height, color, opacity = "F") {
+  drawer.rect({
+    fillColor: "#A33" + opacity,
+    rect: [x, y + Map.tileSize, width, height],
+  });
+
+  drawer.ellipse({
+    ellipse: [
+      x + width / 2,
+      y + height + Map.tileSize,
+      width / 2,
+      height / 4,
+      0,
+      0,
+      2 * Math.PI,
+    ],
+    fillColor: "#A33" + opacity,
+  });
+
+  drawer.ellipse({
+    ellipse: [
+      x + width / 2,
+      y + Map.tileSize,
+      width / 2,
+      height / 4,
+      0,
+      0,
+      2 * Math.PI,
+    ],
+    fillColor: "#A55" + opacity,
+  });
+
+  const FLAGPOLE_WIDTH = 10;
+  const FLAGPOLE_HEIGHT = 100;
+  drawer.rect({
+    fillColor: "#666" + opacity,
+    rect: [
+      x + width / 2 - FLAGPOLE_WIDTH / 2,
+      y - FLAGPOLE_HEIGHT + Map.tileSize,
+      FLAGPOLE_WIDTH,
+      FLAGPOLE_HEIGHT,
+    ],
+  });
+  drawer.rect({
+    fillColor: color + opacity,
+    rect: [
+      x + width / 2 + FLAGPOLE_WIDTH / 2,
+      y - FLAGPOLE_HEIGHT + Map.tileSize,
+      60,
+      40,
+    ],
+  });
+}
 export default {
   base: {
     name: "base",
@@ -43,6 +96,7 @@ export default {
     actions: ({ building, output, player }) => {
       output[0] = buildUnit("shade", building, player);
     },
+    drawBuilding,
   },
   barracks: {
     name: "barracks",
@@ -55,5 +109,6 @@ export default {
       output[0] = buildUnit("goblin", building, player);
       output[1] = buildUnit("brute", building, player);
     },
+    drawBuilding,
   },
 };
