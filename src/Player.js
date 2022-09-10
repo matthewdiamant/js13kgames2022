@@ -15,13 +15,25 @@ class Player {
   addUnit({ type, x, y }) {
     const unitType = unitTypes[type];
     const colors = unitType.colors(this.color);
-    const newUnit = new Unit(x, y, { ...unitType, colors });
+    const newUnit = new Unit(x, y, {
+      ...unitType,
+      colors,
+      miniMapColor: this.miniMapColor,
+    });
     this.units.push(newUnit);
   }
 
   addBuilding({ type, x, y, built = true, unit = null }) {
     const building = buildingTypes[type];
-    const newBuilding = new Building(x, y, building, this.color, built, unit);
+    const newBuilding = new Building(
+      x,
+      y,
+      building,
+      this.color,
+      built,
+      unit,
+      this.miniMapColor
+    );
     this.buildings.push(newBuilding);
     return newBuilding;
   }

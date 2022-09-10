@@ -8,6 +8,7 @@ class CPUPlayer extends Player {
   constructor({ map }) {
     super();
     this.color = "#00A";
+    this.miniMapColor = "#F00";
     map.cpuBases.forEach(([x, y]) => {
       this.addBuilding({ type: "base", x: 80 * x, y: 80 * y });
     });

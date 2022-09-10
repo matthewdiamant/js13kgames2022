@@ -12,6 +12,7 @@ class HumanPlayer extends Player {
     super();
     this.selected = [];
     this.color = "#A00";
+    this.miniMapColor = "#0F0";
     map.humanBases.forEach(([x, y]) => {
       this.addBuilding({ type: "base", x: 80 * x, y: 80 * y });
     });

@@ -3,7 +3,7 @@ import Map from "./Map";
 import Particle from "./Particle";
 
 class Building {
-  constructor(x, y, template, color, built, builder = null) {
+  constructor(x, y, template, color, built, builder = null, miniMapColor) {
     this.health = template.health;
     this.sizeX = template.sizeX;
     this.sizeY = template.sizeY;
@@ -20,6 +20,7 @@ class Building {
     this.type = "building";
     this.tasks = [];
     this.color = color;
+    this.miniMapColor = miniMapColor;
     this.attackSelected = 0;
     this.built = built;
     this.builder = builder;
@@ -283,7 +284,7 @@ class Building {
     drawer.miniMap({
       x: this.x,
       y: this.y,
-      color: "#0f0",
+      color: this.miniMapColor,
       sizeX: Math.ceil(this.sizeX / 20),
       sizeY: Math.ceil(this.sizeY / 20),
     });

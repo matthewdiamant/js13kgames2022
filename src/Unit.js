@@ -532,7 +532,7 @@ class Unit {
     drawer.miniMap({
       x: x,
       y: y,
-      color: "#0f0",
+      color: this.miniMapColor,
       size: Math.ceil(this.size / 20),
     });
   }
