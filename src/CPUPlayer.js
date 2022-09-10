@@ -21,7 +21,7 @@ class CPUPlayer extends Player {
   }
 
   cpuActions({ map, mines }) {
-    const MOVE_RATE = 0.05;
+    const MOVE_RATE = 0.0;
     const WORKER_BUILD_RATE = 0.001;
     const GOBLIN_BUILD_RATE = 0.001;
 

@@ -1,48 +1,40 @@
-// prettier-ignore
 const level = {
-  levelData: "////////+AAAAAAf4AAAAAAHwAAAAAADwAAAAAADgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABwAAAAAADwAAAAAAD4AAAAAAH+AAAAAAf////////",
-  mines: [
-    [42,4],
-    [4,42],
-    [4,4],
-    [42,42]
-  ],
-  humanBases: [
-    [4,9]
-  ],
-  cpuBases: [
-    [41,36]
-  ],
-  rows: 48,
-}
-
-const tutorial = {
   levelData:
-    "////////g+AAAAAPgAAAAAADgAAAAAABgAAAAAABgAAB/wAB//////8B//////+B//////+B//////+B//////+B//////+B//////8B/AAAAAAB4AAAAAADwAAAAAADwAAAAAAHgAAAAAAfgAAAAAA/gD+AAB//gH//////gH//////gH//////gD//////gA//////gAH/////gAA/////gAAAAAP/gAAAAAA/gAAAAAAHgAAAAAADgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABwAAAAAADwAAAAAAH+AP4AAAf////////",
+    "////////4Af/4AAPwAD+AAAHgAD+AAADgAAAAAADgAAAAAABgAAAAAABwAAAAAABwAA8AAABwAD/gAAD4AD/gAAD/A//wAAD////4AAB//////gB//////gB//////gB/////+AB///wAAAB//4AAAAB/gAAAAAB8AAAAAAB4AAAAAAB4AAAAAABwAAAAAABwAAAAAAHgAAAAAAfgAAAAAH/gAAAAD//gAAAAP//gAAAA///gAAAB///gAAAD///gAAAH///gAAAH///gAAAH///gAAAH/8HwAAAP+ADwAAAP4ABwAAADgABwAAAAAABwAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABwAAAAAADwAAAAAAf////////",
+
   mines: [
-    [41, 43],
-    [20, 15],
+    [4, 2],
+    [43, 43],
+    [38, 2],
+    [3, 44],
   ],
-  humanBases: [[26, 15]],
-  cpuBases: [[43, 37]],
+  humanBases: [[4, 6]],
+  cpuBases: [
+    [38, 43],
+    [38, 6],
+    [3, 39],
+  ],
   cpuShades: [
-    [41, 41],
-    [43, 41],
-    [45, 41],
+    [40, 40],
+    [43, 40],
+    [7, 43],
+    [7, 45],
+    [42, 3],
+    [42, 5],
   ],
   cpuGoblins: [
-    [41, 39],
-    [41, 37],
-    [41, 35],
-    [43, 35],
-    [45, 35],
+    [35, 42],
+    [35, 44],
+    [33, 44],
+    [33, 42],
+    [33, 40],
+    [35, 40],
+    [31, 44],
+    [31, 42],
+    [31, 40],
   ],
-  humanShades: [[31, 14]],
-  humanGoblins: [
-    [2, 3],
-    [18, 2],
-    [18, 4],
-  ],
+  humanShades: [[7, 3]],
+  humanGoblins: [[9, 3]],
 };
 
 const decode = (encoded, numRows = 48) => {
@@ -62,7 +54,7 @@ export const TILES = [TILE_TYPE.NORMAL, TILE_TYPE.HOLE, TILE_TYPE.MINE];
 
 class Map {
   constructor() {
-    this.loadLevel(tutorial);
+    this.loadLevel(level);
   }
 
   loadLevel(level) {
@@ -100,7 +92,8 @@ class Map {
 
         const debug = false;
         const debugColor = normalColor ? "#ddd" : "#e6e6e6";
-        const color = debug ? debugColor : "#223";
+        const opacity = (((x ** 3 + y ** 2) % (3 * 16)) + 12 * 16).toString(16);
+        const color = debug ? debugColor : "#202028" + opacity;
         if (tileType !== TILE_TYPE.HOLE) {
           drawer.rect({
             fillColor: color,
