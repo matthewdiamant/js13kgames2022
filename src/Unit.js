@@ -520,6 +520,30 @@ class Unit {
       });
     }
 
+    if (this.firingTotalTime - this.firingTime < 5) {
+      // prettier-ignore
+      [
+        [(this.facing === 1 ? 8 : -1), 3, 1, 1],
+        [(this.facing === 1 ? 7 : 0), 4, 2, 3],
+      ].forEach(([sx, sy, dx, dy]) =>
+        drawer.rect({
+          fillColor: "yellow",
+          rect: [x + sx * 6, y + sy * 6, dx * 6, dy * 6],
+        })
+      );
+
+      // prettier-ignore
+      [
+        [(this.facing === 1 ? 8 : -1), 4, 2, 2],
+        [(this.facing === 1 ? 10 : -3), 4, 1, 1],
+      ].forEach(([sx, sy, dx, dy]) =>
+        drawer.rect({
+          fillColor: "white",
+          rect: [x + sx * 6, y + sy * 6, dx * 6, dy * 6],
+        })
+      );
+    }
+
     const hitbox = false;
     if (hitbox) {
       const hb = this.hitbox();

@@ -47,8 +47,8 @@ export default {
     builder: true,
 
     range: 50,
-    cooldownTotalTime: 5,
-    firingTotalTime: 5,
+    cooldownTotalTime: 10,
+    firingTotalTime: 10,
   },
   "goblin": {
     ...defaultUnit,
