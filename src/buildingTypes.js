@@ -32,7 +32,16 @@ const buildUnit = (type, building, player) => {
   };
 };
 
-function drawBuilding(drawer, x, y, width, height, color, opacity = "F") {
+const drawBuilding = (
+  drawer,
+  x,
+  y,
+  width,
+  height,
+  color,
+  opacity = "F",
+  accessory
+) => {
   drawer.rect({
     fillColor: "#A33" + opacity,
     rect: [x, y + Map.tileSize, width, height],
@@ -64,27 +73,58 @@ function drawBuilding(drawer, x, y, width, height, color, opacity = "F") {
     fillColor: "#A55" + opacity,
   });
 
-  const FLAGPOLE_WIDTH = 10;
-  const FLAGPOLE_HEIGHT = 100;
-  drawer.rect({
-    fillColor: "#666" + opacity,
-    rect: [
-      x + width / 2 - FLAGPOLE_WIDTH / 2,
-      y - FLAGPOLE_HEIGHT + Map.tileSize,
-      FLAGPOLE_WIDTH,
-      FLAGPOLE_HEIGHT,
-    ],
-  });
-  drawer.rect({
-    fillColor: color + opacity,
-    rect: [
-      x + width / 2 + FLAGPOLE_WIDTH / 2,
-      y - FLAGPOLE_HEIGHT + Map.tileSize,
-      60,
-      40,
-    ],
-  });
-}
+  if (accessory === "flag") {
+    const FLAGPOLE_WIDTH = 10;
+    const FLAGPOLE_HEIGHT = 100;
+    drawer.rect({
+      fillColor: "#666" + opacity,
+      rect: [
+        x + width / 2 - FLAGPOLE_WIDTH / 2,
+        y - FLAGPOLE_HEIGHT + Map.tileSize,
+        FLAGPOLE_WIDTH,
+        FLAGPOLE_HEIGHT,
+      ],
+    });
+    drawer.rect({
+      fillColor: color + opacity,
+      rect: [
+        x + width / 2 + FLAGPOLE_WIDTH / 2,
+        y - FLAGPOLE_HEIGHT + Map.tileSize,
+        60,
+        40,
+      ],
+    });
+  }
+
+  if (accessory === "shield") {
+    const sx = 70;
+    const sy = 150;
+    drawer.ellipse({
+      ellipse: [x + sx, y + sy, 100, 100, 0, 0, Math.PI / 3],
+      fillColor: color + opacity,
+    });
+    drawer.ellipse({
+      ellipse: [
+        x + sx + 100,
+        y + sy,
+        100,
+        100,
+        0,
+        (2 * Math.PI) / 3,
+        (3 * Math.PI) / 3,
+      ],
+      fillColor: color + opacity,
+    });
+    drawer.lines({
+      lines: [
+        [x + sx, y + sy],
+        [x + sx + 100, y + sy],
+        [x + sx + 50, y + sy + (100 * 3 ** (1 / 2)) / 2],
+      ],
+      fillColor: color + opacity,
+    });
+  }
+};
 export default {
   base: {
     name: "base",
@@ -96,7 +136,7 @@ export default {
     actions: ({ building, output, player }) => {
       output[0] = buildUnit("shade", building, player);
     },
-    drawBuilding,
+    drawBuilding: (...args) => drawBuilding(...args, "flag"),
   },
   barracks: {
     name: "barracks",
@@ -109,6 +149,6 @@ export default {
       output[0] = buildUnit("goblin", building, player);
       output[1] = buildUnit("brute", building, player);
     },
-    drawBuilding,
+    drawBuilding: (...args) => drawBuilding(...args, "shield"),
   },
 };
