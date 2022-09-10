@@ -16,8 +16,9 @@ export default class Background {
 
     this.stars.forEach(([x, y, o]) => {
       drawer.rect({
+        adjusted: false,
         fillColor: "#fff" + o,
-        rect: [x, y, 3, 3],
+        rect: [x, y, 8 - o, 8 - o],
       });
     });
   }

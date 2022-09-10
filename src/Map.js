@@ -1,26 +1,28 @@
 const level = {
   levelData:
-    "////////4Af/4AAPwAD+AAAHgAD+AAADgAAAAAADgAAAAAABgAAAAAABwAAAAAABwAA8AAABwAD/gAAD4AD/gAAD/A//wAAD////4AAB//////gB//////gB//////gB/////+AB///wAAAB//4AAAAB/gAAAAAB8AAAAAAB4AAAAAAB4AAAAAABwAAAAAABwAAAAAAHgAAAAAAfgAAAAAH/gAAAAD//gAAAAP//gAAAA///gAAAB///gAAAD///gAAAH///gAAAH///gAAAH///gAAAH/8HwAAAP+ADwAAAP4ABwAAADgABwAAAAAABwAAAAAABgAAAAAABgAAAAAABgAAAAAABgAAAAAABwAAAAAADwAAAAAAf////////",
-
+    "////////4Af/4AAPwAD+AAAHgAD+AAADgAAAAAADgAAAAAABgAAAAAABwAAAAAABwAA8AAABwAD/gAAD4AD/gAAD/A//wAAD////4AAB//////gB//////gB//////gB/////+AB///wAAAB//4AAAAB/gAAAAAB8AAAAAAB4AAAAAAB4AAAAAABwAAAAAABwAAAAAAHgAAAAAAfgAAAAAH/gAAAAD//gAAAAP//gAAAA///gAAAB///gAAAD///gAAAH///gAAAH///gAAAH///gAAAH/8HwAAAP+ADwAAAP4ABwAAADgABwAAAAAABwAAAAAABwAAAAAAB4AAAAAAB8AAAAAAB/8AAAAAB//gAAAAD//4AAAAf////////",
   mines: [
     [4, 2],
-    [43, 43],
     [38, 2],
-    [3, 44],
+    [43, 37],
+    [11, 31],
   ],
   humanBases: [[4, 6]],
   cpuBases: [
-    [38, 43],
     [38, 6],
-    [3, 39],
+    [38, 37],
+    [12, 26],
   ],
   cpuShades: [
-    [40, 40],
     [43, 40],
-    [7, 43],
-    [7, 45],
     [42, 3],
     [42, 5],
+    [43, 42],
+    [14, 31],
+    [16, 31],
+    [18, 31],
+    [41, 41],
+    [41, 43],
   ],
   cpuGoblins: [
     [35, 42],
