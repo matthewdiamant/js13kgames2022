@@ -5,7 +5,7 @@ class FogOfWar {
     this.tiles = [];
   }
 
-  tick({ humanPlayer, map }) {
+  tick({ humanPlayer, cpuPlayer, mines, map }) {
     const tiles = [];
     for (let y = 0; y < map.height; y++) {
       const row = [];
@@ -32,6 +32,15 @@ class FogOfWar {
         }
       }
     });
+
+    cpuPlayer
+      .entities()
+      .concat(mines.mines)
+      .forEach((e) => {
+        const { x, y } = e;
+        e.inFog =
+          tiles[Math.floor(y / Map.tileSize)][Math.floor(x / Map.tileSize)];
+      });
 
     this.tiles = tiles;
   }

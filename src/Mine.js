@@ -4,6 +4,7 @@ class Mine {
     this.x = x;
     this.y = y;
     this.size = 80 * 2;
+    this.inFog = 0;
   }
 
   tick() {}
@@ -58,12 +59,14 @@ class Mine {
       });
     }
 
-    drawer.miniMap({
-      x: this.x,
-      y: this.y,
-      color: "#69c",
-      size: Math.ceil(this.size / 20),
-    });
+    if (!this.inFog) {
+      drawer.miniMap({
+        x: this.x,
+        y: this.y,
+        color: "#69c",
+        size: Math.ceil(this.size / 20),
+      });
+    }
   }
 }
 

@@ -922,6 +922,7 @@ class Building {
     this.built = built;
     this.builder = builder;
     this.bloodColor = "#666";
+    this.inFog = 0;
   }
 
   attacked() {
@@ -1124,13 +1125,15 @@ class Building {
       });
     }
 
-    drawer.miniMap({
-      x: this.x,
-      y: this.y,
-      color: this.miniMapColor,
-      sizeX: Math.ceil(this.sizeX / 20),
-      sizeY: Math.ceil(this.sizeY / 20),
-    });
+    if (!this.inFog) {
+      drawer.miniMap({
+        x: this.x,
+        y: this.y,
+        color: this.miniMapColor,
+        sizeX: Math.ceil(this.sizeX / 20),
+        sizeY: Math.ceil(this.sizeY / 20),
+      });
+    }
   }
 }
 
@@ -1898,7 +1901,7 @@ class FogOfWar {
     this.tiles = [];
   }
 
-  tick({ humanPlayer, map }) {
+  tick({ humanPlayer, cpuPlayer, mines, map }) {
     const tiles = [];
     for (let y = 0; y < map.height; y++) {
       const row = [];
@@ -1925,6 +1928,15 @@ class FogOfWar {
         }
       }
     });
+
+    cpuPlayer
+      .entities()
+      .concat(mines.mines)
+      .forEach((e) => {
+        const { x, y } = e;
+        e.inFog =
+          tiles[Math.floor(y / _Map__WEBPACK_IMPORTED_MODULE_0__["default"].tileSize)][Math.floor(x / _Map__WEBPACK_IMPORTED_MODULE_0__["default"].tileSize)];
+      });
 
     this.tiles = tiles;
   }
@@ -2879,6 +2891,7 @@ class Mine {
     this.x = x;
     this.y = y;
     this.size = 80 * 2;
+    this.inFog = 0;
   }
 
   tick() {}
@@ -2933,12 +2946,14 @@ class Mine {
       });
     }
 
-    drawer.miniMap({
-      x: this.x,
-      y: this.y,
-      color: "#69c",
-      size: Math.ceil(this.size / 20),
-    });
+    if (!this.inFog) {
+      drawer.miniMap({
+        x: this.x,
+        y: this.y,
+        color: "#69c",
+        size: Math.ceil(this.size / 20),
+      });
+    }
   }
 }
 
@@ -3541,6 +3556,7 @@ class Unit {
     this.recalculateTarget = 0;
     this.state = STATES.IDLE;
     this.menuState = MENU_STATES.INITIAL;
+    this.inFog = 0;
 
     // worker things
     this.carryingResource = false;
@@ -4048,12 +4064,14 @@ class Unit {
       });
     }
 
-    drawer.miniMap({
-      x: x,
-      y: y,
-      color: this.miniMapColor,
-      size: Math.ceil(this.size / 20),
-    });
+    if (!this.inFog) {
+      drawer.miniMap({
+        x: x,
+        y: y,
+        color: this.miniMapColor,
+        size: Math.ceil(this.size / 20),
+      });
+    }
   }
 }
 
@@ -4395,7 +4413,7 @@ window.onload = () => {
     mines.tick();
     hud.tick({ camera, drawer, map, mouse, player: humanPlayer, sound });
     particles.tick({ map });
-    fogOfWar.tick({ humanPlayer, map });
+    fogOfWar.tick({ humanPlayer, cpuPlayer, mines, map });
   };
 
   let drawObjects = () => [

@@ -46,6 +46,7 @@ class Unit {
     this.recalculateTarget = 0;
     this.state = STATES.IDLE;
     this.menuState = MENU_STATES.INITIAL;
+    this.inFog = 0;
 
     // worker things
     this.carryingResource = false;
@@ -553,12 +554,14 @@ class Unit {
       });
     }
 
-    drawer.miniMap({
-      x: x,
-      y: y,
-      color: this.miniMapColor,
-      size: Math.ceil(this.size / 20),
-    });
+    if (!this.inFog) {
+      drawer.miniMap({
+        x: x,
+        y: y,
+        color: this.miniMapColor,
+        size: Math.ceil(this.size / 20),
+      });
+    }
   }
 }
 

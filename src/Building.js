@@ -26,6 +26,7 @@ class Building {
     this.built = built;
     this.builder = builder;
     this.bloodColor = "#666";
+    this.inFog = 0;
   }
 
   attacked() {
@@ -228,13 +229,15 @@ class Building {
       });
     }
 
-    drawer.miniMap({
-      x: this.x,
-      y: this.y,
-      color: this.miniMapColor,
-      sizeX: Math.ceil(this.sizeX / 20),
-      sizeY: Math.ceil(this.sizeY / 20),
-    });
+    if (!this.inFog) {
+      drawer.miniMap({
+        x: this.x,
+        y: this.y,
+        color: this.miniMapColor,
+        sizeX: Math.ceil(this.sizeX / 20),
+        sizeY: Math.ceil(this.sizeY / 20),
+      });
+    }
   }
 }
 
