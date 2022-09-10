@@ -1,6 +1,7 @@
 const TerserPlugin = require("terser-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 const path = require("path");
 
 const prod = {
@@ -76,5 +77,6 @@ module.exports = {
       inlineSource: ".js$",
     }),
     new HtmlWebpackInlineSourcePlugin(),
+    new CompressionPlugin(),
   ],
 };
