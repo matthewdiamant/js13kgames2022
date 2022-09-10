@@ -43,7 +43,7 @@ const drawBuilding = (
   accessory
 ) => {
   drawer.rect({
-    fillColor: "#A33" + opacity,
+    fillColor: "#544" + opacity,
     rect: [x, y + Map.tileSize, width, height],
   });
 
@@ -57,7 +57,7 @@ const drawBuilding = (
       0,
       2 * Math.PI,
     ],
-    fillColor: "#A33" + opacity,
+    fillColor: "#544" + opacity,
   });
 
   drawer.ellipse({
@@ -70,7 +70,7 @@ const drawBuilding = (
       0,
       2 * Math.PI,
     ],
-    fillColor: "#A55" + opacity,
+    fillColor: "#655" + opacity,
   });
 
   if (accessory === "flag") {
