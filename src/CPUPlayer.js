@@ -62,13 +62,15 @@ class CPUPlayer extends Player {
       this.resources >= 250
     ) {
       const builder = sample(this.units.filter((u) => u.builder));
-      this.placeBuildingForConstruction({
-        building: "barracks",
-        x: base.x - 300,
-        y: base.y,
-        map,
-        unit: builder,
-      });
+      if (builder) {
+        this.placeBuildingForConstruction({
+          building: "barracks",
+          x: base.x - 300,
+          y: base.y,
+          map,
+          unit: builder,
+        });
+      }
     }
 
     // randomly build goblins
