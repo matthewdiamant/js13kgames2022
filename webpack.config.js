@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const path = require("path");
+const zlib = require("zlib");
 
 const prod = {
   devtool: "",
@@ -77,6 +78,23 @@ module.exports = {
       inlineSource: ".js$",
     }),
     new HtmlWebpackInlineSourcePlugin(),
-    new CompressionPlugin(),
+    new CompressionPlugin({
+      filename: "[path][base].gz",
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
+    new CompressionPlugin({
+      filename: "[path][base].br",
+      algorithm: "brotliCompress",
+      compressionOptions: {
+        params: {
+          [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
+        },
+      },
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
   ],
 };

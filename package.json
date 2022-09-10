@@ -6,7 +6,7 @@
   "browserslist": "modern",
   "scripts": {
     "build": "./scripts/finalize.sh",
-    "start": "http-server -g -c-1 docs",
+    "start": "http-server --brotli -c-1 docs",
     "watch": "webpack --watch"
   },
   "author": "",
