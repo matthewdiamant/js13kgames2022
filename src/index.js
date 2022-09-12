@@ -11,6 +11,7 @@ import MineCollection from "./MineCollection";
 import MiniMap from "./MiniMap";
 import Mouse from "./Mouse";
 import ParticleCollection from "./ParticleCollection";
+import SplashScreen from "./SplashScreen";
 import Sound from "./Sound";
 
 let fps = 60,
@@ -38,6 +39,7 @@ window.onload = () => {
   let humanPlayer = new HumanPlayer({ map });
   let cpuPlayer = new CPUPlayer({ map });
   let particles = new ParticleCollection();
+  let splashScreen = new SplashScreen();
 
   let gameLoop = (currentTime) => {
     window.requestAnimationFrame(gameLoop);
@@ -77,6 +79,7 @@ window.onload = () => {
     hud.tick({ camera, drawer, map, mouse, player: humanPlayer, sound });
     particles.tick({ map });
     fogOfWar.tick({ humanPlayer, cpuPlayer, mines, map });
+    splashScreen.tick();
   };
 
   let drawObjects = () => [
@@ -91,6 +94,7 @@ window.onload = () => {
     hud,
     miniMap,
     level,
+    splashScreen,
   ];
 
   gameLoop();
