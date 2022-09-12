@@ -148,6 +148,7 @@ export default {
     actions: ({ building, output, player }) => {
       output[0] = buildUnit("goblin", building, player);
       output[1] = buildUnit("brute", building, player);
+      output[2] = buildUnit("speeder", building, player);
     },
     drawBuilding: (...args) => drawBuilding(...args, "shield"),
   },

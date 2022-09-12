@@ -3451,7 +3451,7 @@ class Sound {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "humanoid", function() { return humanoid; });
 const humanoid = (x, y, facing, colors, options = {}) => {
-  let { skin, horns, eyes, body } = colors;
+  let { skin, eyes, body } = colors;
   let parts = [];
 
   if (options.blink) {
@@ -3475,10 +3475,20 @@ const humanoid = (x, y, facing, colors, options = {}) => {
     parts = parts.concat(lower);
   }
 
-  if (horns)
+  if (options.horns)
     parts = parts.concat([
-      [horns, [0, -1, 1, 1]], // horn left
-      [horns, [4, -1, 1, 1]], // horn right
+      [skin, [0, -1, 1, 1]], // horn left
+      [skin, [4, -1, 1, 1]], // horn right
+    ]);
+
+  if (options.antenna)
+    parts = parts.concat([
+      [skin, [1, -1, 1, 1]], // antenna left
+      [skin, [0, -2, 1, 1]], // antenna left
+      [skin, [3, -1, 1, 1]], // antenna right
+      [skin, [4, -2, 1, 1]], // antenna right
+      [eyes, [2, 1, 1, 1]], // eye leftmiddle
+      [eyes, [3, 1, 1, 1]], // eye rightmiddle
     ]);
 
   const mult = options.size || 8;
@@ -4020,6 +4030,8 @@ class Unit {
     Object(_Sprites__WEBPACK_IMPORTED_MODULE_2__["humanoid"])(x, y, this.facing, this.colors, {
       blink: this.blink > 0,
       bodyless: this.bodyless,
+      horns: this.horns,
+      antenna: this.antenna,
       size: this.size / 5,
     }).forEach(({ c, r }) =>
       drawer.rect({
@@ -4267,6 +4279,7 @@ const drawBuilding = (
     actions: ({ building, output, player }) => {
       output[0] = buildUnit("goblin", building, player);
       output[1] = buildUnit("brute", building, player);
+      output[2] = buildUnit("speeder", building, player);
     },
     drawBuilding: (...args) => drawBuilding(...args, "shield"),
   },
@@ -4510,7 +4523,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************!*\
   !*** ./src/unitTypes.js ***!
   \**************************/
-/*! exports provided: shadeColors, goblinColors, bruteColors, default */
+/*! exports provided: shadeColors, goblinColors, bruteColors, speederColors, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4518,14 +4531,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "shadeColors", function() { return shadeColors; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "goblinColors", function() { return goblinColors; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bruteColors", function() { return bruteColors; });
-const makeColors = ([skin, horns, eyes, body]) => ({ skin, horns, eyes, body });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "speederColors", function() { return speederColors; });
+const makeColors = ([skin, eyes, body]) => ({ skin, eyes, body });
 
 // prettier-ignore
-const shadeColors = (color) => makeColors(["#999", "#999", color, color]);
+const shadeColors = (color) => makeColors(["#999", color, color]);
 // prettier-ignore
-const goblinColors = (color) => makeColors(["#50c878", "#50c878", color, color]);
+const goblinColors = (color) => makeColors(["#50c878", color, color]);
 // prettier-ignore
-const bruteColors = (color) => makeColors(["#c80", "#c80", color, color]);
+const bruteColors = (color) => makeColors(["#c80", color, color]);
+// prettier-ignore
+const speederColors = (color) => makeColors(["#cff", color, color]);
 
 const defaultUnit = {
   name: "goblin",
@@ -4539,6 +4555,8 @@ const defaultUnit = {
   colors: goblinColors,
   speed: 5,
   bodyless: false,
+  horns: true,
+  antenna: false,
   bouncy: true,
   attackSound: "gun",
   canMine: false,
@@ -4586,6 +4604,20 @@ const defaultUnit = {
 
     range: 100,
   },
+  "speeder": {
+    ...defaultUnit,
+    name: "speeder",
+    health: 150,
+    damage: 5,
+    cost: 200,
+    horns: false,
+    antenna: true,
+    buildTime: 10 * 30,
+    colors: speederColors,
+    speed: 8,
+
+    range: 50,
+  }
 });
 
 

@@ -502,6 +502,8 @@ class Unit {
     humanoid(x, y, this.facing, this.colors, {
       blink: this.blink > 0,
       bodyless: this.bodyless,
+      horns: this.horns,
+      antenna: this.antenna,
       size: this.size / 5,
     }).forEach(({ c, r }) =>
       drawer.rect({

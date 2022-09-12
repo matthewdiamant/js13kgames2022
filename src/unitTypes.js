@@ -1,11 +1,13 @@
-const makeColors = ([skin, horns, eyes, body]) => ({ skin, horns, eyes, body });
+const makeColors = ([skin, eyes, body]) => ({ skin, eyes, body });
 
 // prettier-ignore
-export const shadeColors = (color) => makeColors(["#999", "#999", color, color]);
+export const shadeColors = (color) => makeColors(["#999", color, color]);
 // prettier-ignore
-export const goblinColors = (color) => makeColors(["#50c878", "#50c878", color, color]);
+export const goblinColors = (color) => makeColors(["#50c878", color, color]);
 // prettier-ignore
-export const bruteColors = (color) => makeColors(["#c80", "#c80", color, color]);
+export const bruteColors = (color) => makeColors(["#c80", color, color]);
+// prettier-ignore
+export const speederColors = (color) => makeColors(["#cff", color, color]);
 
 const defaultUnit = {
   name: "goblin",
@@ -19,6 +21,8 @@ const defaultUnit = {
   colors: goblinColors,
   speed: 5,
   bodyless: false,
+  horns: true,
+  antenna: false,
   bouncy: true,
   attackSound: "gun",
   canMine: false,
@@ -66,4 +70,18 @@ export default {
 
     range: 100,
   },
+  "speeder": {
+    ...defaultUnit,
+    name: "speeder",
+    health: 150,
+    damage: 5,
+    cost: 200,
+    horns: false,
+    antenna: true,
+    buildTime: 10 * 30,
+    colors: speederColors,
+    speed: 8,
+
+    range: 50,
+  }
 };

@@ -1,5 +1,5 @@
 export const humanoid = (x, y, facing, colors, options = {}) => {
-  let { skin, horns, eyes, body } = colors;
+  let { skin, eyes, body } = colors;
   let parts = [];
 
   if (options.blink) {
@@ -23,10 +23,20 @@ export const humanoid = (x, y, facing, colors, options = {}) => {
     parts = parts.concat(lower);
   }
 
-  if (horns)
+  if (options.horns)
     parts = parts.concat([
-      [horns, [0, -1, 1, 1]], // horn left
-      [horns, [4, -1, 1, 1]], // horn right
+      [skin, [0, -1, 1, 1]], // horn left
+      [skin, [4, -1, 1, 1]], // horn right
+    ]);
+
+  if (options.antenna)
+    parts = parts.concat([
+      [skin, [1, -1, 1, 1]], // antenna left
+      [skin, [0, -2, 1, 1]], // antenna left
+      [skin, [3, -1, 1, 1]], // antenna right
+      [skin, [4, -2, 1, 1]], // antenna right
+      [eyes, [2, 1, 1, 1]], // eye leftmiddle
+      [eyes, [3, 1, 1, 1]], // eye rightmiddle
     ]);
 
   const mult = options.size || 8;
