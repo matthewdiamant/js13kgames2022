@@ -3909,7 +3909,20 @@ class Unit {
       actionable: function () {
         return this.cost <= player.resources;
       },
-      drawIcon: (drawer, x, y) => {},
+      drawIcon: (drawer, x, y) => {
+        if (building["name"] === "base") {
+          drawer.rect({
+            adjusted: false,
+            rect: [x + 14, y + 12, 7, 35],
+            fillColor: "#666",
+          });
+          drawer.rect({
+            adjusted: false,
+            rect: [x + 21, y + 13, 25, 18],
+            fillColor: "#0f0",
+          });
+        }
+      },
       execute: () => {
         player.placeBuildingMode({ unit: this, building: building["name"] });
         this.menuState = MENU_STATES.PLACE_BUILDING;
