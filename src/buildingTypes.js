@@ -138,6 +138,18 @@ export default {
       output[0] = buildUnit("shade", building, player);
     },
     drawBuilding: (...args) => drawBuilding(...args, "flag"),
+    drawIcon: (drawer, x, y) => {
+      drawer.rect({
+        adjusted: false,
+        rect: [x + 14, y + 12, 7, 35],
+        fillColor: "#666",
+      });
+      drawer.rect({
+        adjusted: false,
+        rect: [x + 21, y + 13, 25, 18],
+        fillColor: "#0f0",
+      });
+    },
   },
   barracks: {
     name: "barracks",
@@ -152,5 +164,36 @@ export default {
       output[2] = buildUnit("speeder", building, player);
     },
     drawBuilding: (...args) => drawBuilding(...args, "shield"),
+    drawIcon: (drawer, x, y) => {
+      const sx = 11.5;
+      const sy = 13;
+      drawer.ellipse({
+        adjusted: false,
+        ellipse: [x + sx, y + sy, 36, 36, 0, 0, Math.PI / 3],
+        fillColor: "#0f0",
+      });
+      drawer.ellipse({
+        adjusted: false,
+        ellipse: [
+          x + sx + 36,
+          y + sy,
+          36,
+          36,
+          0,
+          (2 * Math.PI) / 3,
+          (3 * Math.PI) / 3,
+        ],
+        fillColor: "#0f0",
+      });
+      drawer.lines({
+        adjusted: false,
+        lines: [
+          [x + sx, y + sy],
+          [x + sx + 36, y + sy],
+          [x + sx + 18, y + sy + (36 * 3 ** (1 / 2)) / 2],
+        ],
+        fillColor: "#0f0",
+      });
+    },
   },
 };

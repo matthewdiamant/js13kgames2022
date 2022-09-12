@@ -373,49 +373,7 @@ class Unit {
         return this.cost <= player.resources;
       },
       drawIcon: (drawer, x, y) => {
-        if (building["name"] === "base") {
-          drawer.rect({
-            adjusted: false,
-            rect: [x + 14, y + 12, 7, 35],
-            fillColor: "#666",
-          });
-          drawer.rect({
-            adjusted: false,
-            rect: [x + 21, y + 13, 25, 18],
-            fillColor: "#0f0",
-          });
-        }
-        if (building["name"] === "barracks") {
-          const sx = 11.5;
-          const sy = 13;
-          drawer.ellipse({
-            adjusted: false,
-            ellipse: [x + sx, y + sy, 36, 36, 0, 0, Math.PI / 3],
-            fillColor: "#0f0",
-          });
-          drawer.ellipse({
-            adjusted: false,
-            ellipse: [
-              x + sx + 36,
-              y + sy,
-              36,
-              36,
-              0,
-              (2 * Math.PI) / 3,
-              (3 * Math.PI) / 3,
-            ],
-            fillColor: "#0f0",
-          });
-          drawer.lines({
-            adjusted: false,
-            lines: [
-              [x + sx, y + sy],
-              [x + sx + 36, y + sy],
-              [x + sx + 18, y + sy + (36 * 3 ** (1 / 2)) / 2],
-            ],
-            fillColor: "#0f0",
-          });
-        }
+        building.drawIcon(drawer, x, y);
       },
       execute: () => {
         player.placeBuildingMode({ unit: this, building: building["name"] });

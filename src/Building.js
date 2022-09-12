@@ -12,6 +12,7 @@ class Building {
     this.buildingProgress = built ? 0 : template.buildTime;
     this.cost = template.cost;
     this.drawBuilding = template.drawBuilding;
+    this.drawIcon = template.drawIcon;
 
     this.x = x;
     this.y = y;
@@ -165,6 +166,7 @@ class Building {
   }
 
   hudDraw(drawer, x, y) {
+    this.drawIcon(drawer, x - 15, y - 20);
     if (this.tasks.length) {
       this.hudDrawCurrentTask(drawer, x, y);
       this.tasks.slice(1).forEach(({ drawIcon }, i) => {
