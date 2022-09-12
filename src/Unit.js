@@ -3,6 +3,7 @@ import HUD from "./HUD";
 import { humanoid } from "./Sprites";
 import Particle from "./Particle";
 import buildingTypes from "./buildingTypes";
+import unitTypes from "./unitTypes";
 import { boxCollision } from "./collision";
 import { distance } from "./distance";
 
@@ -379,13 +380,13 @@ class Unit {
     });
 
     if (this.state === MENU_STATES.BUILD_BUILDING) {
-      output[8] = cancel;
+      output[5] = cancel;
     } else if (this.menuState === MENU_STATES.BUILDING) {
       output[0] = buildBuilding(buildingTypes["base"]);
       output[1] = buildBuilding(buildingTypes["barracks"]);
-      output[8] = cancel;
+      output[5] = cancel;
     } else if (this.menuState === MENU_STATES.PLACE_BUILDING) {
-      output[8] = cancel;
+      output[5] = cancel;
     } else {
       output[0] = {
         name: "move",
@@ -417,7 +418,7 @@ class Unit {
         },
       };
       if (this.builder) {
-        output[6] = {
+        output[3] = {
           name: "build",
           cost: 0,
           actionable: () => true,
@@ -450,18 +451,19 @@ class Unit {
     return output;
   }
 
-  hudDrawIcon(drawer, x, y) {
-    Unit.hudDrawIcon(drawer, x, y, { bodyless: this.bodyless });
+  hudDrawIcon(drawer, x, y, name) {
+    const options = unitTypes[name];
+    Unit.hudDrawIcon(drawer, x, y, { ...options, bodyless: this.bodyless });
   }
 
-  hudDraw(drawer, x, y) {
+  hudDraw(drawer, x, y, name) {
+    const options = unitTypes[name];
     const colors = {
       skin: "#0f0",
-      horns: "#0f0",
       eyes: "#666",
       body: "#666",
     };
-    humanoid(x, y, 1, colors, { size: 12 }).forEach(({ c, r }) =>
+    humanoid(x, y, 1, colors, { ...options, size: 12 }).forEach(({ c, r }) =>
       drawer.rect({
         adjusted: false,
         fillColor: c,
@@ -570,7 +572,6 @@ class Unit {
 Unit.hudDrawIcon = (drawer, x, y, options) => {
   const colors = {
     skin: "#0f0",
-    horns: "#0f0",
     eyes: "#666",
     body: "#666",
   };

@@ -27,7 +27,8 @@ const buildUnit = (type, building, player) => {
       });
     },
     drawIcon: (drawer, x, y) => {
-      Unit.hudDrawIcon(drawer, x, y);
+      const options = unitTypes[name];
+      Unit.hudDrawIcon(drawer, x, y, options);
     },
   };
 };

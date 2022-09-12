@@ -187,7 +187,8 @@ class HUD {
       entity.hudDraw(
         drawer,
         this.infoboxX + INFOBOX_PADDING,
-        this.infoboxY + INFOBOX_PADDING + 60
+        this.infoboxY + INFOBOX_PADDING + 60,
+        entity.name
       );
 
       drawer.text({
@@ -220,7 +221,7 @@ class HUD {
           strokeColor: "#0f0",
           rect: [x, y, ICON_BOX_SIZE, ICON_BOX_SIZE],
         });
-        unit.hudDrawIcon(drawer, x, y);
+        unit.hudDrawIcon(drawer, x, y, unit.name);
       });
     }
 
@@ -255,10 +256,7 @@ class HUD {
       drawer.text({
         text: this.actionBoxText,
         x: this.actionboxX + ICON_BOX_MARGIN,
-        y:
-          this.actionboxY +
-          (ICON_BOX_SIZE + ICON_BOX_MARGIN) * 3 +
-          ICON_BOX_MARGIN,
+        y: this.actionboxY + (ICON_BOX_SIZE + ICON_BOX_MARGIN) * 3 - 17,
         size: 3,
       });
     }

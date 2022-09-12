@@ -2174,7 +2174,8 @@ class HUD {
       entity.hudDraw(
         drawer,
         this.infoboxX + INFOBOX_PADDING,
-        this.infoboxY + INFOBOX_PADDING + 60
+        this.infoboxY + INFOBOX_PADDING + 60,
+        entity.name
       );
 
       drawer.text({
@@ -2207,7 +2208,7 @@ class HUD {
           strokeColor: "#0f0",
           rect: [x, y, ICON_BOX_SIZE, ICON_BOX_SIZE],
         });
-        unit.hudDrawIcon(drawer, x, y);
+        unit.hudDrawIcon(drawer, x, y, unit.name);
       });
     }
 
@@ -2242,10 +2243,7 @@ class HUD {
       drawer.text({
         text: this.actionBoxText,
         x: this.actionboxX + ICON_BOX_MARGIN,
-        y:
-          this.actionboxY +
-          (ICON_BOX_SIZE + ICON_BOX_MARGIN) * 3 +
-          ICON_BOX_MARGIN,
+        y: this.actionboxY + (ICON_BOX_SIZE + ICON_BOX_MARGIN) * 3 - 17,
         size: 3,
       });
     }
@@ -3524,8 +3522,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Sprites__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Sprites */ "./src/Sprites.js");
 /* harmony import */ var _Particle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Particle */ "./src/Particle.js");
 /* harmony import */ var _buildingTypes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./buildingTypes */ "./src/buildingTypes.js");
-/* harmony import */ var _collision__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./collision */ "./src/collision.js");
-/* harmony import */ var _distance__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./distance */ "./src/distance.js");
+/* harmony import */ var _unitTypes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./unitTypes */ "./src/unitTypes.js");
+/* harmony import */ var _collision__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./collision */ "./src/collision.js");
+/* harmony import */ var _distance__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./distance */ "./src/distance.js");
+
 
 
 
@@ -3623,7 +3623,7 @@ class Unit {
     this.recalculateTarget = 15;
     this.target.attacked();
 
-    const distanceFromTarget = Object(_distance__WEBPACK_IMPORTED_MODULE_6__["distance"])(this, this.target);
+    const distanceFromTarget = Object(_distance__WEBPACK_IMPORTED_MODULE_7__["distance"])(this, this.target);
     const targetInRange = distanceFromTarget <= this.range;
     if (!targetInRange) {
       this.setPath([this.target.x, this.target.y], map);
@@ -3643,7 +3643,7 @@ class Unit {
 
   calculateSpeed() {
     let [targetX, targetY] = this.path[0];
-    let d = Object(_distance__WEBPACK_IMPORTED_MODULE_6__["distance"])({ x: this.x, y: this.pathY }, { x: targetX, y: targetY });
+    let d = Object(_distance__WEBPACK_IMPORTED_MODULE_7__["distance"])({ x: this.x, y: this.pathY }, { x: targetX, y: targetY });
 
     // if close enough to destination, remove waypoint
     if (d > this.speed) {
@@ -3705,7 +3705,7 @@ class Unit {
     if (!base) {
       const bases = player.buildings.filter((b) => b.name === "base");
       if (bases.length) {
-        bases.sort((a, b) => Object(_distance__WEBPACK_IMPORTED_MODULE_6__["distance"])(this, a) - Object(_distance__WEBPACK_IMPORTED_MODULE_6__["distance"])(this, b));
+        bases.sort((a, b) => Object(_distance__WEBPACK_IMPORTED_MODULE_7__["distance"])(this, a) - Object(_distance__WEBPACK_IMPORTED_MODULE_7__["distance"])(this, b));
         base = bases[0];
       }
     }
@@ -3777,7 +3777,7 @@ class Unit {
           map
         );
       }
-      if (Object(_collision__WEBPACK_IMPORTED_MODULE_5__["boxCollision"])(this.hitbox(), this.buildingTarget)) {
+      if (Object(_collision__WEBPACK_IMPORTED_MODULE_6__["boxCollision"])(this.hitbox(), this.buildingTarget)) {
         this.buildingTarget.buildingProgress -= 1;
         if (this.buildingTarget.buildingProgress <= 0) {
           this.buildingTarget.built = true;
@@ -3800,14 +3800,14 @@ class Unit {
       } else if (this.carryingResource) {
         this.returnResource(player, map);
       }
-      if (Object(_collision__WEBPACK_IMPORTED_MODULE_5__["boxCollision"])(this.hitbox(), this.miningTarget)) {
+      if (Object(_collision__WEBPACK_IMPORTED_MODULE_6__["boxCollision"])(this.hitbox(), this.miningTarget)) {
         this.carryingResource = true;
         this.returnResource(player, map);
       }
     }
     if (this.state === STATES.RETURNING_RESOURCE) {
       if (
-        Object(_collision__WEBPACK_IMPORTED_MODULE_5__["boxCollision"])(this.hitbox(), this.baseTarget) &&
+        Object(_collision__WEBPACK_IMPORTED_MODULE_6__["boxCollision"])(this.hitbox(), this.baseTarget) &&
         this.carryingResource
       ) {
         player.resources += 10;
@@ -3826,7 +3826,7 @@ class Unit {
     // find targets while idle
     if (this.aggro && this.state === STATES.IDLE) {
       const [nearTarget] = targets.filter(
-        (entity) => Object(_distance__WEBPACK_IMPORTED_MODULE_6__["distance"])(this, entity) <= this.range
+        (entity) => Object(_distance__WEBPACK_IMPORTED_MODULE_7__["distance"])(this, entity) <= this.range
       );
       if (nearTarget) {
         this.setTarget(nearTarget, map);
@@ -3842,7 +3842,7 @@ class Unit {
     if (this.firingTime > 0) this.firingTime -= 1;
     if (this.cooldownTime > 0) this.cooldownTime -= 1;
     if (this.state === STATES.ATTACKING) {
-      const distanceFromTarget = Object(_distance__WEBPACK_IMPORTED_MODULE_6__["distance"])(this, this.target);
+      const distanceFromTarget = Object(_distance__WEBPACK_IMPORTED_MODULE_7__["distance"])(this, this.target);
       const targetInRange = distanceFromTarget <= this.range;
 
       this.recalculateTarget -= 1;
@@ -3857,7 +3857,7 @@ class Unit {
         this.firingTime = this.firingTotalTime;
         this.path = [];
 
-        const d = Object(_distance__WEBPACK_IMPORTED_MODULE_6__["distance"])(this, this.target);
+        const d = Object(_distance__WEBPACK_IMPORTED_MODULE_7__["distance"])(this, this.target);
         const dx = (this.target.x - this.x) / d;
         const dy = (this.target.y - this.pathY) / d;
         this.target.takeDamage(this.damage, {
@@ -3907,13 +3907,13 @@ class Unit {
     });
 
     if (this.state === MENU_STATES.BUILD_BUILDING) {
-      output[8] = cancel;
+      output[5] = cancel;
     } else if (this.menuState === MENU_STATES.BUILDING) {
       output[0] = buildBuilding(_buildingTypes__WEBPACK_IMPORTED_MODULE_4__["default"]["base"]);
       output[1] = buildBuilding(_buildingTypes__WEBPACK_IMPORTED_MODULE_4__["default"]["barracks"]);
-      output[8] = cancel;
+      output[5] = cancel;
     } else if (this.menuState === MENU_STATES.PLACE_BUILDING) {
-      output[8] = cancel;
+      output[5] = cancel;
     } else {
       output[0] = {
         name: "move",
@@ -3945,7 +3945,7 @@ class Unit {
         },
       };
       if (this.builder) {
-        output[6] = {
+        output[3] = {
           name: "build",
           cost: 0,
           actionable: () => true,
@@ -3978,18 +3978,19 @@ class Unit {
     return output;
   }
 
-  hudDrawIcon(drawer, x, y) {
-    Unit.hudDrawIcon(drawer, x, y, { bodyless: this.bodyless });
+  hudDrawIcon(drawer, x, y, name) {
+    const options = _unitTypes__WEBPACK_IMPORTED_MODULE_5__["default"][name];
+    Unit.hudDrawIcon(drawer, x, y, { ...options, bodyless: this.bodyless });
   }
 
-  hudDraw(drawer, x, y) {
+  hudDraw(drawer, x, y, name) {
+    const options = _unitTypes__WEBPACK_IMPORTED_MODULE_5__["default"][name];
     const colors = {
       skin: "#0f0",
-      horns: "#0f0",
       eyes: "#666",
       body: "#666",
     };
-    Object(_Sprites__WEBPACK_IMPORTED_MODULE_2__["humanoid"])(x, y, 1, colors, { size: 12 }).forEach(({ c, r }) =>
+    Object(_Sprites__WEBPACK_IMPORTED_MODULE_2__["humanoid"])(x, y, 1, colors, { ...options, size: 12 }).forEach(({ c, r }) =>
       drawer.rect({
         adjusted: false,
         fillColor: c,
@@ -4098,7 +4099,6 @@ class Unit {
 Unit.hudDrawIcon = (drawer, x, y, options) => {
   const colors = {
     skin: "#0f0",
-    horns: "#0f0",
     eyes: "#666",
     body: "#666",
   };
@@ -4158,7 +4158,8 @@ const buildUnit = (type, building, player) => {
       });
     },
     drawIcon: (drawer, x, y) => {
-      _Unit__WEBPACK_IMPORTED_MODULE_1__["default"].hudDrawIcon(drawer, x, y);
+      const options = _unitTypes__WEBPACK_IMPORTED_MODULE_2__["default"][name];
+      _Unit__WEBPACK_IMPORTED_MODULE_1__["default"].hudDrawIcon(drawer, x, y, options);
     },
   };
 };
