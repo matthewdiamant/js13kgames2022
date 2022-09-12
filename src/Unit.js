@@ -385,6 +385,37 @@ class Unit {
             fillColor: "#0f0",
           });
         }
+        if (building["name"] === "barracks") {
+          const sx = 11.5;
+          const sy = 13;
+          drawer.ellipse({
+            adjusted: false,
+            ellipse: [x + sx, y + sy, 36, 36, 0, 0, Math.PI / 3],
+            fillColor: "#0f0",
+          });
+          drawer.ellipse({
+            adjusted: false,
+            ellipse: [
+              x + sx + 36,
+              y + sy,
+              36,
+              36,
+              0,
+              (2 * Math.PI) / 3,
+              (3 * Math.PI) / 3,
+            ],
+            fillColor: "#0f0",
+          });
+          drawer.lines({
+            adjusted: false,
+            lines: [
+              [x + sx, y + sy],
+              [x + sx + 36, y + sy],
+              [x + sx + 18, y + sy + (36 * 3 ** (1 / 2)) / 2],
+            ],
+            fillColor: "#0f0",
+          });
+        }
       },
       execute: () => {
         player.placeBuildingMode({ unit: this, building: building["name"] });
