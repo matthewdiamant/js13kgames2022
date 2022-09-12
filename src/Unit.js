@@ -502,10 +502,12 @@ class Unit {
       drawRing("#A00");
 
     humanoid(x, y, this.facing, this.colors, {
-      blink: this.blink > 0,
       bodyless: this.bodyless,
+      brute: this.brute,
       horns: this.horns,
       antenna: this.antenna,
+
+      blink: this.blink > 0,
       size: this.size / 5,
     }).forEach(({ c, r }) =>
       drawer.rect({

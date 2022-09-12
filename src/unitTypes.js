@@ -64,6 +64,8 @@ export default {
     damage: 15,
     size: 8 * 10,
     cost: 200,
+    horns: false,
+    brute: true,
     buildTime: 10 * 30,
     colors: bruteColors,
     speed: 3,

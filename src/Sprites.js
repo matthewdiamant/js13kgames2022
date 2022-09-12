@@ -6,9 +6,19 @@ export const humanoid = (x, y, facing, colors, options = {}) => {
     eyes = "#0000";
   }
 
+  let head;
+  if (options.brute) {
+    head = [
+      [skin, [0, -1, 6, 3]],
+      [skin, [1, -2, 4, 5]],
+    ]; // head
+  } else {
+    head = [[skin, [0, 0, 5, 3]]]; // head
+  }
+  parts = parts.concat(head);
+
   let upper = [
-    [skin, [0, 0, 5, 3]], // head
-    [eyes, [1, 1, 1, 1]], // eye left
+    [eyes, [1 + (options.brute ? 1 : 0), 1, 1, 1]], // eye left
     [eyes, [4, 1, 1, 1]], // eye right
   ];
   parts = parts.concat(upper);

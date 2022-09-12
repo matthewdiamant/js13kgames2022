@@ -3456,9 +3456,19 @@ const humanoid = (x, y, facing, colors, options = {}) => {
     eyes = "#0000";
   }
 
+  let head;
+  if (options.brute) {
+    head = [
+      [skin, [0, -1, 6, 3]],
+      [skin, [1, -2, 4, 5]],
+    ]; // head
+  } else {
+    head = [[skin, [0, 0, 5, 3]]]; // head
+  }
+  parts = parts.concat(head);
+
   let upper = [
-    [skin, [0, 0, 5, 3]], // head
-    [eyes, [1, 1, 1, 1]], // eye left
+    [eyes, [1 + (options.brute ? 1 : 0), 1, 1, 1]], // eye left
     [eyes, [4, 1, 1, 1]], // eye right
   ];
   parts = parts.concat(upper);
@@ -4029,10 +4039,12 @@ class Unit {
       drawRing("#A00");
 
     Object(_Sprites__WEBPACK_IMPORTED_MODULE_2__["humanoid"])(x, y, this.facing, this.colors, {
-      blink: this.blink > 0,
       bodyless: this.bodyless,
+      brute: this.brute,
       horns: this.horns,
       antenna: this.antenna,
+
+      blink: this.blink > 0,
       size: this.size / 5,
     }).forEach(({ c, r }) =>
       drawer.rect({
@@ -4599,6 +4611,8 @@ const defaultUnit = {
     damage: 15,
     size: 8 * 10,
     cost: 200,
+    horns: false,
+    brute: true,
     buildTime: 10 * 30,
     colors: bruteColors,
     speed: 3,
