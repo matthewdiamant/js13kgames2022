@@ -8,6 +8,8 @@ export const goblinColors = (color) => makeColors(["#50c878", color, color]);
 export const bruteColors = (color) => makeColors(["#c80", color, color]);
 // prettier-ignore
 export const speederColors = (color) => makeColors(["#cff", color, color]);
+// prettier-ignore
+export const bossColors = (color) => makeColors(["#A00", color, color]);
 
 const defaultUnit = {
   name: "goblin",
@@ -85,5 +87,15 @@ export default {
     speed: 8,
 
     range: 50,
+  },
+  "boss": {
+    ...defaultUnit,
+    name: "boss",
+    health: 500,
+    damage: 25,
+    size: 20 * 10,
+    colors: bossColors,
+    speed: 1,
+    range: 75,
   }
 };

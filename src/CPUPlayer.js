@@ -20,6 +20,8 @@ class CPUPlayer extends Player {
     map.cpuGoblins.forEach(([x, y]) => {
       this.addUnit({ type: "goblin", x: 80 * x, y: 80 * y });
     });
+    this.addUnit({ type: "boss", x: 80 * 36, y: 80 * 40 });
+    this.addUnit({ type: "boss", x: 80 * 36, y: 80 * 43 });
     this.lifespan = 0;
   }
 

@@ -285,7 +285,7 @@ class Unit {
         boxCollision(this.hitbox(), this.baseTarget) &&
         this.carryingResource
       ) {
-        player.resources += 10;
+        player.resources += 5;
         this.carryingResource = false;
         this.setPath(
           [
@@ -392,37 +392,8 @@ class Unit {
     } else if (this.menuState === MENU_STATES.PLACE_BUILDING) {
       output[5] = cancel;
     } else {
-      output[0] = {
-        name: "move",
-        cost: 0,
-        actionable: () => true,
-        drawIcon: (drawer, x, y) => {
-          drawer.ellipse({
-            adjusted: false,
-            ellipse: [x + 30, y + 30, 23, 23, 0, 0, 2 * Math.PI],
-            strokeColor: "#0F0",
-            strokeWidth: 5,
-          });
-          drawer.triangle({
-            adjusted: false,
-            x: x + 30,
-            y: y + 22,
-            fillColor: "#0F0",
-            rotation: Math.PI * 0.75,
-            size: 15,
-          });
-          drawer.rect({
-            adjusted: false,
-            rect: [x + 14, y + 26, 25, 7],
-            fillColor: "#0F0",
-          });
-        },
-        execute: () => {
-          console.log("move");
-        },
-      };
       if (this.builder) {
-        output[3] = {
+        output[0] = {
           name: "build",
           cost: 0,
           actionable: () => true,

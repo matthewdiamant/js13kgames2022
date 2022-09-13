@@ -1127,8 +1127,7 @@ class Building {
       });
     }
 
-    if (true) {
-      // if (!this.inFog) {
+    if (!this.inFog) {
       drawer.miniMap({
         x: this.x,
         y: this.y,
@@ -1181,6 +1180,8 @@ class CPUPlayer extends _Player__WEBPACK_IMPORTED_MODULE_0__["default"] {
     map.cpuGoblins.forEach(([x, y]) => {
       this.addUnit({ type: "goblin", x: 80 * x, y: 80 * y });
     });
+    this.addUnit({ type: "boss", x: 80 * 36, y: 80 * 40 });
+    this.addUnit({ type: "boss", x: 80 * 36, y: 80 * 43 });
     this.lifespan = 0;
   }
 
@@ -1938,7 +1939,7 @@ class FogOfWar {
   }
 
   draw(drawer) {
-    return;
+    // return;
     this.tiles.forEach((row, y) => {
       row.forEach((tile, x) => {
         if (!tile) return;
@@ -3445,14 +3446,11 @@ class SplashScreen {
 
   tick({ mouse }) {
     const [x, y] = mouse.clickTarget;
-    if (x || y) {
-      this.click = true;
-    }
+    if (x || y) this.click = true;
     if (this.time > 0 && this.click) this.time -= 1;
   }
 
   draw(drawer) {
-    return;
     const opacity =
       (this.time < 19 ? "0" : "") +
       Math.floor((this.time / TIME) * 256).toString(16);
@@ -3884,7 +3882,7 @@ class Unit {
         Object(_collision__WEBPACK_IMPORTED_MODULE_6__["boxCollision"])(this.hitbox(), this.baseTarget) &&
         this.carryingResource
       ) {
-        player.resources += 10;
+        player.resources += 5;
         this.carryingResource = false;
         this.setPath(
           [
@@ -3991,37 +3989,8 @@ class Unit {
     } else if (this.menuState === MENU_STATES.PLACE_BUILDING) {
       output[5] = cancel;
     } else {
-      output[0] = {
-        name: "move",
-        cost: 0,
-        actionable: () => true,
-        drawIcon: (drawer, x, y) => {
-          drawer.ellipse({
-            adjusted: false,
-            ellipse: [x + 30, y + 30, 23, 23, 0, 0, 2 * Math.PI],
-            strokeColor: "#0F0",
-            strokeWidth: 5,
-          });
-          drawer.triangle({
-            adjusted: false,
-            x: x + 30,
-            y: y + 22,
-            fillColor: "#0F0",
-            rotation: Math.PI * 0.75,
-            size: 15,
-          });
-          drawer.rect({
-            adjusted: false,
-            rect: [x + 14, y + 26, 25, 7],
-            fillColor: "#0F0",
-          });
-        },
-        execute: () => {
-          console.log("move");
-        },
-      };
       if (this.builder) {
-        output[3] = {
+        output[0] = {
           name: "build",
           cost: 0,
           actionable: () => true,
@@ -4163,8 +4132,7 @@ class Unit {
       });
     }
 
-    // if (!this.inFog) {
-    if (true) {
+    if (!this.inFog) {
       drawer.miniMap({
         x: x,
         y: y,
@@ -4651,7 +4619,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************!*\
   !*** ./src/unitTypes.js ***!
   \**************************/
-/*! exports provided: shadeColors, goblinColors, bruteColors, speederColors, default */
+/*! exports provided: shadeColors, goblinColors, bruteColors, speederColors, bossColors, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4660,6 +4628,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "goblinColors", function() { return goblinColors; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bruteColors", function() { return bruteColors; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "speederColors", function() { return speederColors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bossColors", function() { return bossColors; });
 const makeColors = ([skin, eyes, body]) => ({ skin, eyes, body });
 
 // prettier-ignore
@@ -4670,6 +4639,8 @@ const goblinColors = (color) => makeColors(["#50c878", color, color]);
 const bruteColors = (color) => makeColors(["#c80", color, color]);
 // prettier-ignore
 const speederColors = (color) => makeColors(["#cff", color, color]);
+// prettier-ignore
+const bossColors = (color) => makeColors(["#A00", color, color]);
 
 const defaultUnit = {
   name: "goblin",
@@ -4747,6 +4718,16 @@ const defaultUnit = {
     speed: 8,
 
     range: 50,
+  },
+  "boss": {
+    ...defaultUnit,
+    name: "boss",
+    health: 500,
+    damage: 25,
+    size: 20 * 10,
+    colors: bossColors,
+    speed: 1,
+    range: 75,
   }
 });
 
