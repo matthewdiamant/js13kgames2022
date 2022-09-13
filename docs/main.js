@@ -1216,7 +1216,7 @@ class CPUPlayer extends _Player__WEBPACK_IMPORTED_MODULE_0__["default"] {
     // build workers
     const MAX_WORKERS = 10;
     const builders = this.units.filter((u) => u.builder);
-    const [base] = bases;
+    const base = sample(bases);
     if (base && !(this.lifespan % 300) && builders.length < MAX_WORKERS) {
       this.tryAction(base, "build shade");
     }
@@ -1224,11 +1224,12 @@ class CPUPlayer extends _Player__WEBPACK_IMPORTED_MODULE_0__["default"] {
     // build goblins
     const MAX_FIGHTERS = 20;
     const fighters = this.units.filter((u) => !u.builder);
-    const [barracks] = this.buildings.filter((b) => b.name === "barracks");
-    if (barracks && !(this.lifespan % 300) && fighters.length < MAX_FIGHTERS) {
-      this.tryAction(barracks, "build goblin");
-      if (bases.length < 3) this.tryAction(barracks, "build brute");
-      if (bases.length < 2) this.tryAction(barracks, "build speeder");
+    const barracks = this.buildings.filter((b) => b.name === "barracks");
+    const barrack = sample(barracks);
+    if (barrack && !(this.lifespan % 300) && fighters.length < MAX_FIGHTERS) {
+      this.tryAction(barrack, "build goblin");
+      if (bases.length < 3) this.tryAction(barrack, "build brute");
+      if (bases.length < 2) this.tryAction(barrack, "build speeder");
     }
   }
 
@@ -3620,7 +3621,7 @@ const MENU_STATES = {
   PLACE_BUILDING: 2,
 };
 
-const AGGRO_DISTANCE = 300;
+const AGGRO_DISTANCE = 400;
 
 class Unit {
   constructor(x, y, unitType) {
@@ -4338,7 +4339,7 @@ const drawBuilding = (
 /* harmony default export */ __webpack_exports__["default"] = ({
   base: {
     name: "base",
-    health: 50,
+    health: 1000,
     buildTime: 600,
     cost: 400,
     sizeX: _Map__WEBPACK_IMPORTED_MODULE_0__["default"].tileSize * 3,
@@ -4362,7 +4363,7 @@ const drawBuilding = (
   },
   barracks: {
     name: "barracks",
-    health: 50,
+    health: 500,
     buildTime: 300,
     cost: 150,
     sizeX: _Map__WEBPACK_IMPORTED_MODULE_0__["default"].tileSize * 3,

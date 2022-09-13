@@ -129,7 +129,7 @@ const drawBuilding = (
 export default {
   base: {
     name: "base",
-    health: 50,
+    health: 1000,
     buildTime: 600,
     cost: 400,
     sizeX: Map.tileSize * 3,
@@ -153,7 +153,7 @@ export default {
   },
   barracks: {
     name: "barracks",
-    health: 50,
+    health: 500,
     buildTime: 300,
     cost: 150,
     sizeX: Map.tileSize * 3,

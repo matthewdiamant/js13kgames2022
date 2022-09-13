@@ -22,7 +22,7 @@ const MENU_STATES = {
   PLACE_BUILDING: 2,
 };
 
-const AGGRO_DISTANCE = 300;
+const AGGRO_DISTANCE = 400;
 
 class Unit {
   constructor(x, y, unitType) {

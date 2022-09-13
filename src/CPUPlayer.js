@@ -55,7 +55,7 @@ class CPUPlayer extends Player {
     // build workers
     const MAX_WORKERS = 10;
     const builders = this.units.filter((u) => u.builder);
-    const [base] = bases;
+    const base = sample(bases);
     if (base && !(this.lifespan % 300) && builders.length < MAX_WORKERS) {
       this.tryAction(base, "build shade");
     }
@@ -63,11 +63,12 @@ class CPUPlayer extends Player {
     // build goblins
     const MAX_FIGHTERS = 20;
     const fighters = this.units.filter((u) => !u.builder);
-    const [barracks] = this.buildings.filter((b) => b.name === "barracks");
-    if (barracks && !(this.lifespan % 300) && fighters.length < MAX_FIGHTERS) {
-      this.tryAction(barracks, "build goblin");
-      if (bases.length < 3) this.tryAction(barracks, "build brute");
-      if (bases.length < 2) this.tryAction(barracks, "build speeder");
+    const barracks = this.buildings.filter((b) => b.name === "barracks");
+    const barrack = sample(barracks);
+    if (barrack && !(this.lifespan % 300) && fighters.length < MAX_FIGHTERS) {
+      this.tryAction(barrack, "build goblin");
+      if (bases.length < 3) this.tryAction(barrack, "build brute");
+      if (bases.length < 2) this.tryAction(barrack, "build speeder");
     }
   }
 
