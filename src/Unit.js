@@ -22,6 +22,8 @@ const MENU_STATES = {
   PLACE_BUILDING: 2,
 };
 
+const AGGRO_DISTANCE = 300;
+
 class Unit {
   constructor(x, y, unitType) {
     Object.entries(unitType).forEach(([key, value]) => {
@@ -299,7 +301,7 @@ class Unit {
     // find targets while idle
     if (this.aggro && this.state === STATES.IDLE) {
       const [nearTarget] = targets.filter(
-        (entity) => distance(this, entity) <= this.range
+        (entity) => distance(this, entity) <= AGGRO_DISTANCE
       );
       if (nearTarget) {
         this.setTarget(nearTarget, map);
