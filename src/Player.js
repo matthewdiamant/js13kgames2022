@@ -5,7 +5,7 @@ import unitTypes from "./unitTypes";
 
 class Player {
   constructor() {
-    this.resources = 500;
+    this.resources = 100;
 
     this.units = [];
 
