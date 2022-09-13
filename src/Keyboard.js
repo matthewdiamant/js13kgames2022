@@ -5,30 +5,10 @@ class Keyboard {
 
     this._pressed = {};
 
-    this.SPACE = { keyboard: [32], controller: [0, 1, 5, 7] };
-    this.LEFT = { keyboard: [37], controller: [14], dir: "l" };
-    this.UP = { keyboard: [38], controller: [12, 2, 3] };
-    this.RIGHT = { keyboard: [39], controller: [15], dir: "r" };
-    this.DOWN = { keyboard: [40], controller: [13] };
-  }
-
-  isDownControllerStick(dir) {
-    if (!navigator.getGamepads()[0]) return false;
-    const axes = navigator.getGamepads()[0].axes;
-
-    return {
-      l: axes[0] < 0,
-      r: axes[0] > 0,
-    }[dir];
-  }
-
-  isDownController(keyCode) {
-    if (!navigator.getGamepads()[0]) return false;
-
-    return navigator
-      .getGamepads()[0]
-      .buttons.reduce((acc, b, i) => (b.pressed ? acc.concat([i]) : acc), [])
-      .some((b) => keyCode.includes(b));
+    this.LEFT = { keyboard: [37], dir: "l" };
+    this.UP = { keyboard: [38] };
+    this.RIGHT = { keyboard: [39], dir: "r" };
+    this.DOWN = { keyboard: [40] };
   }
 
   isDownKeyboard(keyCode) {
@@ -36,12 +16,7 @@ class Keyboard {
   }
 
   isDown(keyCode) {
-    return (
-      this.isDownControllerStick(keyCode.dir) ||
-      this.isDownKeyboard(keyCode.keyboard) ||
-      this.isDownController(keyCode.controller) ||
-      false
-    );
+    return this.isDownKeyboard(keyCode.keyboard) || false;
   }
 
   onKeydown(event) {

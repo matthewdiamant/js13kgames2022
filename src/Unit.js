@@ -526,15 +526,6 @@ class Unit {
       );
     }
 
-    const hitbox = false;
-    if (hitbox) {
-      const hb = this.hitbox();
-      drawer.rect({
-        fillColor: "#c668",
-        rect: [hb.x, hb.y, hb.size, hb.size],
-      });
-    }
-
     if (!this.inFog) {
       drawer.miniMap({
         x: x,

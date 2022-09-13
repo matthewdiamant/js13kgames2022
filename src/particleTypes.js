@@ -1,5 +1,6 @@
+// prettier-ignore
 export default {
-  blood: {
+  "blood": {
     draw: function (drawer) {
       drawer.rect({
         fillColor: this.color,
@@ -7,7 +8,7 @@ export default {
       });
     },
   },
-  chunk: {
+  "chunk": {
     draw: function (drawer) {
       const glistenColor = "#FF77A8";
       drawer.rect({
@@ -38,7 +39,7 @@ export default {
       });
     },
   },
-  bit: {
+  "bit": {
     draw: function (drawer) {
       drawer.rect({
         fillColor: this.color,

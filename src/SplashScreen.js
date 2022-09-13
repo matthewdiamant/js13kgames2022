@@ -6,9 +6,12 @@ class SplashScreen {
     this.click = false;
   }
 
-  tick({ mouse }) {
+  tick({ mouse, music }) {
     const [x, y] = mouse.clickTarget;
-    if (x || y) this.click = true;
+    if (!this.click && (x || y)) {
+      this.click = true;
+      music.startMusic();
+    }
     if (this.time > 0 && this.click) this.time -= 1;
   }
 

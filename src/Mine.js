@@ -7,8 +7,6 @@ class Mine {
     this.inFog = 0;
   }
 
-  tick() {}
-
   draw(drawer) {
     drawer.rect({
       fillColor: "#338",
@@ -49,15 +47,6 @@ class Mine {
         2 * Math.PI,
       ],
     });
-
-    // hitbox?
-    const hitbox = false;
-    if (hitbox) {
-      drawer.rect({
-        fillColor: "#caa",
-        rect: [this.x, this.y, this.size, this.size],
-      });
-    }
 
     if (!this.inFog) {
       drawer.miniMap({

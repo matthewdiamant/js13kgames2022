@@ -38,22 +38,6 @@ class Camera {
     );
   }
 
-  shake(force, duration) {
-    if (force >= this.shakeForce || this.shakeRemaining === 0) {
-      this.shakeRemaining = duration;
-      this.shakeForce = force;
-    }
-  }
-
-  applyShake() {
-    this.shakeRemaining = Math.max(0, this.shakeRemaining - 1);
-    if (!this.shakeRemaining) return;
-    const shakeX = Math.random() * this.shakeForce * 2 - this.shakeForce;
-    const shakeY = Math.random() * this.shakeForce * 2 - this.shakeForce;
-    this.x += shakeX;
-    this.y += shakeY;
-  }
-
   tick({ keyboard, mouse }) {
     const SPEED = 15;
     const THRESHOLD = HUD.HUD_PADDING;
@@ -73,8 +57,6 @@ class Camera {
 
     this.x = this.position_x;
     this.y = this.position_y;
-
-    this.applyShake();
   }
 }
 

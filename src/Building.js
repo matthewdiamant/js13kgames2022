@@ -223,14 +223,6 @@ class Building {
       this.built ? "F" : "4"
     );
 
-    const hitbox = false;
-    if (hitbox) {
-      drawer.rect({
-        fillColor: "#A006",
-        rect: [this.x, this.y, this.sizeX, this.sizeY],
-      });
-    }
-
     if (!this.inFog) {
       drawer.miniMap({
         x: this.x,

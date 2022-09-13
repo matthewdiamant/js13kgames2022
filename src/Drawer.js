@@ -213,22 +213,6 @@ export default class Drawer {
     }
   }
 
-  emoji({ emoji, x, y, flipped, adjusted = true }) {
-    this.draw(() => {
-      if (adjusted) {
-        x = this.camera.adjustX(x, this.canvas.width);
-        y = this.camera.adjustY(y, this.canvas.height);
-      }
-      if (flipped) {
-        // cx.scale(-1, 1);
-        // cx.translate(canvasWidth.width / 2, canvasHeight.height / 2);
-      }
-
-      cx.font = "6px serif";
-      cx.fillText(emoji, x, y + 2);
-    });
-  }
-
   miniMap({ x, y, size, sizeX, sizeY, color }) {
     const miniMapSize = 250;
     this.miniMapObjects.push(() =>
@@ -255,13 +239,6 @@ export default class Drawer {
   renderMiniMap() {
     this.miniMapObjects.forEach((obj) => {
       this.draw(obj);
-    });
-  }
-
-  hitbox({ x, y, size }) {
-    this.rect({
-      rect: [x - size / 2, y - size / 2, size, size],
-      color: "#f00",
     });
   }
 }
@@ -306,13 +283,6 @@ letters["I"] = [
   [, 1],
   [1, 1, 1],
 ];
-letters["J"] = [
-  [1, 1, 1],
-  [, , 1],
-  [, , 1],
-  [1, , 1],
-  [1, 1, 1],
-];
 letters["K"] = [
   [1, , , 1],
   [1, , 1],
@@ -321,13 +291,6 @@ letters["K"] = [
   [1, , , 1],
 ];
 letters["L"] = [[1], [1], [1], [1], [1, 1, 1]];
-letters["M"] = [
-  [1, 1, 1, 1, 1],
-  [1, , 1, , 1],
-  [1, , 1, , 1],
-  [1, , , , 1],
-  [1, , , , 1],
-];
 letters["N"] = [
   [1, , , 1],
   [1, 1, , 1],
@@ -343,13 +306,6 @@ letters["O"] = [
   [1, 1, 1],
 ];
 letters["P"] = [[1, 1, 1], [1, , 1], [1, 1, 1], [1], [1]];
-letters["Q"] = [
-  [0, 1, 1],
-  [1, , , 1],
-  [1, , , 1],
-  [1, , 1, 1],
-  [1, 1, 1, 1],
-];
 letters["R"] = [
   [1, 1],
   [1, , 1],
@@ -379,33 +335,12 @@ letters["V"] = [
   [, 1, , 1],
   [, , 1],
 ];
-letters["W"] = [
-  [1, , , , 1],
-  [1, , , , 1],
-  [1, , , , 1],
-  [1, , 1, , 1],
-  [1, 1, 1, 1, 1],
-];
-letters["X"] = [
-  [1, , , , 1],
-  [, 1, , 1],
-  [, , 1],
-  [, 1, , 1],
-  [1, , , , 1],
-];
 letters["Y"] = [
   [1, , 1],
   [1, , 1],
   [, 1],
   [, 1],
   [, 1],
-];
-letters["Z"] = [
-  [1, 1, 1, 1, 1],
-  [, , , 1],
-  [, , 1],
-  [, 1],
-  [1, 1, 1, 1, 1],
 ];
 letters[" "] = [
   [, ,],

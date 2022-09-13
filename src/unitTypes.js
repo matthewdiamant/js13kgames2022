@@ -42,6 +42,7 @@ export default {
     ...defaultUnit,
     name: "shade",
     damage: 1,
+    cost: 50,
     aggro: false,
     colors: shadeColors,
     speed: 3,

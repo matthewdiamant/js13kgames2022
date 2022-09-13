@@ -10,6 +10,7 @@ import Map from "./Map";
 import MineCollection from "./MineCollection";
 import MiniMap from "./MiniMap";
 import Mouse from "./Mouse";
+import Music from "./Music";
 import ParticleCollection from "./ParticleCollection";
 import SplashScreen from "./SplashScreen";
 import Sound from "./Sound";
@@ -36,6 +37,7 @@ window.onload = () => {
   let map = new Map();
   let mines = new MineCollection({ map });
   let miniMap = new MiniMap();
+  let music = new Music();
   let humanPlayer = new HumanPlayer({ map });
   let cpuPlayer = new CPUPlayer({ map });
   let particles = new ParticleCollection();
@@ -75,11 +77,10 @@ window.onload = () => {
       sound,
       targets: cpuPlayer.entities(),
     });
-    mines.tick();
     hud.tick({ camera, drawer, map, mouse, player: humanPlayer, sound });
     particles.tick({ map });
     fogOfWar.tick({ humanPlayer, cpuPlayer, mines, map });
-    splashScreen.tick({ mouse });
+    splashScreen.tick({ mouse, music });
   };
 
   let drawObjects = () => [
