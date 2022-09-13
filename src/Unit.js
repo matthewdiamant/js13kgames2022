@@ -36,7 +36,7 @@ class Unit {
     this.maxHealth = this.health;
     this.lifespan = 0;
     this.selected = false;
-    this.path = [];
+    this.path = [[x + Math.random() * 100, y + Math.random() * 200 - 100]];
     this.facing = 1;
     this.type = "unit";
     this.bounce = 0;
@@ -45,7 +45,7 @@ class Unit {
     this.target = null;
     this.attackSelected = 0;
     this.recalculateTarget = 0;
-    this.state = STATES.IDLE;
+    this.state = STATES.MOVING;
     this.menuState = MENU_STATES.INITIAL;
     this.inFog = 0;
 

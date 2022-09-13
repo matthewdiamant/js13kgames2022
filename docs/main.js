@@ -1127,7 +1127,8 @@ class Building {
       });
     }
 
-    if (!this.inFog) {
+    if (true) {
+      // if (!this.inFog) {
       drawer.miniMap({
         x: this.x,
         y: this.y,
@@ -1171,19 +1172,21 @@ class CPUPlayer extends _Player__WEBPACK_IMPORTED_MODULE_0__["default"] {
     this.miniMapColor = "#F00";
     map.cpuBases.forEach(([x, y]) => {
       this.addBuilding({ type: "base", x: 80 * x, y: 80 * y });
+      this.addBuilding({ type: "barracks", x: 80 * x - 400, y: 80 * y });
     });
+    this.addBuilding({ type: "barracks", x: 80 * 38, y: 80 * 41 });
     map.cpuShades.forEach(([x, y]) => {
       this.addUnit({ type: "shade", x: 80 * x, y: 80 * y });
     });
     map.cpuGoblins.forEach(([x, y]) => {
       this.addUnit({ type: "goblin", x: 80 * x, y: 80 * y });
     });
+    this.lifespan = 0;
   }
 
   cpuActions({ map, mines }) {
     const MOVE_RATE = 0.0;
-    const WORKER_BUILD_RATE = 0.001;
-    const GOBLIN_BUILD_RATE = 0.001;
+    const bases = this.buildings.filter((b) => b.name === "base");
 
     // idle workers mine
     this.units
@@ -1210,33 +1213,22 @@ class CPUPlayer extends _Player__WEBPACK_IMPORTED_MODULE_0__["default"] {
       }
     }
 
-    // randomly build workers
-    const [base] = this.buildings.filter((b) => b.name === "base");
-    if (Math.random() < WORKER_BUILD_RATE) {
+    // build workers
+    const MAX_WORKERS = 10;
+    const builders = this.units.filter((u) => u.builder);
+    const [base] = bases;
+    if (base && !(this.lifespan % 300) && builders.length < MAX_WORKERS) {
       this.tryAction(base, "build shade");
     }
 
-    // build one barracks
-    if (
-      this.buildings.filter((b) => b.name === "barracks").length === 0 &&
-      this.resources >= 250
-    ) {
-      const builder = sample(this.units.filter((u) => u.builder));
-      if (builder) {
-        this.placeBuildingForConstruction({
-          building: "barracks",
-          x: base.x - 300,
-          y: base.y,
-          map,
-          unit: builder,
-        });
-      }
-    }
-
-    // randomly build goblins
+    // build goblins
+    const MAX_FIGHTERS = 20;
+    const fighters = this.units.filter((u) => !u.builder);
     const [barracks] = this.buildings.filter((b) => b.name === "barracks");
-    if (Math.random() < GOBLIN_BUILD_RATE) {
+    if (barracks && !(this.lifespan % 300) && fighters.length < MAX_FIGHTERS) {
       this.tryAction(barracks, "build goblin");
+      if (bases.length < 3) this.tryAction(barracks, "build brute");
+      if (bases.length < 2) this.tryAction(barracks, "build speeder");
     }
   }
 
@@ -1259,6 +1251,7 @@ class CPUPlayer extends _Player__WEBPACK_IMPORTED_MODULE_0__["default"] {
   }
 
   tick({ map, mines, particles, sound, targets }) {
+    this.lifespan += 1;
     this.cpuActions({ map, mines });
     _Player__WEBPACK_IMPORTED_MODULE_0__["default"].tick.call(this, { map, particles, sound, targets });
   }
@@ -1944,7 +1937,7 @@ class FogOfWar {
   }
 
   draw(drawer) {
-    // return;
+    return;
     this.tiles.forEach((row, y) => {
       row.forEach((tile, x) => {
         if (!tile) return;
@@ -3451,11 +3444,14 @@ class SplashScreen {
 
   tick({ mouse }) {
     const [x, y] = mouse.clickTarget;
-    if (x || y) this.click = true;
+    if (x || y) {
+      this.click = true;
+    }
     if (this.time > 0 && this.click) this.time -= 1;
   }
 
   draw(drawer) {
+    return;
     const opacity =
       (this.time < 19 ? "0" : "") +
       Math.floor((this.time / TIME) * 256).toString(16);
@@ -3638,7 +3634,7 @@ class Unit {
     this.maxHealth = this.health;
     this.lifespan = 0;
     this.selected = false;
-    this.path = [];
+    this.path = [[x + Math.random() * 100, y + Math.random() * 200 - 100]];
     this.facing = 1;
     this.type = "unit";
     this.bounce = 0;
@@ -3647,7 +3643,7 @@ class Unit {
     this.target = null;
     this.attackSelected = 0;
     this.recalculateTarget = 0;
-    this.state = STATES.IDLE;
+    this.state = STATES.MOVING;
     this.menuState = MENU_STATES.INITIAL;
     this.inFog = 0;
 
@@ -4164,7 +4160,8 @@ class Unit {
       });
     }
 
-    if (!this.inFog) {
+    // if (!this.inFog) {
+    if (true) {
       drawer.miniMap({
         x: x,
         y: y,

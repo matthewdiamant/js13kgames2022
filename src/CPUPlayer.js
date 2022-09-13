@@ -11,19 +11,21 @@ class CPUPlayer extends Player {
     this.miniMapColor = "#F00";
     map.cpuBases.forEach(([x, y]) => {
       this.addBuilding({ type: "base", x: 80 * x, y: 80 * y });
+      this.addBuilding({ type: "barracks", x: 80 * x - 400, y: 80 * y });
     });
+    this.addBuilding({ type: "barracks", x: 80 * 38, y: 80 * 41 });
     map.cpuShades.forEach(([x, y]) => {
       this.addUnit({ type: "shade", x: 80 * x, y: 80 * y });
     });
     map.cpuGoblins.forEach(([x, y]) => {
       this.addUnit({ type: "goblin", x: 80 * x, y: 80 * y });
     });
+    this.lifespan = 0;
   }
 
   cpuActions({ map, mines }) {
     const MOVE_RATE = 0.0;
-    const WORKER_BUILD_RATE = 0.001;
-    const GOBLIN_BUILD_RATE = 0.001;
+    const bases = this.buildings.filter((b) => b.name === "base");
 
     // idle workers mine
     this.units
@@ -50,33 +52,22 @@ class CPUPlayer extends Player {
       }
     }
 
-    // randomly build workers
-    const [base] = this.buildings.filter((b) => b.name === "base");
-    if (Math.random() < WORKER_BUILD_RATE) {
+    // build workers
+    const MAX_WORKERS = 10;
+    const builders = this.units.filter((u) => u.builder);
+    const [base] = bases;
+    if (base && !(this.lifespan % 300) && builders.length < MAX_WORKERS) {
       this.tryAction(base, "build shade");
     }
 
-    // build one barracks
-    if (
-      this.buildings.filter((b) => b.name === "barracks").length === 0 &&
-      this.resources >= 250
-    ) {
-      const builder = sample(this.units.filter((u) => u.builder));
-      if (builder) {
-        this.placeBuildingForConstruction({
-          building: "barracks",
-          x: base.x - 300,
-          y: base.y,
-          map,
-          unit: builder,
-        });
-      }
-    }
-
-    // randomly build goblins
+    // build goblins
+    const MAX_FIGHTERS = 20;
+    const fighters = this.units.filter((u) => !u.builder);
     const [barracks] = this.buildings.filter((b) => b.name === "barracks");
-    if (Math.random() < GOBLIN_BUILD_RATE) {
+    if (barracks && !(this.lifespan % 300) && fighters.length < MAX_FIGHTERS) {
       this.tryAction(barracks, "build goblin");
+      if (bases.length < 3) this.tryAction(barracks, "build brute");
+      if (bases.length < 2) this.tryAction(barracks, "build speeder");
     }
   }
 
@@ -99,6 +90,7 @@ class CPUPlayer extends Player {
   }
 
   tick({ map, mines, particles, sound, targets }) {
+    this.lifespan += 1;
     this.cpuActions({ map, mines });
     Player.tick.call(this, { map, particles, sound, targets });
   }
