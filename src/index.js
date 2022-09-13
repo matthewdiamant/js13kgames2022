@@ -79,7 +79,7 @@ window.onload = () => {
     hud.tick({ camera, drawer, map, mouse, player: humanPlayer, sound });
     particles.tick({ map });
     fogOfWar.tick({ humanPlayer, cpuPlayer, mines, map });
-    splashScreen.tick();
+    splashScreen.tick({ mouse });
   };
 
   let drawObjects = () => [

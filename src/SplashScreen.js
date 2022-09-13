@@ -2,11 +2,14 @@ const TIME = 300;
 
 class SplashScreen {
   constructor() {
-    this.time = TIME;
+    this.time = TIME - 1;
+    this.click = false;
   }
 
-  tick() {
-    if (this.time > 0) this.time -= 1;
+  tick({ mouse }) {
+    const [x, y] = mouse.clickTarget;
+    if (x || y) this.click = true;
+    if (this.time > 0 && this.click) this.time -= 1;
   }
 
   draw(drawer) {
@@ -40,6 +43,13 @@ class SplashScreen {
       x: 0 + x,
       y: 300 + y,
       size: 40,
+      fillColor,
+    });
+    drawer.text({
+      text: "Click to start",
+      x: drawer.width / 2 - 135,
+      y: 600 + y,
+      size: 5,
       fillColor,
     });
   }
